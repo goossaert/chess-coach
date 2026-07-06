@@ -1033,6 +1033,23 @@ function activeMistakeAt(ply) {
   return mistakeByPly.get(ply) || mistakeByPly.get(ply - 1) || null;
 }
 
+// Keep the current move visible in the move list by scrolling ONLY that
+// container — never Element.scrollIntoView(), which also scrolls the window
+// (and, on iOS Safari, throws the page zoom off). Pure navigation must leave
+// the page's scroll and zoom untouched.
+function scrollMoveListToCurrent() {
+  const container = $("move-list");
+  const btn = moveButtons[current - 1];
+  if (!container || !btn) return;
+  const cRect = container.getBoundingClientRect();
+  const bRect = btn.getBoundingClientRect();
+  if (bRect.top < cRect.top) {
+    container.scrollTop -= cRect.top - bRect.top;
+  } else if (bRect.bottom > cRect.bottom) {
+    container.scrollTop += bRect.bottom - cRect.bottom;
+  }
+}
+
 function renderPosition() {
   if (!positions) return;
   const pos = positions[current];
@@ -1086,7 +1103,7 @@ function renderPosition() {
     moveButtons[i].classList.toggle("current", i === current - 1);
   }
   if (current > 0 && moveButtons[current - 1]) {
-    moveButtons[current - 1].scrollIntoView({ block: "nearest" });
+    scrollMoveListToCurrent();
   }
 
   // feedback panel + mistake cards
@@ -1123,11 +1140,7 @@ if (positions) {
       const btn = document.createElement("button");
       btn.className = "san" + (mistakeByPly.has(j) ? " mistake" : "");
       btn.textContent = GAME.movesSan[j];
-      btn.addEventListener("click", () => {
-        const scrollY = window.scrollY;
-        goTo(j + 1);
-        window.scrollTo(0, scrollY);
-      });
+      btn.addEventListener("click", () => { goTo(j + 1); btn.blur(); });
       pair.appendChild(btn);
       moveButtons.push(btn);
     }
@@ -1159,45 +1172,17 @@ if (positions) {
     card.appendChild(num);
     card.appendChild(text);
     card.appendChild(badge);
-    card.addEventListener("click", () => {
-      const scrollY = window.scrollY;
-      goTo(mk.ply);
-      window.scrollTo(0, scrollY);
-    });
+    card.addEventListener("click", () => { goTo(mk.ply); card.blur(); });
     mlist.appendChild(card);
   }
 
   // controls
-  $("btn-start").addEventListener("click", (e) => {
-    const scrollY = window.scrollY;
-    goTo(0);
-    window.scrollTo(0, scrollY);
-  });
-  $("btn-back10").addEventListener("click", (e) => {
-    const scrollY = window.scrollY;
-    goTo(current - 10);
-    window.scrollTo(0, scrollY);
-  });
-  $("btn-prev").addEventListener("click", (e) => {
-    const scrollY = window.scrollY;
-    goTo(current - 1);
-    window.scrollTo(0, scrollY);
-  });
-  $("btn-next").addEventListener("click", (e) => {
-    const scrollY = window.scrollY;
-    goTo(current + 1);
-    window.scrollTo(0, scrollY);
-  });
-  $("btn-fwd10").addEventListener("click", (e) => {
-    const scrollY = window.scrollY;
-    goTo(current + 10);
-    window.scrollTo(0, scrollY);
-  });
-  $("btn-end").addEventListener("click", (e) => {
-    const scrollY = window.scrollY;
-    goTo(totalPlies);
-    window.scrollTo(0, scrollY);
-  });
+  $("btn-start").addEventListener("click", (e) => { goTo(0); e.target.blur(); });
+  $("btn-back10").addEventListener("click", (e) => { goTo(current - 10); e.target.blur(); });
+  $("btn-prev").addEventListener("click", (e) => { goTo(current - 1); e.target.blur(); });
+  $("btn-next").addEventListener("click", (e) => { goTo(current + 1); e.target.blur(); });
+  $("btn-fwd10").addEventListener("click", (e) => { goTo(current + 10); e.target.blur(); });
+  $("btn-end").addEventListener("click", (e) => { goTo(totalPlies); e.target.blur(); });
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") { goTo(current - (e.shiftKey ? 10 : 1)); e.preventDefault(); }

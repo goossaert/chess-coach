@@ -1,0 +1,12 @@
+[Event " Classical game"]
+[Site "https://lichess.org/ocg_8ca2ce1c"]
+[Date "2026.07.06"]
+[Variant "Standard"]
+[Round "?"]
+[White "Anonymous"]
+[Black "Stockfish"]
+[Result "0-1"]
+[WhiteElo "?"]
+[BlackElo "?"]
+
+1. d4 e6 2. Nf3 Qe7 3. e4 h5 4. e5 Rh7 5. Ng5 Rh8 6. f4 Nc6 7. Be3 b6 8. Bc4 Bb7 9. b3 f6 10. Nf3 Nh6 11. O-O Nb4 12. c3 d5 13. Bb5+ c6 14. Ba4 Nf5 15. Bd2 g6 16. cxb4 b5 17. Bxb5 Qc7 18. Ba4 Qg7 19. Nc3 Kf7 20. b5 Re8 21. bxc6 Ba6 22. Bb5 Ne3 23. Qe1 Rb8 24. Bxe3 Rxb5 25. Nxb5 Be7 26. Qe2 Rd8 27. c7 Rg8 28. Rac1 g5 29. c8=Q Rxc8 30. Rxc8 Bxc8 31. Nxa7 Qf8 32. Rc1 Bb7 33. Rc8 Qh6 34. Qd2 Bxc8 35. Nxc8 Bd8 36. a4 Bc7 37. a5 g4 38. Ne1 Kf8 39. a6 Qh8 40. Qc3 Bd8 41. a7 g3 42. hxg3 Kg8 43. a8=Q Kh7 44. f5 Qe8 45. Nd6 Qe7 46. Qb8 Kg8 47. Nc8 Qa3 48. Ne7+ Qxe7 49. Qd6 fxe5 50. Qxe5 Qc7 51. Bf4 Qxe5 52. Qe3 Qxe3+ 53. Bxe3 Kf8 54. b4 Be7 55. b5 Bb4 56. Nd3 Bd6 57. b6 Bb8 58. Nc5 Bxg3 59. Nd7+ Ke7 60. Nb8 Bxb8 61. b7 exf5 62. Kf2 Kd7 63. g3 Kc6 64. Kf3 Kxb7 65. Bf4 Kc6 66. Be5 Bxe5 0-1

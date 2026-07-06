@@ -95,6 +95,13 @@ house style — see `games/` for examples).
 Regex that does the replacement safely (Python, `re.S`):
 `re.subn(r"const GAME = \{.*?\n\};", new_game_js, html, count=1, flags=re.S)`
 
+- **Save the source game data.** Store the game exactly as the user gave it —
+  headers/metadata **and** the full PGN movetext — verbatim in `pgn/`, as a `.txt`
+  file whose name matches the generated page. For `games/<stamp>-<white>-vs-<black>.html`
+  the source lives at `pgn/<stamp>-<white>-vs-<black>.txt`. This keeps the raw input
+  next to the page it produced, so any game can be re-analyzed later. Write the PGN
+  before (or alongside) the page, and commit the two together.
+
 ### GAME data reference
 
 ```js
@@ -162,7 +169,8 @@ browser auto-found via `PLAYWRIGHT_BROWSERS_PATH`). Load the generated file head
 Also sanity-check every `mistake.ply` points at the right move:
 `movesSan[ply]` must equal `mistake.played`.
 
-Then commit the new page together with the updated `games/index.html` and push.
+Then commit the new page together with its `pgn/*.txt` source and the updated
+`games/index.html`, and push.
 
 ## Repo layout
 
@@ -171,6 +179,9 @@ Then commit the new page together with the updated `games/index.html` and push.
 - `games/` — one generated HTML page per analyzed game.
   `games/2026-07-06-11-54-morphy-vs-duke-of-brunswick-count-isouard.html` is a worked
   example; match its tone and depth of annotation.
+- `pgn/` — the raw source for each analyzed game (metadata + PGN movetext), one `.txt`
+  file per page with a matching filename (`pgn/<stamp>-<white>-vs-<black>.txt`
+  pairs with `games/<stamp>-<white>-vs-<black>.html`). Saved in workflow step 4.
 - `games/index.html` — the game list: one link per analyzed game, newest first.
   Must be updated whenever a page is added (see workflow step 5).
 - `docs/plan.md` — the design plan behind the template and this workflow.

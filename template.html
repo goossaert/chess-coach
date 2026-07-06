@@ -1123,7 +1123,7 @@ if (positions) {
       const btn = document.createElement("button");
       btn.className = "san" + (mistakeByPly.has(j) ? " mistake" : "");
       btn.textContent = GAME.movesSan[j];
-      btn.addEventListener("click", () => goTo(j + 1));
+      btn.addEventListener("click", () => { goTo(j + 1); btn.blur(); });
       pair.appendChild(btn);
       moveButtons.push(btn);
     }
@@ -1155,17 +1155,17 @@ if (positions) {
     card.appendChild(num);
     card.appendChild(text);
     card.appendChild(badge);
-    card.addEventListener("click", () => goTo(mk.ply));
+    card.addEventListener("click", () => { goTo(mk.ply); card.blur(); });
     mlist.appendChild(card);
   }
 
   // controls
-  $("btn-start").addEventListener("click", () => goTo(0));
-  $("btn-back10").addEventListener("click", () => goTo(current - 10));
-  $("btn-prev").addEventListener("click", () => goTo(current - 1));
-  $("btn-next").addEventListener("click", () => goTo(current + 1));
-  $("btn-fwd10").addEventListener("click", () => goTo(current + 10));
-  $("btn-end").addEventListener("click", () => goTo(totalPlies));
+  $("btn-start").addEventListener("click", (e) => { goTo(0); e.target.blur(); });
+  $("btn-back10").addEventListener("click", (e) => { goTo(current - 10); e.target.blur(); });
+  $("btn-prev").addEventListener("click", (e) => { goTo(current - 1); e.target.blur(); });
+  $("btn-next").addEventListener("click", (e) => { goTo(current + 1); e.target.blur(); });
+  $("btn-fwd10").addEventListener("click", (e) => { goTo(current + 10); e.target.blur(); });
+  $("btn-end").addEventListener("click", (e) => { goTo(totalPlies); e.target.blur(); });
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") { goTo(current - (e.shiftKey ? 10 : 1)); e.preventDefault(); }

@@ -1,2 +1,2 @@
 # chess-coach
-A chess game visualization tool to replay games from PNG exports and have an LLM analyze the game and provide improvement feedback
+A chess game visualization tool to replay games from PGN exports and have an LLM analyze the game and provide improvement feedback

@@ -130,7 +130,23 @@ Conventions: all evals from the **user's** perspective (positive = good for the 
 mate scores as `#3` / `#−2` (negative = user gets mated). Use the minus sign `−` in
 displayed evals to match the house style.
 
-### 5. Verify before delivering
+### 5. Update the games index
+
+`games/index.html` lists every analyzed game, **newest first**, one clickable
+`<a class="game-card">` entry per page. After generating a new page, add its entry
+between the `GAME LIST` / `END GAME LIST` comment markers, keeping the list sorted
+by the filename's `YYYY-MM-DD-HH-MM` stamp in descending order (new entries usually
+go at the top). Each entry carries:
+
+- `href`: the page's filename (relative, same folder);
+- `.gc-date` / `.gc-time`: the date and time from the filename (`2026-07-05` / `14:50`);
+- `<h2>`: the page's `GAME.title` with `<br>` flattened to a space (keep the `<em>`);
+- `.gc-players`: `White vs Black · <span class="result">RESULT</span> · played COLOR`.
+
+Copy an existing entry and edit it — never change the index's markup or CSS outside
+the list. Verify every `href` in the index resolves to a file in `games/`.
+
+### 6. Verify before delivering
 
 Playwright and Chromium are pre-installed (`NODE_PATH=/opt/node22/lib/node_modules`,
 browser auto-found via `PLAYWRIGHT_BROWSERS_PATH`). Load the generated file headless and check:
@@ -146,7 +162,7 @@ browser auto-found via `PLAYWRIGHT_BROWSERS_PATH`). Load the generated file head
 Also sanity-check every `mistake.ply` points at the right move:
 `movesSan[ply]` must equal `mistake.played`.
 
-Then commit the new page and push.
+Then commit the new page together with the updated `games/index.html` and push.
 
 ## Repo layout
 
@@ -155,4 +171,6 @@ Then commit the new page and push.
 - `games/` — one generated HTML page per analyzed game.
   `games/2026-07-06-11-54-morphy-vs-duke-of-brunswick-count-isouard.html` is a worked
   example; match its tone and depth of annotation.
+- `games/index.html` — the game list: one link per analyzed game, newest first.
+  Must be updated whenever a page is added (see workflow step 5).
 - `docs/plan.md` — the design plan behind the template and this workflow.

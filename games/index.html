@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Reviews — Chess Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12161d;
+    --panel: #181e27;
+    --panel-border: #262f3b;
+    --cream: #ece7da;
+    --muted: #8b93a1;
+    --gold: #c9a24b;
+    --rust: #c1502f;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body { padding: 0 0 64px; }
+
+  header.page-head {
+    padding: 48px 20px 32px;
+    max-width: 760px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--panel-border);
+  }
+  .eyebrow-top {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 14px;
+  }
+  h1.title {
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.05;
+    margin: 0 0 14px;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+  }
+  h1.title em { font-style: italic; color: var(--rust); }
+  p.subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    max-width: 62ch;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+  }
+
+  a.game-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-top: 12px;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--cream);
+    transition: border-color 120ms;
+  }
+  a.game-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  a.game-card:hover { border-color: var(--gold); }
+
+  .gc-when {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-family: var(--mono);
+    text-align: right;
+    min-width: 92px;
+    flex-shrink: 0;
+  }
+  .gc-date { font-size: 13px; font-weight: 600; color: var(--gold); }
+  .gc-time { font-size: 11.5px; color: var(--muted); }
+
+  .gc-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+  .gc-text h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.25;
+    margin: 0;
+    color: var(--cream);
+  }
+  .gc-text h2 em { font-style: italic; color: var(--rust); }
+  .gc-players {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .gc-players .result { color: var(--gold); }
+
+  .gc-arrow {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  a.game-card:hover .gc-arrow { color: var(--gold); }
+
+  @media (max-width: 480px) {
+    h1.title { font-size: 32px; }
+    a.game-card { flex-wrap: wrap; }
+    .gc-when { flex-direction: row; gap: 10px; min-width: 0; text-align: left; }
+  }
+
+  footer {
+    max-width: 760px;
+    margin: 40px auto 0;
+    padding: 20px 20px 0;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    border-top: 1px solid var(--panel-border);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <span class="eyebrow-top">chess coach</span>
+  <h1 class="title">Every game,<br><em>reviewed.</em></h1>
+  <p class="subtitle">All analyzed games, most recent first. Click a game to open its interactive review — board replay, engine evaluations, and the lessons to retain.</p>
+</header>
+
+<main>
+  <!-- ======================================================================
+       GAME LIST — one <a class="game-card"> per analyzed game.
+       Keep sorted by the filename's date-time stamp, NEWEST FIRST:
+       new entries go at the TOP of this list.
+       ====================================================================== -->
+
+  <a class="game-card" href="2026-07-09-12-11-anonymous-vs-stockfish.html">
+    <span class="gc-when">
+      <span class="gc-date">2026-07-09</span>
+      <span class="gc-time">12:11</span>
+    </span>
+    <span class="gc-text">
+      <h2>A winning game, <em>given away twice.</em></h2>
+      <span class="gc-players">Anonymous vs Stockfish · <span class="result">0-1</span> · played white</span>
+    </span>
+    <span class="gc-arrow">&rsaquo;</span>
+  </a>
+
+  <a class="game-card" href="2026-07-06-19-53-anonymous-vs-stockfish.html">
+    <span class="gc-when">
+      <span class="gc-date">2026-07-06</span>
+      <span class="gc-time">19:53</span>
+    </span>
+    <span class="gc-text">
+      <h2>Winning the whole way, <em>and lost at the last.</em></h2>
+      <span class="gc-players">Anonymous vs Stockfish · <span class="result">0-1</span> · played white</span>
+    </span>
+    <span class="gc-arrow">&rsaquo;</span>
+  </a>
+
+  <a class="game-card" href="2026-07-06-11-54-morphy-vs-duke-of-brunswick-count-isouard.html">
+    <span class="gc-when">
+      <span class="gc-date">2026-07-06</span>
+      <span class="gc-time">11:54</span>
+    </span>
+    <span class="gc-text">
+      <h2>A night at the opera, <em>four ways to lose it.</em></h2>
+      <span class="gc-players">Paul Morphy vs Duke of Brunswick &amp; Count Isouard · <span class="result">1-0</span> · played black</span>
+    </span>
+    <span class="gc-arrow">&rsaquo;</span>
+  </a>
+
+  <a class="game-card" href="2026-07-05-14-50-stockfish-vs-anonymous.html">
+    <span class="gc-when">
+      <span class="gc-date">2026-07-05</span>
+      <span class="gc-time">14:50</span>
+    </span>
+    <span class="gc-text">
+      <h2>You beat the machine — <em>and it declined four gifts.</em></h2>
+      <span class="gc-players">Stockfish vs Anonymous · <span class="result">0-1</span> · played black</span>
+    </span>
+    <span class="gc-arrow">&rsaquo;</span>
+  </a>
+
+  <!-- ======================================================================
+       END GAME LIST
+       ====================================================================== -->
+</main>
+
+<footer>Generated by the chess-coach workflow · one interactive review page per game</footer>
+
+</body>
+</html>

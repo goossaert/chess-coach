@@ -3,7 +3,7 @@
 [Date "2026.07.11"]
 [Variant "Standard"]
 [Round "?"]
-[White "Anonymous"]
+[White "Stockfish-level-3"]
 [Black "Anonymous"]
 [Result "1-0"]
 [WhiteElo "?"]

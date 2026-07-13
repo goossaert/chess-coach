@@ -1,0 +1,12 @@
+[Event " Classical game"]
+[Site "https://lichess.org/ocg_3c351c76"]
+[Date "2026.07.13"]
+[Variant "Standard"]
+[Round "?"]
+[White "Anonymous"]
+[Black "Stockfish-level-3"]
+[Result "0-1"]
+[WhiteElo "?"]
+[BlackElo "?"]
+
+1. d4 d6 2. e4 e6 3. Nf3 Bd7 4. e5 h6 5. c3 Be7 6. Nbd2 Kf8 7. Bc4 Nc6 8. Ne4 d5 9. Nc5 b6 10. Nb7 Qb8 11. Ba6 h5 12. Bf4 Na5 13. Nxa5 c5 14. Nb3 Bc6 15. Qd3 Qe8 16. O-O c4 17. Qc2 Qd8 18. Nbd2 g5 19. Bxg5 Qe8 20. b3 f6 21. Bf4 Rd8 22. bxc4 h4 23. cxd5 exd5 24. Nxh4 Rxh4 25. g3 Rxf4 26. gxf4 Ba3 27. Qf5 Rd7 28. exf6 Qf7 29. Bd3 Nxf6 30. Nb3 Rc7 31. Be2 Ba4 32. Nd2 Bb2 33. Bh5 Nxh5 34. Qb1 Nxf4 35. Qxb2 Qg6+ 36. Kh1 Qg2# 0-1

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recurring Mistakes &amp; Lichess Study Plan</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #5a5a5a;
+    --border: #ddd;
+    --row-alt: #f7f7f7;
+    --link: #1155cc;
+    --checked-bg: #eef7ee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181c;
+      --fg: #e8e8e8;
+      --muted: #a8a8a8;
+      --border: #3a3d42;
+      --row-alt: #1d2025;
+      --link: #7db2ff;
+      --checked-bg: #1c2b1e;
+    }
+  }
+  html, body { background: var(--bg); color: var(--fg); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 4rem;
+  }
+  h1, h2, h3 { line-height: 1.25; }
+  h1 { font-size: 1.7rem; margin-top: 0; }
+  h2 { font-size: 1.35rem; margin-top: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: .3rem; }
+  h3 { font-size: 1.1rem; margin-top: 1.75rem; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  a { color: var(--link); }
+  code { background: var(--row-alt); padding: .1em .3em; border-radius: 3px; font-size: .92em; }
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+  th, td { border: 1px solid var(--border); padding: .4rem .6rem; text-align: left; vertical-align: top; }
+  thead th { background: var(--row-alt); }
+  tbody tr:nth-child(even) { background: var(--row-alt); }
+  ol, ul { padding-left: 1.4rem; }
+  ol.checklist, ul.checklist { list-style: none; padding-left: 0; }
+  ol.checklist > li, ul.checklist > li { margin: 0.4rem 0; }
+  label.check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  label.check-item:hover { background: var(--row-alt); }
+  label.check-item input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.15rem;
+    height: 1.15rem;
+    min-width: 1.15rem;
+    margin-top: 0.18rem;
+    border: 1.5px solid var(--muted);
+    border-radius: 4px;
+    background: var(--bg);
+    cursor: pointer;
+    position: relative;
+  }
+  label.check-item input[type="checkbox"]:checked {
+    background: #2e8b57;
+    border-color: #2e8b57;
+  }
+  label.check-item input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  label.check-item.is-checked { background: var(--checked-bg); }
+  label.check-item.is-checked span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); }
+</style>
+</head>
+<body>
+<h1>Recurring Mistakes &amp; Lichess Study Plan</h1>
+<p><strong>Player:</strong> Anonymous · <strong>Games analyzed:</strong> 7 (July 5 – July 13, 2026) · <strong>Engine:</strong> Stockfish 16, depth 20, every move you played · <strong>Evals:</strong> always from your perspective (positive = good for you)</p>
+<hr>
+<h2>The one-paragraph summary</h2>
+<p>You reached a <strong>winning position (+3.3 or better) in six of the seven games and converted only two of them</strong>. The games are not being lost in the opening or to deep strategy — they are lost in single moves: a piece put on a square the opponent covers, a "free" capture that turns out to be bait, a recapture made on autopilot, a pawn push that opens your own king. The engine data says the same thing seven different ways: <strong>the leak is move-by-move safety checking, not chess knowledge.</strong> The good news: this is the most trainable weakness in chess. Every section below has a drill plan.</p>
+<h3>Scoreboard</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Game</th><th>You played</th><th>Result for you</th><th>Avg. eval loss/move¹</th><th>Mistakes²</th><th>Blunders³</th><th>Peak eval before collapse</th></tr></thead>
+<tbody>
+<tr><td>2026-07-05 vs Stockfish</td><td>Black</td><td><strong>Won</strong></td><td>63 cp</td><td>10</td><td>3</td><td>(won, despite 3 gifts)</td></tr>
+<tr><td>2026-07-06 vs Stockfish</td><td>White</td><td>Lost</td><td>84 cp</td><td>11</td><td>4</td><td><strong>+34</strong> (forced mate on the board)</td></tr>
+<tr><td>2026-07-09 (12:11) vs Stockfish</td><td>White</td><td>Lost</td><td>152 cp</td><td>7</td><td>6</td><td>+1.3 (opening)</td></tr>
+<tr><td>2026-07-09 (17:46) vs Stockfish</td><td>White</td><td><strong>Won</strong></td><td>39 cp</td><td>5</td><td>1</td><td>—</td></tr>
+<tr><td>2026-07-09 (20:18) vs Stockfish</td><td>Black</td><td>Lost</td><td>45 cp</td><td>7</td><td>2</td><td><strong>+3.5</strong></td></tr>
+<tr><td>2026-07-11 vs Stockfish level 3</td><td>Black</td><td>Lost</td><td>143 cp</td><td>11</td><td>5</td><td><strong>+5.1</strong></td></tr>
+<tr><td>2026-07-13 vs Stockfish level 3</td><td>White</td><td>Lost</td><td>121 cp</td><td>9</td><td>5</td><td><strong>+7.6</strong></td></tr>
+</tbody></table></div>
+<p>¹ average centipawn loss vs. Stockfish's best move (clamped at ±10.00). ² moves losing 1.00–2.99 vs. best. ³ moves losing ≥3.00 vs. best.</p>
+<p>The mistake categories below are <strong>sorted by how much they cost you across these seven games</strong>. Within each category, studies/exercises are sorted with the most relevant and impactful first. (Free lichess account recommended — it tracks your puzzle history and unlocks the dashboard.)</p>
+<hr>
+<h2>1. Pieces left en prise — you don't count attackers and defenders on the landing square</h2>
+<p><strong>This appeared in all seven games and is the single biggest leak.</strong> The pattern: you decide where a piece <em>wants</em> to go and play it there without asking the mechanical question, <em>"how many enemy pieces touch that square, and how many of mine defend it?"</em> — or you move a piece without asking what it was defending.</p>
+<p>What the engine found:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Game</th><th>Move</th><th>What happened</th><th>Cost</th></tr></thead>
+<tbody>
+<tr><td>07-13 (W)</td><td>33.Bh5??</td><td>Parked the bishop on the one square the h5-knight... covered — from +3.7 to −3.9</td><td><strong>−7.6</strong></td></tr>
+<tr><td>07-05 (B)</td><td>17…Ne5??</td><td>Knight to a "strong" central square that nobody actually defended — +3.5 to −2.5</td><td><strong>−6.0</strong></td></tr>
+<tr><td>07-11 (B)</td><td>20…Bf6 → 23…Qd7</td><td>Your h5-knight stood attacked for <strong>four consecutive moves</strong> (20…Ng3! saved it with a fork every time); on the 4th it fell</td><td>−3.5 to −4.2 per move</td></tr>
+<tr><td>07-06 (W)</td><td>66.Be5??</td><td>Hung the bishop for nothing — one move earlier 66.Bxb8! simply won Black's bishop (+7.3); the final losing move</td><td><strong>−14.0</strong></td></tr>
+<tr><td>07-09 12:11 (W)</td><td>17.b4??</td><td>Pushed the pawn past the square that defended your a4-knight; the knight simply fell</td><td>−3.1</td></tr>
+<tr><td>07-05 (B)</td><td>23…Ng4?</td><td>Re-routed the knight that was the only guard of the h5-knight</td><td>−4.7</td></tr>
+<tr><td>07-09 17:46 (W)</td><td>25.Qa3?</td><td>Passed up 25.Rb1! — the rook that never joined the game all match (won anyway)</td><td>−3.6</td></tr>
+</tbody></table></div>
+<p><strong>The habit to build:</strong> before <em>releasing</em> any piece (or pawn), name out loud every enemy unit that attacks the landing square — including bishops still sitting on their home squares behind pawns (that's exactly how 33.Bh5 and 17…Ne5 died) — and everything the moving piece was defending. This is a 5-second scan; it would have saved roughly four of these seven games.</p>
+<p><strong>Lichess studies &amp; exercises (most impactful first):</strong></p>
+<ol class="checklist">
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/hangingPiece"><span><a href="https://lichess.org/training/hangingPiece">https://lichess.org/training/hangingPiece</a> — the Hanging Piece puzzle trainer. Do 10/day for a month. This is <em>your</em> theme: it drills spotting pieces that can simply be taken.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/qAT8DEcG"><span><a href="https://lichess.org/study/qAT8DEcG">https://lichess.org/study/qAT8DEcG</a> — <em>Counting attackers/defenders</em> — the exact skill of tallying a square before landing on it.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/lib2mgJf/Y48PAStF"><span><a href="https://lichess.org/study/lib2mgJf/Y48PAStF">https://lichess.org/study/lib2mgJf/Y48PAStF</a> — <em>Counting Attackers &amp; Defenders 3</em> — more counting reps, including when the count lies (piece values in the capture sequence).</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/899jbI8q"><span><a href="https://lichess.org/study/899jbI8q">https://lichess.org/study/899jbI8q</a> — <em>Board Vision</em> — trains seeing the whole board, including long-range pieces behind blockers.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/i52i2RZd/qKXcBHbx"><span><a href="https://lichess.org/study/i52i2RZd/qKXcBHbx">https://lichess.org/study/i52i2RZd/qKXcBHbx</a> — <em>Winning Tactics — Loose Pieces Drop Off (LPDO)</em> — the classic "loose piece" mantra, from the punishing side; teaches you to keep a mental list of undefended pieces (yours and theirs).</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/6fNfJhyQ"><span><a href="https://lichess.org/study/6fNfJhyQ">https://lichess.org/study/6fNfJhyQ</a> — <em>Undefended Pieces</em> — spotting exercises.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/3eLEBsD5"><span><a href="https://lichess.org/study/3eLEBsD5">https://lichess.org/study/3eLEBsD5</a> — <em>Hanging Pieces</em> (NM kstorn) — themed exercise set.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/UO1jtDDb"><span><a href="https://lichess.org/study/UO1jtDDb">https://lichess.org/study/UO1jtDDb</a> — <em>Hanging Pieces lesson</em> — guided lesson format.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/9iiz4N01/e1POUvNw"><span><a href="https://lichess.org/study/9iiz4N01/e1POUvNw">https://lichess.org/study/9iiz4N01/e1POUvNw</a> — <em>Beginner Strategy Class — Hanging Pieces</em> — slower, explained examples.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/FCFA1NuF/yLtHgiLd"><span><a href="https://lichess.org/study/FCFA1NuF/yLtHgiLd">https://lichess.org/study/FCFA1NuF/yLtHgiLd</a> — <em>Hanging piece study</em> — extra reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/ZukDFo3z/xPavTrls"><span><a href="https://lichess.org/study/ZukDFo3z/xPavTrls">https://lichess.org/study/ZukDFo3z/xPavTrls</a> — <em>Capture &amp; Defend Beginner</em> — attack/defense counting from both sides.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/rZHYOYSU"><span><a href="https://lichess.org/study/rZHYOYSU">https://lichess.org/study/rZHYOYSU</a> — <em>Piece Capture, Counting and more!</em> — counting drills with piece-value twists.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/w7TzU82u"><span><a href="https://lichess.org/study/w7TzU82u">https://lichess.org/study/w7TzU82u</a> — <em>Attack and capture for beginners</em> — foundation reps if the above feel fast.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/fork"><span><a href="https://lichess.org/training/fork">https://lichess.org/training/fork</a> — Fork trainer: your unguarded pieces are what forks hit; punishing forks trains spotting them.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/9fFjmVYl/f6JRV0kH"><span><a href="https://lichess.org/study/9fFjmVYl/f6JRV0kH">https://lichess.org/study/9fFjmVYl/f6JRV0kH</a> — <em>Double Attack Puzzles</em> — same skill from the winning side.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/yJEO1s42/QOxTr8YH"><span><a href="https://lichess.org/study/yJEO1s42/QOxTr8YH">https://lichess.org/study/yJEO1s42/QOxTr8YH</a> — <em>Double Attacks</em> — more of the same.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/bXJ7Y4eU"><span><a href="https://lichess.org/study/bXJ7Y4eU">https://lichess.org/study/bXJ7Y4eU</a> — <em>Double Attack + Pin puzzles</em> — mixed set.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/video/Ao9iOeK_jvU"><span><a href="https://lichess.org/video/Ao9iOeK_jvU">https://lichess.org/video/Ao9iOeK_jvU</a> — video: <em>Chess Fundamentals #1: Undefended Pieces</em>.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/video/Iu1f7axtccQ"><span><a href="https://lichess.org/video/Iu1f7axtccQ">https://lichess.org/video/Iu1f7axtccQ</a> — video: <em>How to identify Hanging Pieces</em> (IM Alex Astaneh) — includes the counting method.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/forum/general-chess-discussion/quick-and-accurate-method-of-counting-multiple-captures"><span><a href="https://lichess.org/forum/general-chess-discussion/quick-and-accurate-method-of-counting-multiple-captures">https://lichess.org/forum/general-chess-discussion/quick-and-accurate-method-of-counting-multiple-captures</a> — forum thread: fast counting technique on contested squares.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/forum/general-chess-discussion/loose-pieces-drop-off-how-to-stop-blundering?page=3"><span><a href="https://lichess.org/forum/general-chess-discussion/loose-pieces-drop-off-how-to-stop-blundering?page=3">https://lichess.org/forum/general-chess-discussion/loose-pieces-drop-off-how-to-stop-blundering?page=3</a> — forum thread: practical anti-blunder routines from other improvers.</span></label></li>
+</ol>
+<hr>
+<h2>2. Unsafe captures and automatic recaptures — "why am I allowed to take this?"</h2>
+<p><strong>Three of the four lost-from-winning games flipped on a single capture.</strong> Two flavors: (a) the <em>automatic recapture</em>, played instantly because "he took, so I take back", which opens a line or walks into a tactic; (b) the <em>poisoned gift</em> — a piece offered as bait for a fork or mating net, and you took it.</p>
+<p>What the engine found:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Game</th><th>Move</th><th>What happened</th><th>Cost</th></tr></thead>
+<tbody>
+<tr><td>07-13 (W)</td><td>35.Qxb2??</td><td>Took the "free" bishop on b2 — it was bait pulling your queen off the defense: 35…Qg6+ 36.Kh1 Qg2#</td><td>−4.8 → <strong>mate in 2 against you</strong></td></tr>
+<tr><td>07-11 (B)</td><td>24…Rxh5??</td><td>The automatic recapture; from +1.0 to −4.1 in one move — "the recapture that gave the game back"</td><td><strong>−5.2</strong></td></tr>
+<tr><td>07-09 20:18 (B)</td><td>22…fxg5?</td><td>Recaptured toward the attacker and opened the c1–h6 diagonal through your own king position; everything after flowed through that diagonal</td><td>−2.3 (and the game)</td></tr>
+<tr><td>07-09 20:18 (B)</td><td>38…Qxf6</td><td>Took the bishop that was bait for the d5 royal fork</td><td>queen lost</td></tr>
+<tr><td>07-11 (B)</td><td>28…Kxf6??</td><td>Took a rook with the king in the open — walked from −19 into forced mate</td><td>mate in 14</td></tr>
+<tr><td>07-13 (W)</td><td>24.Nxh4?</td><td>Grabbed the h4-pawn with the knight; …Rxh4 took the knight (the rook was watching)</td><td>−2.1</td></tr>
+<tr><td>07-09 17:46 (W)</td><td>20.Rxc6?</td><td>Grabbed the c6-pawn while a threat was pending; cost a knight for two pawns in the wash (won anyway)</td><td>−1.6</td></tr>
+</tbody></table></div>
+<p><strong>The habit to build:</strong> treat every capture — <em>especially</em> recaptures — as a brand-new move. Ask: <strong>"Why am I allowed to take this?"</strong> If a full-strength opponent leaves something en prise, assume it's a deflection or attraction until you've checked every check and capture in reply. And after any exchange, re-scan which lines just opened (every pawn capture opens two lines — yours <em>and</em> theirs).</p>
+<p><strong>Lichess studies &amp; exercises (most impactful first):</strong></p>
+<ol class="checklist">
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/fundamental-tactics/zwischenzug/ITWY4GN2/CSGoTH5f"><span><a href="https://lichess.org/practice/fundamental-tactics/zwischenzug/ITWY4GN2/CSGoTH5f">https://lichess.org/practice/fundamental-tactics/zwischenzug/ITWY4GN2/CSGoTH5f</a> — <strong>Practice: Zwischenzug</strong> — the interactive lichess lesson on in-between moves: the direct cure for automatic recaptures.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/intermezzo"><span><a href="https://lichess.org/training/intermezzo">https://lichess.org/training/intermezzo</a> — Intermezzo puzzle trainer — endless reps of "the obvious recapture is wrong".</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/wHl4EGiN"><span><a href="https://lichess.org/study/wHl4EGiN">https://lichess.org/study/wHl4EGiN</a> — <em>Zwischenzug (In-between moves) Puzzles</em> — themed puzzle set.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/3BXFIMtX/l39o66lp"><span><a href="https://lichess.org/study/3BXFIMtX/l39o66lp">https://lichess.org/study/3BXFIMtX/l39o66lp</a> — <em>Introduction to Intermezzo</em> — concept first, then exercises.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/jV1A3RrM"><span><a href="https://lichess.org/study/jV1A3RrM">https://lichess.org/study/jV1A3RrM</a> — <em>Intermediate: Tactics Internalized: Zwischenzug</em> — spaced-repetition style set.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/YnxJYFKE"><span><a href="https://lichess.org/study/YnxJYFKE">https://lichess.org/study/YnxJYFKE</a> — <em>Tactics — Zwischenzug (In-between move)</em> — more reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/9ms9GmEU"><span><a href="https://lichess.org/study/9ms9GmEU">https://lichess.org/study/9ms9GmEU</a> — <em>zwischenzug — in between moves</em> — more reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/GcpdEPWF"><span><a href="https://lichess.org/study/GcpdEPWF">https://lichess.org/study/GcpdEPWF</a> — <em>Lowell School: Tactic: Zwischenzug</em> — teaching set with explanations.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/jcbJLf9B"><span><a href="https://lichess.org/study/jcbJLf9B">https://lichess.org/study/jcbJLf9B</a> — <em>zwischenzug / jugada intermedia / intermezzo 1</em> — extra volume.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/intermediate-tactics/deflection/kdKpaYLW/h9gLa7uT"><span><a href="https://lichess.org/practice/intermediate-tactics/deflection/kdKpaYLW/h9gLa7uT">https://lichess.org/practice/intermediate-tactics/deflection/kdKpaYLW/h9gLa7uT</a> — <strong>Practice: Deflection</strong> — learn the bait mechanism from the attacker's side so you recognize it when <em>you're</em> offered the gift (35.Qxb2 was a deflection victim).</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/fundamental-tactics/overloaded-pieces/o734CNqp/YOva0EFV"><span><a href="https://lichess.org/practice/fundamental-tactics/overloaded-pieces/o734CNqp/YOva0EFV">https://lichess.org/practice/fundamental-tactics/overloaded-pieces/o734CNqp/YOva0EFV</a> — <strong>Practice: Overloaded Pieces</strong> — teaches you to ask what a capturing piece <em>stops defending</em> (your queen on b2 stopped defending g2).</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/YbXWEP2N"><span><a href="https://lichess.org/study/YbXWEP2N">https://lichess.org/study/YbXWEP2N</a> — <em>Intermediate: Tactics: Overloaded Piece</em> — same theme, exercise form.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/capturingDefender"><span><a href="https://lichess.org/training/capturingDefender">https://lichess.org/training/capturingDefender</a> — Capture the Defender trainer — trains the "what was that piece guarding?" reflex from the winning side.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/defensiveMove"><span><a href="https://lichess.org/training/defensiveMove">https://lichess.org/training/defensiveMove</a> — Defensive Move trainer — puzzles where the right move is the careful one, not the greedy one.</span></label></li>
+</ol>
+<hr>
+<h2>3. King safety — you open lines toward your own king</h2>
+<p>The 07-09 20:18 game is the textbook case: the engine had you <strong>+3.5 out of a sleepy 1.e3 opening</strong>, and 21…g5?? (pushing a pawn onto a square attacked twice, in front of your own castled-long king's flank) followed by 22…fxg5? opened the c1–h6 diagonal — one bishop then ate a pawn, a knight, a rook and finally your queen through that one diagonal. In the 12:11 game your king sat on c1 under a queenside pawn storm while you spent tempi grabbing the h5-pawn (26.Bxh5?, −3.6); the attack arrived first, and 24.bxa5?? even opened the b-file into your own king (mate in 5 against you). In the 07-11 game the king walked forward into the open (28…Kxf6) straight into a mating net.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Game</th><th>Move</th><th>What happened</th><th>Cost</th></tr></thead>
+<tbody>
+<tr><td>07-09 20:18 (B)</td><td>21…g5??</td><td>Pawn push in front of your own king onto a twice-attacked square, +3.5 → +0.4, and the losing mechanism</td><td><strong>−3.1 and the game</strong></td></tr>
+<tr><td>07-09 12:11 (W)</td><td>22.Qf4? / 23.Qh4? / 26.Bxh5?</td><td>Queen went pawn-hunting on the kingside while your c1-king was being stormed on the queenside</td><td>−6.4, −2.7, −3.6</td></tr>
+<tr><td>07-09 12:11 (W)</td><td>24.bxa5??</td><td>Opened the b-file toward your own king — forced mate in 5</td><td>mate</td></tr>
+<tr><td>07-11 (B)</td><td>28…Kxf6??, 29…Be6?</td><td>King caught in the open; every move had to be about the king, and wasn't</td><td>mate in 14 / 9</td></tr>
+</tbody></table></div>
+<p><strong>The habit to build:</strong> the pawns in front of your king move only when you can name a concrete gain that outweighs the permanent weakness — and <em>never</em> while enemy pieces are aimed at that flank. When your king is under attack, material is irrelevant: count attackers vs. defenders around the king before counting pawns. (Note the asymmetry in your one won game as Black: the …g5/…g4 storm on 07-05 worked because <em>White's</em> king was stuck in the center and yours had the extra defender — the rule is about <em>your</em> king's coverage, not about pawn pushes in general.)</p>
+<p><strong>Lichess studies &amp; exercises (most impactful first):</strong></p>
+<ol class="checklist">
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/ukMqeI6m/rfwDiCe2"><span><a href="https://lichess.org/study/ukMqeI6m/rfwDiCe2">https://lichess.org/study/ukMqeI6m/rfwDiCe2</a> — <em>King safety</em> (FM Heineccius) — dedicated lesson on shelter, weakening pushes, and when they're justified.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/VIykrfMP/stlQeErM"><span><a href="https://lichess.org/study/VIykrfMP/stlQeErM">https://lichess.org/study/VIykrfMP/stlQeErM</a> — <em>Chess Strategy — King Safety</em> — concept-and-example study.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/exposedKing"><span><a href="https://lichess.org/training/exposedKing">https://lichess.org/training/exposedKing</a> — Exposed King trainer — punish exposed kings in puzzles until you feel <em>why</em> yours must not become one.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/kingsideAttack"><span><a href="https://lichess.org/training/kingsideAttack">https://lichess.org/training/kingsideAttack</a> — Kingside Attack trainer — see attacks from the attacker's side; the patterns that beat you (open diagonal, open file toward the king) repeat here endlessly.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/intermediate-tactics/greek-gift/s5pLU7Of/uCkLsFs1"><span><a href="https://lichess.org/practice/intermediate-tactics/greek-gift/s5pLU7Of/uCkLsFs1">https://lichess.org/practice/intermediate-tactics/greek-gift/s5pLU7Of/uCkLsFs1</a> — <strong>Practice: Greek Gift</strong> — the standard Bxh7+ sacrifice: the canonical punishment for a weakened king shelter; learn it from both sides.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/Q7CWvKM0/iORv4Mxg"><span><a href="https://lichess.org/study/Q7CWvKM0/iORv4Mxg">https://lichess.org/study/Q7CWvKM0/iORv4Mxg</a> — <em>Puzzles for defensive skills — series</em> — finding the defensive resource under attack.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/rgSv9KtF"><span><a href="https://lichess.org/study/rgSv9KtF">https://lichess.org/study/rgSv9KtF</a> — <em>Defensive tactics</em> — more defense-first puzzles.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/5Ax6sL8x/3g4CSs7T"><span><a href="https://lichess.org/study/5Ax6sL8x/3g4CSs7T">https://lichess.org/study/5Ax6sL8x/3g4CSs7T</a> — <em>defensive puzzles</em> — extra reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/gzJKRPF1"><span><a href="https://lichess.org/study/gzJKRPF1">https://lichess.org/study/gzJKRPF1</a> — <em>defense from tactic puzzles</em> — extra reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/defensiveMove"><span><a href="https://lichess.org/training/defensiveMove">https://lichess.org/training/defensiveMove</a> — Defensive Move trainer (also listed in §2 — it's the bridge between both leaks).</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/@/datajunkie/blog/9-10-things-you-should-know-about-defending-against-an-attack-in-chess/pU3i3FkK"><span><a href="https://lichess.org/@/datajunkie/blog/9-10-things-you-should-know-about-defending-against-an-attack-in-chess/pU3i3FkK">https://lichess.org/@/datajunkie/blog/9-10-things-you-should-know-about-defending-against-an-attack-in-chess/pU3i3FkK</a> — blog: <em>10 Things You Should Know About Defending Against An Attack</em> — checklist-style advice for exactly the 12:11-game situation.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/forum/general-chess-discussion/when-to-push-the-pawns-infront-the-king?page=1"><span><a href="https://lichess.org/forum/general-chess-discussion/when-to-push-the-pawns-infront-the-king?page=1">https://lichess.org/forum/general-chess-discussion/when-to-push-the-pawns-infront-the-king?page=1</a> — forum thread: when pushing shelter pawns is and isn't justified — short and worth reading once.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/@/Kingscrusher-YouTube/blog/the-complete-guide-to-chess-opening-principles-king-safety-driven-development/5zEb9Utr"><span><a href="https://lichess.org/@/Kingscrusher-YouTube/blog/the-complete-guide-to-chess-opening-principles-king-safety-driven-development/5zEb9Utr">https://lichess.org/@/Kingscrusher-YouTube/blog/the-complete-guide-to-chess-opening-principles-king-safety-driven-development/5zEb9Utr</a> — blog: king-safety-driven development — ties this section to §6.</span></label></li>
+</ol>
+<hr>
+<h2>4. You don't hunt forcing moves — mates and perpetuals sail past</h2>
+<p>This one is stark in the data. Across the seven games you missed:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Game</th><th>What was on the board</th><th>What happened</th></tr></thead>
+<tbody>
+<tr><td>07-09 17:46 (W)</td><td><strong>Mate in 1, twice in a row</strong> (34.Qc8#, then 35.Qa8#)</td><td>played checks instead (34.Qc6+?, 35.Qxc7?) — won anyway, 2 moves later</td></tr>
+<tr><td>07-09 17:46 (W)</td><td>Qxf7+ forcing mate next move — available <strong>three moves running</strong> (31–33)</td><td>pushed pawns instead</td></tr>
+<tr><td>07-05 (B)</td><td>40…Rd2+ <strong>forced mate in 2</strong>; 35…Ra1+ / 36…Ra1+ <strong>forced mate in 3</strong>; 37…Ra1+ forced mate in 5</td><td>shuffled knights; won anyway 16 moves later</td></tr>
+<tr><td>07-06 (W)</td><td>With two queens on the board, a <strong>forced mate (#4–#14) available for ten consecutive moves</strong> (42–51)</td><td>never looked for the forcing line; traded both queens instead — and eventually <em>lost</em></td></tr>
+<tr><td>07-09 12:11 (W)</td><td>Down −11, <strong>29.Bxf7+! held a perpetual-check draw — twice</strong> (moves 29 and 30)</td><td>played quiet moves; lost</td></tr>
+</tbody></table></div>
+<p>Two skills are missing, and they're the same skill pointed in opposite directions: <strong>when winning, check every check before every quiet move; when losing, hunt for the perpetual first.</strong> You have the patterns (you <em>did</em> mate cleanly in two games) — you're just not <em>scanning</em> for forcing moves systematically.</p>
+<p><strong>Lichess studies &amp; exercises (most impactful first):</strong></p>
+<ol class="checklist">
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/checkmates/checkmate-patterns-i/fE4k21MW/9rd7XwOw"><span><a href="https://lichess.org/practice/checkmates/checkmate-patterns-i/fE4k21MW/9rd7XwOw">https://lichess.org/practice/checkmates/checkmate-patterns-i/fE4k21MW/9rd7XwOw</a> — <strong>Practice: Checkmate Patterns I</strong> — the named mates; makes mates-in-one leap off the board at you.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/checkmates/checkmate-patterns-ii/8yadFPpU/UZ1np9Is"><span><a href="https://lichess.org/practice/checkmates/checkmate-patterns-ii/8yadFPpU/UZ1np9Is">https://lichess.org/practice/checkmates/checkmate-patterns-ii/8yadFPpU/UZ1np9Is</a> — <strong>Practice: Checkmate Patterns II</strong>.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/checkmates/checkmate-patterns-iii/PDkQDt6u/ygAaFQNc"><span><a href="https://lichess.org/practice/checkmates/checkmate-patterns-iii/PDkQDt6u/ygAaFQNc">https://lichess.org/practice/checkmates/checkmate-patterns-iii/PDkQDt6u/ygAaFQNc</a> — <strong>Practice: Checkmate Patterns III</strong>.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/checkmates/checkmate-patterns-iv/96Lij7wH/qr2pOlrL"><span><a href="https://lichess.org/practice/checkmates/checkmate-patterns-iv/96Lij7wH/qr2pOlrL">https://lichess.org/practice/checkmates/checkmate-patterns-iv/96Lij7wH/qr2pOlrL</a> — <strong>Practice: Checkmate Patterns IV</strong>.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/mateIn1"><span><a href="https://lichess.org/training/mateIn1">https://lichess.org/training/mateIn1</a> — Mate-in-1 trainer. You walked past two of these outright (and a stack of mates-in-two); drill until they're instant.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/mateIn2"><span><a href="https://lichess.org/training/mateIn2">https://lichess.org/training/mateIn2</a> — Mate-in-2 trainer — the natural next step; forces the "every check, every reply" scan.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/mateIn3"><span><a href="https://lichess.org/training/mateIn3">https://lichess.org/training/mateIn3</a> — Mate-in-3 trainer — builds the short forced-line calculation you needed in the 07-06 game.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/dxVT98YD/zEGPySfm"><span><a href="https://lichess.org/study/dxVT98YD/zEGPySfm">https://lichess.org/study/dxVT98YD/zEGPySfm</a> — <em>Checks, Captures, Threats</em> — the move-selection ritual itself, as a study.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/wmi4cpQp"><span><a href="https://lichess.org/study/wmi4cpQp">https://lichess.org/study/wmi4cpQp</a> — <em>How to Create a Plan — Look for Checks, Captures and Threats</em> — same ritual, applied.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/video/K_-Yt2NxTU4"><span><a href="https://lichess.org/video/K_-Yt2NxTU4">https://lichess.org/video/K_-Yt2NxTU4</a> — video: <em>Checks, Captures &amp; Threats Method</em> (IM Alex Astaneh) — 20 minutes, watch once, apply forever.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/EHA5Q06S/0sLfdLQ1"><span><a href="https://lichess.org/study/EHA5Q06S/0sLfdLQ1">https://lichess.org/study/EHA5Q06S/0sLfdLQ1</a> — <em>Mate in 1, 2, &amp; 3 for Beginners</em> — graded single set.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/IjkwOT5e/MLmQWH9y"><span><a href="https://lichess.org/study/IjkwOT5e/MLmQWH9y">https://lichess.org/study/IjkwOT5e/MLmQWH9y</a> — <em>Exercises: Mate in one (part 1)</em> — volume reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/iixBtBrI/pup7ytLV"><span><a href="https://lichess.org/study/iixBtBrI/pup7ytLV">https://lichess.org/study/iixBtBrI/pup7ytLV</a> — <em>Mate in two moves. Exercises</em> (IM Monkey_King) — quality mate-in-2 set.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/c7EwKyMy/XxG8wpEB"><span><a href="https://lichess.org/study/c7EwKyMy/XxG8wpEB">https://lichess.org/study/c7EwKyMy/XxG8wpEB</a> — <em>5334: Mate in Two Part 1</em> — the classic Polgár exercises on lichess.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/hqmSoiYO/0LsmqxWW"><span><a href="https://lichess.org/study/hqmSoiYO/0LsmqxWW">https://lichess.org/study/hqmSoiYO/0LsmqxWW</a> — <em>Tricky mates in two</em> — for when the easy ones get automatic.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/4Re4Lmxw"><span><a href="https://lichess.org/study/4Re4Lmxw">https://lichess.org/study/4Re4Lmxw</a> — <em>Mating Puzzles (mate in 2)</em> — extra volume.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/mAAzSuxx"><span><a href="https://lichess.org/study/mAAzSuxx">https://lichess.org/study/mAAzSuxx</a> — <em>Mate in 1 puzzles (plus 2s and 3s)</em> — extra volume.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/F3AllbNb/W5S7x1Io"><span><a href="https://lichess.org/study/F3AllbNb/W5S7x1Io">https://lichess.org/study/F3AllbNb/W5S7x1Io</a> — <em>Mate in 1, 2 and 3 puzzles from games</em> — real-game finishes.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/JrwLZArS/j8tRCe9Y"><span><a href="https://lichess.org/study/JrwLZArS/j8tRCe9Y">https://lichess.org/study/JrwLZArS/j8tRCe9Y</a> — <em>Mate in 3 puzzles!</em> — extra volume.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/FfDCg0XR/hChsuTPx"><span><a href="https://lichess.org/study/FfDCg0XR/hChsuTPx">https://lichess.org/study/FfDCg0XR/hChsuTPx</a> — <em>Mate in 3 or 4 Puzzles</em> — stretch goal.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/5u5tXlKg/U7nGvhke"><span><a href="https://lichess.org/study/5u5tXlKg/U7nGvhke">https://lichess.org/study/5u5tXlKg/U7nGvhke</a> — <em>All 30 Checkmate Patterns</em> — compact pattern reference.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/backRankMate"><span><a href="https://lichess.org/training/backRankMate">https://lichess.org/training/backRankMate</a> — Back-Rank Mate trainer — the most common missed-mate family.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/oYmEsHwe/LeCCwfHJ"><span><a href="https://lichess.org/study/oYmEsHwe/LeCCwfHJ">https://lichess.org/study/oYmEsHwe/LeCCwfHJ</a> — <em>Back Rank Mate Puzzles</em> — themed set.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/uqztxD5h"><span><a href="https://lichess.org/study/uqztxD5h">https://lichess.org/study/uqztxD5h</a> — <em>Back-Rank Mate: Everything about it</em> — lesson + exercises.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/jOsMvS68/zHxSLTyY"><span><a href="https://lichess.org/study/jOsMvS68/zHxSLTyY">https://lichess.org/study/jOsMvS68/zHxSLTyY</a> — <em>Perpetual check. Exercises</em> (IM Monkey_King) — <strong>the half-point you left on the table in the 12:11 game.</strong></span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/aPrv1yVQ"><span><a href="https://lichess.org/study/aPrv1yVQ">https://lichess.org/study/aPrv1yVQ</a> — <em>Perpetual check. Theory</em> (IM Monkey_King) — read before the exercises.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/feh6YY6d"><span><a href="https://lichess.org/study/feh6YY6d">https://lichess.org/study/feh6YY6d</a> — <em>Stalemate, Perpetual check, Threefold repetition</em> — all the escape hatches in one study.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/OHUEkGUK"><span><a href="https://lichess.org/study/OHUEkGUK">https://lichess.org/study/OHUEkGUK</a> — <em>drawing completely lost positions</em> — the "when losing, hunt the draw" mindset.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/A0DQmBKQ"><span><a href="https://lichess.org/study/A0DQmBKQ">https://lichess.org/study/A0DQmBKQ</a> — <em>Calculation (finding candidate moves)</em> — forcing-moves-first candidate generation.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/Ux6HeaNm"><span><a href="https://lichess.org/study/Ux6HeaNm">https://lichess.org/study/Ux6HeaNm</a> — <em>Calculation training, forcing moves</em> — reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/vhGnR8d7"><span><a href="https://lichess.org/study/vhGnR8d7">https://lichess.org/study/vhGnR8d7</a> — <em>calculation exercises</em> — reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/jftL3ptX/V4MDO20I"><span><a href="https://lichess.org/study/jftL3ptX/V4MDO20I">https://lichess.org/study/jftL3ptX/V4MDO20I</a> — <em>Visualization Exercises</em> — you can only calculate as deep as you can visualize.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/streak"><span><a href="https://lichess.org/streak">https://lichess.org/streak</a> — Puzzle Streak — untimed, escalating difficulty; great daily forcing-move scan practice.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/storm"><span><a href="https://lichess.org/storm">https://lichess.org/storm</a> — Puzzle Storm — timed pattern-speed builder (use sparingly; speed is not your bottleneck).</span></label></li>
+</ol>
+<hr>
+<h2>5. Converting winning positions — the +5 that becomes 0</h2>
+<p>The outcome-level leak that the previous categories feed. The record across these seven games:</p>
+<ul>
+<li><strong>07-06:</strong> +34 (a bishop, knight and unstoppable b-pawn up, forced mate available) → knight wandered to b8 and was given away (60.Nb8??), 63.g3?? let the eval hit 0.00, 66.Be5?? hung the bishop → <strong>lost</strong>.</li>
+<li><strong>07-13:</strong> a clean piece up, <strong>+7.6 by move 24</strong> → 33.Bh5??, 35.Qxb2?? → <strong>lost</strong> (mated).</li>
+<li><strong>07-11:</strong> <strong>+5.1 by move 8</strong> (the engine's top move was the central break …exf3 on <strong>seven consecutive moves</strong>, then the saving fork 20…Ng3! four times) → passive retreats instead, then 24…Rxh5?? → <strong>lost</strong>.</li>
+<li><strong>07-09 20:18:</strong> <strong>+3.5 by move 21</strong> → 21…g5?? → <strong>lost</strong>.</li>
+<li><strong>07-09 17:46:</strong> +7 → converted, but only after declining two mates-in-one and letting the a1-rook sleep all game.</li>
+</ul>
+<p>Three sub-habits are missing:</p>
+<ul>
+<li><strong>Open lines / strike when winning.</strong> In 07-11 the engine wanted the central break …exf3 for ten straight moves while you shuffled. Winning positions are converted by opening lines for the extra material, not by avoiding contact.</li>
+<li><strong>When winning, get paranoid, not casual.</strong> The blunders above all came <em>after</em> the position was won — the most dangerous moment in chess. Solve your opponent's threat first (prophylaxis), then push.</li>
+<li><strong>Endgame technique.</strong> 07-06 ended in a completely won B+N+passed-pawn endgame that dissolved in four moves.</li>
+</ul>
+<p><strong>Lichess studies &amp; exercises (most impactful first):</strong></p>
+<ol class="checklist">
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/I9YbUAV8/E66o3Reg"><span><a href="https://lichess.org/study/I9YbUAV8/E66o3Reg">https://lichess.org/study/I9YbUAV8/E66o3Reg</a> — <em>How to Win Winning Positions</em> (IM TheHeartofChess) — exactly this problem, chapter by chapter.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/Wu6O6k7m"><span><a href="https://lichess.org/study/Wu6O6k7m">https://lichess.org/study/Wu6O6k7m</a> — <em>Technique — Converting an Advantage / Maximising</em> — practical conversion technique.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/advantage"><span><a href="https://lichess.org/training/advantage">https://lichess.org/training/advantage</a> — Advantage trainer — puzzles where the reward is a winning (not mating) position, then you must keep it.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/crushing"><span><a href="https://lichess.org/training/crushing">https://lichess.org/training/crushing</a> — Crushing trainer — spot the blunder, get a ≥+6 position — trains the "stay sharp when it's already won" muscle.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/UXVPcUOZ/08mdRZK5"><span><a href="https://lichess.org/study/UXVPcUOZ/08mdRZK5">https://lichess.org/study/UXVPcUOZ/08mdRZK5</a> — <em>Prophylaxis exercises</em> (FM JosePadeiro) — "what does my opponent want?" — the question that saves won games.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/SNWKXWlk"><span><a href="https://lichess.org/study/SNWKXWlk">https://lichess.org/study/SNWKXWlk</a> — <em>Prophylaxis Puzzles</em> — more reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/TypmFAbe/YfCXBlz6"><span><a href="https://lichess.org/study/TypmFAbe/YfCXBlz6">https://lichess.org/study/TypmFAbe/YfCXBlz6</a> — <em>Prophylaxis in Chess Middlegames</em> — concept study.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/vOEUBDcg"><span><a href="https://lichess.org/study/vOEUBDcg">https://lichess.org/study/vOEUBDcg</a> — <em>Chess Strategy — Prophylaxis</em> — alternative presentation.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/JlvrbfQn"><span><a href="https://lichess.org/study/JlvrbfQn">https://lichess.org/study/JlvrbfQn</a> — <em>Simplification — Part 1</em> — trade pieces, not pawns, when ahead.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/zznJhuGd"><span><a href="https://lichess.org/study/zznJhuGd">https://lichess.org/study/zznJhuGd</a> — <em>SIMPLIFICATION</em> — more examples.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/2HHBEEqT"><span><a href="https://lichess.org/study/2HHBEEqT">https://lichess.org/study/2HHBEEqT</a> — <em>When to trade or not to trade pieces</em> — the decision rules.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/checkmates/piece-checkmates-i/BJy6fEDf/8K8FdT6P"><span><a href="https://lichess.org/practice/checkmates/piece-checkmates-i/BJy6fEDf/8K8FdT6P">https://lichess.org/practice/checkmates/piece-checkmates-i/BJy6fEDf/8K8FdT6P</a> — <strong>Practice: Piece Checkmates I</strong> — K+Q and K+R vs K until they're reflexes; converting means finishing.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/zNsUmoVY"><span><a href="https://lichess.org/study/zNsUmoVY">https://lichess.org/study/zNsUmoVY</a> — <em>Queen or Rook vs King Exercises</em> — basic mate delivery reps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/opgcgude"><span><a href="https://lichess.org/study/opgcgude">https://lichess.org/study/opgcgude</a> — <em>Checkmate with the Rook and King</em> — technique study.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/practice/pawn-endgames/key-squares/xebrDvFe/o3Hq4RZ0"><span><a href="https://lichess.org/practice/pawn-endgames/key-squares/xebrDvFe/o3Hq4RZ0">https://lichess.org/practice/pawn-endgames/key-squares/xebrDvFe/o3Hq4RZ0</a> — <strong>Practice: Key Squares</strong> — the pawn-endgame foundation for cashing in extra material.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/7w5GUwhT"><span><a href="https://lichess.org/study/7w5GUwhT">https://lichess.org/study/7w5GUwhT</a> — <em>Practice: King and Pawn Endgames I</em> — guided pawn-endgame module.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/dqCpuvFS/eQLYGkny"><span><a href="https://lichess.org/study/dqCpuvFS/eQLYGkny">https://lichess.org/study/dqCpuvFS/eQLYGkny</a> — <em>Practice: Rook And Pawn Endgames</em> — Lucena/Philidor and friends.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/rookEndgame"><span><a href="https://lichess.org/training/rookEndgame">https://lichess.org/training/rookEndgame</a> — Rook Endgame trainer — practical endgame puzzles.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/aJa70P5N"><span><a href="https://lichess.org/study/aJa70P5N">https://lichess.org/study/aJa70P5N</a> — <em>Promoting Pawns Study</em> — escorting the passer (your b-pawn and a-pawn games show you like passers — finish them cleanly).</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/L8k6PKMU"><span><a href="https://lichess.org/study/L8k6PKMU">https://lichess.org/study/L8k6PKMU</a> — <em>Common Endgame Tactics #2: Passed Pawn Odyssey</em> — passed-pawn tactics.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/xy2UDdiU"><span><a href="https://lichess.org/study/xy2UDdiU">https://lichess.org/study/xy2UDdiU</a> — <em>Endgame Technique: Create passed pawn by winning pawns</em> — building the passer.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/promotion"><span><a href="https://lichess.org/training/promotion">https://lichess.org/training/promotion</a> — Promotion trainer — promotion tactics.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/advancedPawn"><span><a href="https://lichess.org/training/advancedPawn">https://lichess.org/training/advancedPawn</a> — Advanced Pawn trainer — the 7th-rank pawn tactics family.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/sr5b6mnr"><span><a href="https://lichess.org/study/sr5b6mnr">https://lichess.org/study/sr5b6mnr</a> — <em>2 queens: how to prevent stalemate</em> — you've now had two two-queen games; this 5-minute study prevents the classic accident.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/JgB4zdIz"><span><a href="https://lichess.org/study/JgB4zdIz">https://lichess.org/study/JgB4zdIz</a> — <em>Stalemate Practice</em> — the other half of that insurance.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/forum/general-chess-discussion/how-to-improve-in-converting-winning-positions"><span><a href="https://lichess.org/forum/general-chess-discussion/how-to-improve-in-converting-winning-positions">https://lichess.org/forum/general-chess-discussion/how-to-improve-in-converting-winning-positions</a> — forum thread: converting advice from stronger players.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/forum/general-chess-discussion/unable-to-convert-clearly-winning-positions-how-do-i-improve"><span><a href="https://lichess.org/forum/general-chess-discussion/unable-to-convert-clearly-winning-positions-how-do-i-improve">https://lichess.org/forum/general-chess-discussion/unable-to-convert-clearly-winning-positions-how-do-i-improve</a> — forum thread: same topic, more angles.</span></label></li>
+</ol>
+<hr>
+<h2>6. Opening habits — adventures before development</h2>
+<p>The least costly category in eval terms, but it set up several of the disasters above. Recurring items:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Game</th><th>Moves</th><th>Pattern</th></tr></thead>
+<tbody>
+<tr><td>07-13 (W)</td><td>8.Ne4?→10.Nb7??</td><td>A knight tour (Ne4–c5–b7) into a square with <strong>zero retreat squares</strong>; the knight spent the game entombed on b7 (−5.1 across two moves)</td></tr>
+<tr><td>07-09 12:11 (W)</td><td>8.Qg4?! then 12.Na4?</td><td>Queen out on move 8 before any minor-piece harmony; knight to the rim where it became a target and fell</td></tr>
+<tr><td>07-09 17:46 (W)</td><td>4.e5?</td><td>Declined a free central pawn (4.exd5) to push past — "check every capture before every push" (−1.6)</td></tr>
+<tr><td>07-06 (W)</td><td>5.Ng5, 10.Nf3</td><td>The same knight moved three times before a single other piece developed</td></tr>
+<tr><td>07-11 (B)</td><td>9…Nh5?, 12…O-O (instead of 12…Bxh4 free pawn)</td><td>Rim knight; declined free material out of habit</td></tr>
+<tr><td>07-09 17:46 (W)</td><td>a1-rook</td><td>Never moved all game (the engine's two biggest improvement suggestions were both Rb1)</td></tr>
+</tbody></table></div>
+<p><strong>The habit to build:</strong> in the first 10–12 moves — develop a new piece each move toward the center, castle before starting operations, don't move the queen out early, don't move the same piece twice without a concrete reason, and <em>always</em> check whether a central capture is simply free. Before any knight jump, count its retreat squares: zero means it's lost.</p>
+<p><strong>Lichess studies &amp; exercises (most impactful first):</strong></p>
+<ol class="checklist">
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/vyS3PnUA/h8sUGQ2Z"><span><a href="https://lichess.org/study/vyS3PnUA/h8sUGQ2Z">https://lichess.org/study/vyS3PnUA/h8sUGQ2Z</a> — <em>Opening Principles And Theory — Learning Lesson</em> — the principles, interactive.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/393yZ8hJ"><span><a href="https://lichess.org/study/393yZ8hJ">https://lichess.org/study/393yZ8hJ</a> — <em>Starting Out a Chess Game: Opening Principles!</em> — same ground, different examples.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/ZTYzV6Jl"><span><a href="https://lichess.org/study/ZTYzV6Jl">https://lichess.org/study/ZTYzV6Jl</a> — <em>Basic opening principles</em> — compact version.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/NfMygq6x/cncxKfyw"><span><a href="https://lichess.org/study/NfMygq6x/cncxKfyw">https://lichess.org/study/NfMygq6x/cncxKfyw</a> — <em>An Introduction to Opening Theory</em> — why the principles exist.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/video/kURU67G98O8"><span><a href="https://lichess.org/video/kURU67G98O8">https://lichess.org/video/kURU67G98O8</a> — video: <em>Chess Basics: Opening Principles</em>.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/opening"><span><a href="https://lichess.org/training/opening">https://lichess.org/training/opening</a> — Opening-phase puzzle trainer — punish opening mistakes (including early queen sorties) tactically.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/Okg4LOJB/xYH86iCY"><span><a href="https://lichess.org/study/Okg4LOJB/xYH86iCY">https://lichess.org/study/Okg4LOJB/xYH86iCY</a> — <em>Trapping Pieces EXERCISE</em> — the b7-knight lesson, from the trapping side: learn which squares are traps.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/PksUBvjS/7qnQPUG8"><span><a href="https://lichess.org/study/PksUBvjS/7qnQPUG8">https://lichess.org/study/PksUBvjS/7qnQPUG8</a> — <em>Trapping pieces</em> — more trap patterns.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/training/trappedPiece"><span><a href="https://lichess.org/training/trappedPiece">https://lichess.org/training/trappedPiece</a> — Trapped Piece trainer — spot doomed pieces (before you create one).</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/zti5dtmO"><span><a href="https://lichess.org/study/zti5dtmO">https://lichess.org/study/zti5dtmO</a> — <em>Knight trapped</em> — knight-specific trap patterns.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/CI2zREac"><span><a href="https://lichess.org/study/CI2zREac">https://lichess.org/study/CI2zREac</a> — <em>Two trapped knights</em> — more of the same.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/YoGTjm0V"><span><a href="https://lichess.org/study/YoGTjm0V">https://lichess.org/study/YoGTjm0V</a> — <em>Annoying Queens! Stopping Early Queen Attacks</em> (GothamChess study) — you played 8.Qg4 yourself; seeing why early queens fail cures both sides of the habit.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/9Ui9ETCY/64DQ9kdG"><span><a href="https://lichess.org/study/9Ui9ETCY/64DQ9kdG">https://lichess.org/study/9Ui9ETCY/64DQ9kdG</a> — <em>Defending early queen attacks</em> — the defensive side.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/Pk8uFkMs"><span><a href="https://lichess.org/study/Pk8uFkMs">https://lichess.org/study/Pk8uFkMs</a> — <em>6 Proven Tips to PUNISH Early Queen Attacks</em> — checklist form.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/N4ikSIua"><span><a href="https://lichess.org/study/N4ikSIua">https://lichess.org/study/N4ikSIua</a> — <em>Punish the Wayward Queen attack</em> — concrete refutation lines.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/y39Fw5Bf"><span><a href="https://lichess.org/study/y39Fw5Bf">https://lichess.org/study/y39Fw5Bf</a> — <em>How to Punish Early Queen Attacks!</em> — extra examples.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/study/VejXPPZv/S9DqzF09"><span><a href="https://lichess.org/study/VejXPPZv/S9DqzF09">https://lichess.org/study/VejXPPZv/S9DqzF09</a> — <em>Wayward Queen Attack</em> — know the trap everyone plays at club level.</span></label></li>
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/@/Kingscrusher-YouTube/blog/the-complete-guide-to-chess-opening-principles-king-safety-driven-development/5zEb9Utr"><span><a href="https://lichess.org/@/Kingscrusher-YouTube/blog/the-complete-guide-to-chess-opening-principles-king-safety-driven-development/5zEb9Utr">https://lichess.org/@/Kingscrusher-YouTube/blog/the-complete-guide-to-chess-opening-principles-king-safety-driven-development/5zEb9Utr</a> — blog: opening principles framed around king safety.</span></label></li>
+</ol>
+<hr>
+<h2>Other advice worth more than any single study</h2>
+<h3>The 5-second pre-move ritual (fixes §1, §2, §4 at once)</h3>
+<p>Before <em>releasing</em> every move, in this order:</p>
+<ol>
+<li><strong>Checks</strong> — every check for both sides. (Would have found five mates-in-one and two perpetuals.)</li>
+<li><strong>Captures</strong> — every capture for both sides, <em>including replies to your intended move</em>. ("Why am I allowed to take this?")</li>
+<li><strong>Landing square</strong> — count enemy attackers of the square your piece is going to, <em>including sleeping long-range pieces behind blockers</em>.</li>
+<li><strong>Leaving square</strong> — what did the moving piece defend?</li>
+</ol>
+<p>This is the entire fix for perhaps 80% of the eval you lost in these seven games. It costs a few seconds per move — which is also why the next point matters.</p>
+<h3>Play time controls that allow the ritual</h3>
+<p>These were classical games, good. Keep playing 15+10 or slower while the ritual becomes automatic. Blitz will re-teach the autopilot recapture you're trying to unlearn.</p>
+<h3>Change your sparring partner</h3>
+<p>Five of these games were against full-strength Stockfish, which punishes perfectly but plays inhumanly — you learn fear, not patterns. Level 3 is better but gives absurd gifts (you saw 3.c5?? and 5.b4??), which trains bad habits too. The sweet spot on Lichess:</p>
+<ul class="checklist">
+<li><label class="check-item"><input type="checkbox" class="lichess-check" data-key="https://lichess.org/@/maia1"><span><strong>Maia bots</strong> — neural nets trained to play like humans at specific ratings: <a href="https://lichess.org/@/maia1">https://lichess.org/@/maia1</a> (~1100-level), <a href="https://lichess.org/@/maia5">https://lichess.org/@/maia5</a> (~1500), <a href="https://lichess.org/@/maia9">https://lichess.org/@/maia9</a> (~1900). They blunder like humans, so punishing them trains exactly the §1 skills. (Team page: <a href="https://lichess.org/team/maia-bots">https://lichess.org/team/maia-bots</a>)</span></label></li>
+<li><strong>Rated human games</strong> — the real feedback loop.</li>
+</ul>
+<h3>Make the engine review a routine, not an event</h3>
+<p>After every game: run the Lichess server analysis and click <strong>"Learn from your mistakes"</strong> in the analysis screen — it replays your errors and makes you find the right move. Then, for games that deserve it, keep doing what you're doing with this repo — the coach pages in <code>games/</code> are a genuinely good spaced-repetition source. Re-open old pages weekly and re-answer each mistake card before reading the explanation.</p>
+<h3>A 30-minute daily plan built from your actual weaknesses</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Day</th><th>Drill (≈30 min)</th></tr></thead>
+<tbody>
+<tr><td>Mon</td><td>10× <a href="https://lichess.org/training/hangingPiece">https://lichess.org/training/hangingPiece</a> + 10× <a href="https://lichess.org/training/mateIn1">https://lichess.org/training/mateIn1</a></td></tr>
+<tr><td>Tue</td><td>One chapter of a §2 zwischenzug study + 10× <a href="https://lichess.org/training/intermezzo">https://lichess.org/training/intermezzo</a></td></tr>
+<tr><td>Wed</td><td>10× <a href="https://lichess.org/training/mateIn2">https://lichess.org/training/mateIn2</a> + one §4 CCT chapter</td></tr>
+<tr><td>Thu</td><td>One chapter of <em>How to Win Winning Positions</em> (§5) + 10× <a href="https://lichess.org/training/advantage">https://lichess.org/training/advantage</a></td></tr>
+<tr><td>Fri</td><td>10× <a href="https://lichess.org/training/defensiveMove">https://lichess.org/training/defensiveMove</a> + one §3 king-safety chapter</td></tr>
+<tr><td>Sat</td><td>One slow game (15+10 or slower) vs a Maia bot or human, ritual on every move, then "Learn from your mistakes"</td></tr>
+<tr><td>Sun</td><td><a href="https://lichess.org/training/dashboard">https://lichess.org/training/dashboard</a> — review the week; retry every failed puzzle; one <a href="https://lichess.org/streak">https://lichess.org/streak</a> run</td></tr>
+</tbody></table></div>
+<p>Track weaknesses over time with the <strong>Puzzle Dashboard</strong> (<a href="https://lichess.org/training/dashboard">https://lichess.org/training/dashboard</a>) — after a few hundred puzzles it will show your themes objectively; expect <em>Hanging Piece</em>, <em>Defensive Move</em> and <em>Mate in 1</em> to be the low bars at first. Browse all themes at <a href="https://lichess.org/training/themes">https://lichess.org/training/themes</a>, and use <a href="https://lichess.org/training/mix">https://lichess.org/training/mix</a> for a healthy default. The full guided-lesson catalog is at <a href="https://lichess.org/practice">https://lichess.org/practice</a>, and <a href="https://lichess.org/learn">https://lichess.org/learn</a> covers fundamentals if you ever want a refresher.</p>
+<h3>One encouraging pattern in the data</h3>
+<p>Your two wins were the two games with the lowest average eval loss (39 and 63 cp/move) — when you're careful, you're already strong enough to beat these opponents. The queenside play in the 07-05 game (…a5, …axb4, the b-pawn promotion) and the space-grabbing setups you get as White show real positional instinct. Nothing in these seven games suggests you need more chess <em>knowledge</em> — they all point at the same 5-second discipline gap, and that's fixable with reps.</p>
+<hr>
+<h2>Methodology</h2>
+<p>Every position where you were to move was analyzed with <strong>Stockfish 16 at depth 20</strong> (the same engine/depth used for the per-game coach pages): eval before the move, engine's best move and its eval, eval after your actual move. "Cost" figures are the difference between your move and the engine's best, from your perspective; <code>#N</code> means forced mate in N. Mistake selection threshold: ≥1.00 eval loss, plus all missed/allowed forced mates. Player color per game was taken from the PGN headers (<code>White</code>/<code>Black</code> = "Anonymous"; the 2026-07-11 file's headers name White as "Stockfish-level-3", so you were Black despite the filename).</p>
+<h2>Sources used for this report</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Source PGN (<code>pgn/</code>)</th><th>Coach page (<code>games/</code>)</th><th>You played</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><a href="../pgn/2026-07-05-14-50-stockfish-vs-anonymous.txt">2026-07-05-14-50-stockfish-vs-anonymous.txt</a></td><td><a href="../games/2026-07-05-14-50-stockfish-vs-anonymous.html">2026-07-05-14-50-stockfish-vs-anonymous.html</a></td><td>Black</td><td>0–1 (win)</td></tr>
+<tr><td>2</td><td><a href="../pgn/2026-07-06-19-53-anonymous-vs-stockfish.txt">2026-07-06-19-53-anonymous-vs-stockfish.txt</a></td><td><a href="../games/2026-07-06-19-53-anonymous-vs-stockfish.html">2026-07-06-19-53-anonymous-vs-stockfish.html</a></td><td>White</td><td>0–1 (loss)</td></tr>
+<tr><td>3</td><td><a href="../pgn/2026-07-09-12-11-anonymous-vs-stockfish.txt">2026-07-09-12-11-anonymous-vs-stockfish.txt</a></td><td><a href="../games/2026-07-09-12-11-anonymous-vs-stockfish.html">2026-07-09-12-11-anonymous-vs-stockfish.html</a></td><td>White</td><td>0–1 (loss)</td></tr>
+<tr><td>4</td><td><a href="../pgn/2026-07-09-17-46-anonymous-vs-stockfish.txt">2026-07-09-17-46-anonymous-vs-stockfish.txt</a></td><td><a href="../games/2026-07-09-17-46-anonymous-vs-stockfish.html">2026-07-09-17-46-anonymous-vs-stockfish.html</a></td><td>White</td><td>1–0 (win)</td></tr>
+<tr><td>5</td><td><a href="../pgn/2026-07-09-20-18-stockfish-vs-anonymous.txt">2026-07-09-20-18-stockfish-vs-anonymous.txt</a></td><td><a href="../games/2026-07-09-20-18-stockfish-vs-anonymous.html">2026-07-09-20-18-stockfish-vs-anonymous.html</a></td><td>Black</td><td>1–0 (loss)</td></tr>
+<tr><td>6</td><td><a href="../pgn/2026-07-11-15-49-anonymous-vs-anonymous.txt">2026-07-11-15-49-anonymous-vs-anonymous.txt</a></td><td><a href="../games/2026-07-11-15-49-anonymous-vs-anonymous.html">2026-07-11-15-49-anonymous-vs-anonymous.html</a></td><td>Black</td><td>1–0 (loss)</td></tr>
+<tr><td>7</td><td><a href="../pgn/2026-07-13-18-31-anonymous-vs-stockfish-level-3.txt">2026-07-13-18-31-anonymous-vs-stockfish-level-3.txt</a></td><td><a href="../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html">2026-07-13-18-31-anonymous-vs-stockfish-level-3.html</a></td><td>White</td><td>0–1 (loss)</td></tr>
+</tbody></table></div>
+<script>
+(function () {
+  var STORAGE_PREFIX = "chessCoachChecklist:";
+  var storageAvailable = true;
+  try {
+    var t = "__storage_test__";
+    window.localStorage.setItem(t, "1");
+    window.localStorage.removeItem(t);
+  } catch (e) {
+    storageAvailable = false;
+  }
+
+  function keyFor(box) {
+    return STORAGE_PREFIX + box.getAttribute("data-key");
+  }
+
+  function applyState(box) {
+    var label = box.closest("label");
+    if (box.checked) {
+      if (label) label.classList.add("is-checked");
+    } else {
+      if (label) label.classList.remove("is-checked");
+    }
+  }
+
+  var boxes = document.querySelectorAll("input.lichess-check");
+  boxes.forEach(function (box) {
+    if (storageAvailable) {
+      var saved = window.localStorage.getItem(keyFor(box));
+      box.checked = saved === "1";
+    }
+    applyState(box);
+    box.addEventListener("change", function () {
+      applyState(box);
+      if (storageAvailable) {
+        try {
+          window.localStorage.setItem(keyFor(box), box.checked ? "1" : "0");
+        } catch (e) {
+          /* storage full or unavailable (e.g. Safari private mode) - ignore */
+        }
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

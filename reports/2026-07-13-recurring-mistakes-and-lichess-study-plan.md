@@ -1,3 +1,7 @@
+[← Back to index](../games/index.html)
+
+**Version 1**
+
 # Recurring Mistakes & Lichess Study Plan
 
 **Player:** Anonymous · **Games analyzed:** 7 (July 5 – July 13, 2026) · **Engine:** Stockfish 16, depth 20, every move you played · **Evals:** always from your perspective (positive = good for you)

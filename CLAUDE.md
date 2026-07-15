@@ -1,5 +1,7 @@
 # chess-coach
 
+**Version 1**
+
 This repository turns chess games into interactive coaching pages. When the user
 uploads a game and asks for feedback, analyze it and generate one HTML review page
 per game in `games/`, built from `template.html`.

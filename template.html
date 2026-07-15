@@ -459,6 +459,92 @@
   .mistake-card .mc-moves .played-san { color: var(--rust); }
   .mistake-card .mc-moves .best-san { color: var(--gold); }
 
+  /* ---------- Maia human-model additions ----------
+     Every element below renders only when the GAME data carries the matching
+     field, so the page stays valid for plain Stockfish-only data. */
+  .strength-line {
+    margin-top: 16px;
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .strength-line b {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .strength-line .note { font-size: 12px; opacity: 0.85; }
+  .phase-row { display: flex; gap: 8px; margin-top: 9px; flex-wrap: wrap; }
+  .phase-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 9px;
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .phase-chip b { color: var(--cream); font-weight: 600; }
+  .phase-chip.weakest { border-color: rgba(193,80,47,0.5); }
+  .phase-chip.weakest b { color: #e8a18c; }
+
+  .swing-badge .pts { color: #d98d70; font-weight: 500; }
+
+  .typ-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .typ-badge.common {
+    color: #e8a18c;
+    background: rgba(193,80,47,0.10);
+    border: 1px solid rgba(193,80,47,0.30);
+  }
+  .typ-badge.mid {
+    color: var(--gold);
+    background: rgba(201,162,75,0.08);
+    border: 1px solid rgba(201,162,75,0.35);
+  }
+  .typ-badge.slip {
+    color: var(--muted);
+    background: rgba(139,147,161,0.08);
+    border: 1px solid var(--panel-border);
+  }
+  .fb-badges, .mc-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+  }
+  .recur-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 7px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+  .recur-tag.high { color: #e8a18c; border: 1px solid rgba(193,80,47,0.45); }
+  .recur-tag.medium { color: var(--gold); border: 1px solid rgba(201,162,75,0.4); }
+  .recur-tag.low { color: var(--muted); border: 1px solid var(--panel-border); }
+
+  .find-row {
+    border: 1px dashed rgba(201,162,75,0.35);
+    background: rgba(201,162,75,0.05);
+    border-radius: 10px;
+    padding: 11px 14px;
+    margin: -6px 0 20px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .find-row b { color: var(--gold); font-weight: 600; }
+  .find-row .hb { color: #e7d7ab; font-weight: 600; }
+  .dot.cream { background: #e7d7ab; }
+
   footer {
     max-width: 980px;
     margin: 40px auto 0;
@@ -482,13 +568,14 @@
 
 <nav style="max-width:1000px;margin:0 auto;padding:16px 24px 0;display:flex;justify-content:space-between;align-items:baseline;font-family:var(--sans);font-size:13px;letter-spacing:.02em;">
   <a href="index.html" style="color:var(--gold);text-decoration:none;">&larr;&nbsp;Back to index</a>
-  <span style="color:var(--muted);">Version&nbsp;1</span>
+  <span style="color:var(--muted);">Version&nbsp;2</span>
 </nav>
 
 <header class="page-head">
   <span class="eyebrow-top" id="head-eyebrow"></span>
   <h1 class="title" id="head-title"></h1>
   <p class="subtitle" id="head-subtitle"></p>
+  <div class="strength-line" id="head-strength" hidden></div>
 </header>
 
 <main>
@@ -500,6 +587,7 @@
       <div class="legend" id="board-legend" hidden>
         <span class="legend-item"><i class="dot rust"></i>played</span>
         <span class="legend-item"><i class="dot gold"></i>engine's pick</span>
+        <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i>human-findable</span>
       </div>
       <div class="controls">
         <button id="btn-start" title="Start position (Home)">|&laquo;</button>
@@ -521,7 +609,7 @@
   <div class="move-list" id="move-list"></div>
 
   <h2 class="section-head">The biggest mistakes</h2>
-  <p class="section-sub">Ranked by how hard the evaluation swung. Click one to jump the board to that moment and read the feedback.</p>
+  <p class="section-sub" id="mistake-sub">Ranked by how hard the evaluation swung. Click one to jump the board to that moment and read the feedback.</p>
   <div id="mistake-list"></div>
 </main>
 
@@ -553,9 +641,17 @@ const GAME = {
   // Shown in the footer, describing how the analysis was produced.
   // All evaluations are from the PLAYER's perspective (playerColor):
   // positive = good for the player, "#−1" = player gets mated in 1.
-  analysisNote: "Stockfish 16 · depth 20 · evaluations from Black's perspective · template.html demo data",
+  analysisNote: "Stockfish 16 · depth 20 · evaluations from Black's perspective · human model: Maia rating-band networks conditioned at ≈1100 · pts = expected score lost against human opposition at your level · template.html demo data",
 
-  // The key mistakes, most important first.
+  // Maia strength estimate (optional — omit all of these on a Stockfish-only page).
+  estimatedElo: "≈1100",             // best-fit Maia rating band for this game
+  estimatedEloNote: "demo data — a 7-ply game is far too short for a real fit",
+  phaseElo: { opening: "≈1100" },    // per-phase fits; any of the three keys may be omitted
+  weakestPhase: "opening",           // highlights that chip in the header
+
+  // The key mistakes, most important first — with Maia, the display order is
+  // swing × recurrence likelihood, not raw swing (a smaller mistake the user's
+  // level repeats outranks a bigger one-off). Moves allowing mate always lead.
   // ply: 0-based index into movesSan of the move that was PLAYED.
   //      (ply 0 = White's 1st move, ply 1 = Black's 1st move, ply 5 = Black's 3rd move.)
   mistakes: [
@@ -568,9 +664,17 @@ const GAME = {
       evalBest: "+0.3",
       swing: "mate",
       title: "Developed a piece while the house was on fire",
-      explanation: "After 3.Bc4 the queen on h5 and bishop on c4 both hit f7, defended only by the king. 3…Nf6 develops a piece and even attacks the queen — but it does nothing for f7, and White simply takes: 4.Qxf7#. 3…g6 hits the queen while closing the h5–f7 diagonal, and Black is fine.",
+      explanation: "After 3.Bc4 the queen on h5 and bishop on c4 both hit f7, defended only by the king. 3…Nf6 develops a piece and even attacks the queen — but it does nothing for f7, and White simply takes: 4.Qxf7#. 3…g6 hits the queen while closing the h5–f7 diagonal, and Black is fine — it is also the move a third of players at this level find.",
       playedArrow: ["g8","f6"],
       bestArrow: ["g7","g6"],
+      // Maia fields (all optional; real Maia-1100 numbers for this position):
+      playedPopularity: "15%",        // share of the user's level that plays the played move
+      bestFindability: "36%",         // share of the user's level that finds the best move
+      // humanBest / humanBestArrow / humanBestFindability: only when the engine's
+      // best is near-unfindable and a human-findable alternative keeps the eval —
+      // here the best move IS the human move, so they are omitted.
+      expectedPointsLost: "−0.30",    // WDL-based cost in expected score at the user's level
+      recurrenceRisk: "medium",       // "high" | "medium" | "low" → card tag & badge tone
       takeaways: [
         {
           lesson: "Before every move, ask: what is my opponent threatening right now?",
@@ -890,6 +994,83 @@ function renderHeader() {
     (GAME.event ? GAME.event + " · " : "") +
     (GAME.opening ? GAME.opening + " · " : "") +
     (GAME.analysisNote || "");
+
+  // Maia strength estimate (renders only when the fields are present)
+  if (GAME.estimatedElo) {
+    const s = $("head-strength");
+    s.hidden = false;
+    let html = "Maia strength estimate — you played this game like a <b>" +
+      GAME.estimatedElo + "</b>" +
+      (GAME.estimatedEloNote ? " <span class=\"note\">(" + GAME.estimatedEloNote + ")</span>" : "");
+    if (GAME.phaseElo) {
+      html += "<div class=\"phase-row\">";
+      for (const ph of ["opening", "middlegame", "endgame"]) {
+        if (!GAME.phaseElo[ph]) continue;
+        const wk = GAME.weakestPhase === ph;
+        html += "<span class=\"phase-chip" + (wk ? " weakest" : "") + "\">" + ph +
+          " <b>" + GAME.phaseElo[ph] + "</b>" + (wk ? " · weakest" : "") + "</span>";
+      }
+      html += "</div>";
+    }
+    s.innerHTML = html;
+  }
+}
+
+// ---- Maia badge helpers (all return null when the GAME fields are absent) ----
+
+const PTS_TITLE = "pts = expected score lost against human opposition at your level (Maia), comparing the position after your move with the position after the best move";
+
+function makeSwingBadge(mk) {
+  const badge = document.createElement("span");
+  badge.className = "swing-badge";
+  if (mk.expectedPointsLost) {
+    badge.innerHTML = mk.swing + " <span class=\"pts\">· " + mk.expectedPointsLost + " pts</span>";
+    badge.title = PTS_TITLE;
+  } else {
+    badge.textContent = mk.swing;
+  }
+  return badge;
+}
+
+function makeTypBadge(mk) {
+  if (!mk.playedPopularity) return null;
+  const el = document.createElement("span");
+  const risk = mk.recurrenceRisk || "low";
+  if (risk === "high") {
+    el.className = "typ-badge common";
+    el.textContent = "common at your level — " + mk.playedPopularity + " play this";
+  } else if (risk === "medium") {
+    el.className = "typ-badge mid";
+    el.textContent = "seen at your level — " + mk.playedPopularity + " play this";
+  } else {
+    el.className = "typ-badge slip";
+    el.textContent = "uncharacteristic slip — " + mk.playedPopularity;
+  }
+  return el;
+}
+
+function makeRecurTag(mk) {
+  if (!mk.recurrenceRisk) return null;
+  const el = document.createElement("span");
+  el.className = "recur-tag " + mk.recurrenceRisk;
+  el.textContent = mk.recurrenceRisk === "high" ? "likely to recur"
+                 : mk.recurrenceRisk === "medium" ? "may recur" : "one-off";
+  el.title = "Recurrence risk, from how often players at your level choose this move (Maia)";
+  return el;
+}
+
+function makeFindRow(mk) {
+  if (!mk.bestFindability) return null;
+  const div = document.createElement("div");
+  div.className = "find-row";
+  let html = "Engine pick <b>" + mk.best + "</b> — found by <b>" + mk.bestFindability +
+    "</b> of players at your level.";
+  if (mk.humanBest) {
+    html += " The human-findable <span class=\"hb\">" + mk.humanBest +
+      "</span> (cream arrow) keeps the eval, and <b>" + mk.humanBestFindability + "</b> play it.";
+  }
+  div.innerHTML = html;
+  return div;
 }
 
 function sideOfPly(ply) { return ply % 2 === 0 ? "White" : "Black"; }
@@ -934,12 +1115,14 @@ function renderFeedbackMistake(mk) {
   h2.textContent = moveNumOfPly(mk.ply) + (mk.ply % 2 ? "… " : ". ") + mk.played;
   text.appendChild(eb);
   text.appendChild(h2);
-  const badge = document.createElement("span");
-  badge.className = "swing-badge";
-  badge.textContent = mk.swing;
+  const badges = document.createElement("div");
+  badges.className = "fb-badges";
+  badges.appendChild(makeSwingBadge(mk));
+  const typ = makeTypBadge(mk);
+  if (typ) badges.appendChild(typ);
   head.appendChild(num);
   head.appendChild(text);
-  head.appendChild(badge);
+  head.appendChild(badges);
   panel.appendChild(head);
 
   if (mk.title) {
@@ -975,6 +1158,9 @@ function renderFeedbackMistake(mk) {
     cmp.appendChild(col);
   }
   panel.appendChild(cmp);
+
+  const fr = makeFindRow(mk);
+  if (fr) panel.appendChild(fr);
 
   if (mk.takeaways && mk.takeaways.length) {
     const box = document.createElement("div");
@@ -1082,8 +1268,10 @@ function renderPosition() {
   if (atMistakeBefore) {
     if (atMistakeBefore.playedArrow) drawArrow(arrowsLayer, atMistakeBefore.playedArrow[0], atMistakeBefore.playedArrow[1], "#c1502fcc");
     if (atMistakeBefore.bestArrow) drawArrow(arrowsLayer, atMistakeBefore.bestArrow[0], atMistakeBefore.bestArrow[1], "#c9a24bcc");
+    if (atMistakeBefore.humanBestArrow) drawArrow(arrowsLayer, atMistakeBefore.humanBestArrow[0], atMistakeBefore.humanBestArrow[1], "#e7d7abcc");
   }
   $("board-legend").hidden = !atMistakeBefore;
+  $("legend-human").hidden = !(atMistakeBefore && atMistakeBefore.humanBestArrow);
 
   // counter
   const counter = $("move-counter");
@@ -1152,7 +1340,11 @@ if (positions) {
     list.appendChild(pair);
   }
 
-  // mistake cards
+  // mistake cards — when Maia data is present, the ranking blends in recurrence,
+  // so say so instead of the Stockfish-only wording baked into the markup
+  if (mistakes.some((mk) => mk.playedPopularity || mk.recurrenceRisk)) {
+    $("mistake-sub").innerHTML = "Ranked by evaluation swing <em>times</em> how often players at your level make the same mistake — a smaller slip you're likely to repeat outranks a bigger one-off. Click one to jump the board to that moment and read the feedback.";
+  }
   const mlist = $("mistake-list");
   for (const mk of mistakes) {
     const card = document.createElement("button");
@@ -1171,12 +1363,14 @@ if (positions) {
       mk.played + "</span> · better <span class=\"best-san\">" + mk.best + "</span>";
     text.appendChild(h3);
     text.appendChild(mv);
-    const badge = document.createElement("span");
-    badge.className = "swing-badge";
-    badge.textContent = mk.swing;
+    const badges = document.createElement("div");
+    badges.className = "mc-badges";
+    badges.appendChild(makeSwingBadge(mk));
+    const tag = makeRecurTag(mk);
+    if (tag) badges.appendChild(tag);
     card.appendChild(num);
     card.appendChild(text);
-    card.appendChild(badge);
+    card.appendChild(badges);
     card.addEventListener("click", () => { goTo(mk.ply); card.blur(); });
     mlist.appendChild(card);
   }

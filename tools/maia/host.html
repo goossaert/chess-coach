@@ -1,0 +1,53 @@
+<!doctype html><meta charset="utf-8"><title>maia uci host</title>
+<script type="module">
+// Hosts the zerofish WASM lc0 and exposes two functions to the Playwright
+// driver (query.cjs):
+//   window.maiaLoadNet(band)  — load weights/maia-<band>.pb into the engine
+//   window.maiaQuery(fen)     — nodes=1 policy query, returns
+//     { bestmove, value, moves } where `moves` maps UCI → human-move
+//     probability in percent (lc0 VerboseMoveStats "P:") and `value` is the
+//     expected score (0..1) for the side to move, from Maia's human-outcome
+//     head ((WL+1)/2 at the root).
+const jsUrl = new URL('vendor/package/dist/zerofishEngine.js', location.href).href;
+
+window.maiaReady = (async () => {
+  const module = await import(jsUrl);
+  const engine = await module.default({
+    mainScriptUrlOrBlob: jsUrl,
+    onError: msg => { window.maiaError = String(msg); },
+    locateFile: f => new URL('vendor/package/dist/' + f, location.href).href,
+    noInitialRun: true,
+  });
+  engine.callMain(['0']); // no stockfish search threads; only the lc0 side is used
+  engine.zero('setoption name VerboseMoveStats value true');
+  window.engine = engine;
+  return true;
+})();
+
+window.maiaLoadNet = async band => {
+  const res = await fetch('weights/maia-' + band + '.pb');
+  if (!res.ok) throw new Error('missing weights for band ' + band);
+  window.engine.zero('ucinewgame');
+  window.engine.setZeroWeights(new Uint8Array(await res.arrayBuffer()));
+  return true;
+};
+
+window.maiaQuery = fen => new Promise((resolve, reject) => {
+  const moves = {};
+  let value = null;
+  const timer = setTimeout(() => reject(new Error('maiaQuery timed out: ' + fen)), 30000);
+  window.engine.listenZero = line => {
+    let m = line.match(/^info string node .*\(WL:\s*(-?[\d.]+)\)/);
+    if (m) value = (parseFloat(m[1]) + 1) / 2;
+    m = line.match(/^info string (\S+).*\(P:\s*([\d.]+)%\)/);
+    if (m && m[1] !== 'node') moves[m[1]] = parseFloat(m[2]);
+    if (line.startsWith('bestmove')) {
+      clearTimeout(timer);
+      window.engine.listenZero = undefined;
+      resolve({ bestmove: line.split(' ')[1], value, moves });
+    }
+  };
+  window.engine.zero('position fen ' + fen);
+  window.engine.zero('go nodes 1');
+});
+</script>

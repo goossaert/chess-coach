@@ -1,10 +1,19 @@
 # chess-coach
 
-**Version 1**
+**Version 2**
 
 This repository turns chess games into interactive coaching pages. When the user
 uploads a game and asks for feedback, analyze it and generate one HTML review page
 per game in `games/`, built from `template.html`.
+
+Version 2 (per `docs/0003-plan-maia-engine.md`) adds a **human-model pass**: every
+game is checked against Stockfish for the truth of each position *and* against a
+Maia rating-band model for what humans at the user's level actually play. This
+yields per-mistake typicality and findability percentages, a human-findable
+alternative when the engine's best move is one no human would see, mistake
+selection weighted by recurrence, an estimated playing strength (overall and per
+phase), and eval swings expressed as expected score against human opposition.
+Pages generated under version 1 remain valid — every new field is optional.
 
 ## Trigger
 
@@ -61,8 +70,77 @@ engine.quit()
 If no engine can be installed, analyze by judgment, clearly mark evaluations as
 estimates in `analysisNote`, and say so to the user.
 
-Select the **3–6 biggest mistakes by the user** (largest negative swings; a move that
-allows mate always qualifies). Prefer instructive moments over near-duplicates.
+### 2b. Human-model pass (Maia)
+
+Stockfish says what is true; Maia says what a human at a given rating actually
+plays. Run this second pass whenever possible — it feeds the typicality badges,
+findability rows, recurrence tags, strength estimate, and expected-points numbers
+on the page. Maia is a **move predictor, not an evaluator**: Stockfish remains the
+only source for `evalBefore/After/Best`; Maia only ever supplies probabilities and
+human-outcome expected scores. Never blend the two into one number.
+
+**Setup — known to work in this environment** (the plan's preferred
+`pip install maia3` does NOT work here: PyPI returns no distribution through the
+proxy, and the Maia-2/3 checkpoints on Hugging Face/Google Drive are blocked —
+verified 2026-07-15. The original Maia-1 rating-band networks run via the
+zerofish WASM lc0 in headless Chromium instead; the harness is committed in
+`tools/maia/`):
+
+```bash
+tools/maia/setup.sh                                  # zerofish engine + Maia-1 weights (both gitignored)
+node tools/maia/serve.mjs &                          # COOP/COEP static server, port 8123
+NODE_PATH=/opt/node22/lib/node_modules node tools/maia/query.cjs job.json > maia.json
+```
+
+`job.json` is `{ "bands": [1100, …, 1900], "positions": ["<FEN>", …] }`; the
+output maps each band to, per FEN, `moves` (UCI → percent of humans in that band
+playing it) and `value` (expected score 0–1 for the **side to move** against human
+opposition at that band). Generate the FENs with python-chess while replaying the
+PGN. Bands run 1100–1900 in steps of 100 — there is nothing below 1100.
+
+Compute three things:
+
+1. **Estimated strength** — for every position where the user is to move (skip
+   forced/only-move positions), get the probability each band assigns to the move
+   actually played. The best-fit band maximizes the mean log-probability (floor
+   tiny probabilities at 0.1% so one weird move can't dominate). Report it as
+   `estimatedElo` ("≈1300"); if the fit is flat, say so in `estimatedEloNote`.
+   Repeat per phase for `phaseElo` (opening ≈ first 10 full moves, endgame from
+   when queens are off or few pieces remain, middlegame between; include the
+   sample size, e.g. "≈1300 · 43 moves", and set `weakestPhase`). Small per-phase
+   samples are normal — the ≈ carries the uncertainty.
+2. **Per-mistake numbers**, at the best-fit band, for the 10–20 positions where
+   Stockfish flagged a meaningful swing: `playedPopularity` = probability of the
+   played move; `bestFindability` = probability of the engine's best move;
+   `expectedPointsLost` = (expected score after the best move) − (expected score
+   after the played move), both from the **user's** perspective — the after
+   positions have the opponent to move, so use `1 − value`. Display as a signed
+   number ("−0.21"), or "±0.00" when the human-outcome cost is negligible.
+3. **The human-findable alternative** — when the engine's best move is
+   near-unfindable at the user's level (roughly `bestFindability` < 10%), find the
+   highest-probability move whose Stockfish eval (re-check at depth ~18) stays
+   within 0.5 of best and is not losing. If it differs from the engine's best,
+   emit `humanBest`, `humanBestArrow`, `humanBestFindability`. Never recommend an
+   engine-only move as the lesson when a human-findable one keeps the eval.
+
+**Mistake selection** — rank by **swing × recurrence likelihood** instead of raw
+swing: weight each candidate's centipawn loss by `playedPopularity` (floored at
+~5% so rare blunders still register). A −1.5 mistake that 35% of the user's level
+repeats outranks a −3.0 one-off. A move that allows mate always qualifies, first.
+Select 3–6 mistakes; prefer instructive moments over near-duplicates. Derive
+`recurrenceRisk` from `playedPopularity`: ≥25% high, 10–25% medium, <10% low.
+
+**Caveats**: most games in `pgn/` are against engines, whose off-beat play can
+push positions outside Maia's human-vs-human training data — take probabilities
+in weird positions with a grain of salt, and keep forced positions out of the Elo
+fit. Percentages in the first ~5 moves are approximate too. Name the model and
+conditioning band in `analysisNote` (e.g. "human model: Maia rating-band networks
+(lc0 via zerofish WASM), conditioned at ≈1300; Maia-3 unreachable from this
+sandbox, Maia-1 bands stand in").
+
+**Fallback**: if the Maia setup fails (network policy can change), do the
+Stockfish-only analysis and omit every Maia field — the template then renders
+exactly as version 1. Say so in `analysisNote` and to the user.
 
 ### 3. Write the coaching content
 
@@ -78,6 +156,14 @@ For each selected mistake, write:
   - `detail`: how to apply or practice it in future games (a habit, a checklist step, a drill).
 - arrows: `playedArrow` and `bestArrow` as `["from","to"]` square names (take them
   from the moves' UCI, e.g. `g8f6` → `["g8","f6"]`).
+
+With Maia data, let typicality steer the diagnosis: a mistake many peers share
+(`recurrenceRisk` high) is a **knowledge gap** — write a pattern to drill; a move
+almost nobody at the user's level plays is an **attention lapse** — write a
+blunder-check habit, not a chess lesson. When `humanBest` is present, make it the
+move the explanation teaches (the engine's pick gets a mention, not the lesson),
+and quote the percentages where they sharpen the point ("88% of your peers
+recapture with the rook").
 
 Also write a 2–4 sentence `summary` of the whole game and an eye-catching serif
 `title`/`subtitle` for the page header (the `<em>…</em>` and `<br>` tags carry the
@@ -115,8 +201,13 @@ const GAME = {
   result: "1-0", date: "…", event: "…", opening: "…",   // free text, shown in header/footer
   movesSan: ["e4", "e5", …],  // full game, one SAN string per half-move
   summary: "…",               // default feedback-panel text; HTML allowed
-  analysisNote: "…",          // footer: engine, depth, eval perspective
+  analysisNote: "…",          // footer: engines, depth, eval perspective, Maia band
+  estimatedElo: "≈1300",      // OPTIONAL Maia fields — omit all of them on a
+  estimatedEloNote: "…",      //   Stockfish-only page and the template renders as v1
+  phaseElo: { opening: "≈1450 · 10 moves", middlegame: "…", endgame: "…" }, // any key omittable
+  weakestPhase: "endgame",    // which phase chip gets the "weakest" highlight
   mistakes: [{                // most important first — this is the display order
+                              //   (with Maia: swing × recurrence, mates first)
     ply: 17,                  // 0-BASED index into movesSan of the move PLAYED.
                               //   ply 0 = White's move 1, ply 1 = Black's move 1,
                               //   ply 17 = Black's move 9. Clicking the mistake shows
@@ -130,6 +221,13 @@ const GAME = {
     explanation: "…",                   // HTML allowed
     playedArrow: ["b7","b5"],           // rust arrow, from→to
     bestArrow: ["e8","d8"],             // gold arrow, from→to
+    playedPopularity: "38%",            // OPTIONAL Maia fields, per mistake:
+    bestFindability: "6%",              //   share of the user's level playing/finding these
+    humanBest: "Nf5",                   // best human-findable move; only when it
+    humanBestArrow: ["d3","f5"],        //   differs from `best` (drawn as a cream arrow)
+    humanBestFindability: "47%",
+    expectedPointsLost: "−0.21",        // human-outcome cost in expected score; "±0.00" ok
+    recurrenceRisk: "high",             // "high" | "medium" | "low" → card tag
     takeaways: [{ lesson: "…", detail: "…" }, …]   // plain text
   }, …]
 };
@@ -171,6 +269,19 @@ browser auto-found via `PLAYWRIGHT_BROWSERS_PATH`). Load the generated file head
 Also sanity-check every `mistake.ply` points at the right move:
 `movesSan[ply]` must equal `mistake.played`.
 
+When the page carries Maia data, also check:
+
+- every `humanBest` is **legal** in the position before its `ply` (python-chess
+  `parse_san`) and its re-checked Stockfish eval is within tolerance of best;
+- percentage fields parse as percentages, `expectedPointsLost` as a signed number;
+- in the Playwright pass: the header strength line is visible iff `estimatedElo`
+  is set, each mistake card shows a `.recur-tag` iff it has `recurrenceRisk`, the
+  feedback panel shows the `.typ-badge` and `.find-row` iff the fields are set,
+  and the cream arrow + "human-findable" legend appear only for mistakes with
+  `humanBestArrow`;
+- sanity: the Maia probability of the user's actual moves should average well
+  above random at the fit band — if it doesn't, the FENs and moves are misaligned.
+
 Then commit the new page together with its `pgn/*.txt` source and the updated
 `games/index.html`, and push.
 
@@ -186,4 +297,9 @@ Then commit the new page together with its `pgn/*.txt` source and the updated
   pairs with `games/<stamp>-<white>-vs-<black>.html`). Saved in workflow step 4.
 - `games/index.html` — the game list: one link per analyzed game, newest first.
   Must be updated whenever a page is added (see workflow step 5).
-- `docs/plan.md` — the design plan behind the template and this workflow.
+- `tools/maia/` — the Maia harness for workflow step 2b: `setup.sh` (fetches and
+  patches the zerofish WASM engine, downloads the Maia-1 weights), `serve.mjs`
+  (COOP/COEP static server), `host.html` + `query.cjs` (batch UCI queries through
+  headless Chromium). `vendor/` and `weights/` are gitignored, re-fetched per session.
+- `docs/` — the design plans behind the template and this workflow;
+  `docs/0003-plan-maia-engine.md` is the plan version 2 implements.

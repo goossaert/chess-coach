@@ -1,0 +1,8 @@
+[ID "f73fe929-8b9"]
+[Event "Play vs. Maia 800"]
+[Site "https://maiachess.com/"]
+[White "emgosr"]
+[Black "Maia 800"]
+[Result "0-1"]
+
+1. d4 d5 2. Nf3 Nc6 3. e3 Nf6 4. c3 g6 5. Bd3 Bg7 6. O-O O-O 7. Nbd2 Bg4 8. e4 dxe4 9. Nxe4 Nxe4 10. Bxe4 Bxf3 11. Bxf3 e5 12. d5 Ne7 13. c4 c6 14. Be3 cxd5 15. cxd5 Nxd5 16. Bxd5 e4 17. Bxe4 Qxd1 18. Raxd1 Bxb2 19. Bc5 Rfe8 20. Rfe1 Bc3 21. Re3 Bg7 22. Bxb7 Rab8 23. Bc6 Rxe3 24. fxe3 Rc8 25. Rd6 Bf8 26. Rd5 Rxc6 27. Bd4 Rc1+ 28. Kf2 Rc2+ 29. Kf3 Rxa2 30. e4 Ra3+ 31. Kf4 Bh6+ 32. Ke5 Bg7+ 33. Kd6 Bxd4 34. Rxd4 Ra6+ 35. Kc7 Ra2 36. Rd8+ Kg7 37. Ra8 Rxg2 38. Rxa7 Rxh2 39. Ra4 Re2 40. Kc6 h5 41. Kd5 h4 42. Ra1 h3 43. Kd4 h2 44. Kd3 Rg2 45. Ke3 Rg1 46. Rxg1 hxg1=Q+ 47. Kf3 g5 48. e5 g4+ 49. Ke4 g3 50. e6 g2 51. exf7 Kxf7 52. Ke5 Qf1 53. Kd6 g1=Q 0-1

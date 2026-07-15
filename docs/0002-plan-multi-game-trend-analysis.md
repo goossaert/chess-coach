@@ -2,7 +2,7 @@
 
 ## Context
 
-Until now the repo has produced **one coaching page per game** (see `docs/plan.md`). The user asked for the first **cross-game** deliverable: aggregate every game they have played, find what keeps going wrong, and turn that into a prioritized training plan backed by Lichess material. A follow-up request (run separately) added an interactive HTML version of the resulting report with persistent checkboxes, so the study plan can be worked through over time.
+Until now the repo has produced **one coaching page per game** (see `docs/0001-plan-interactive-chess-review-template.md`). The user asked for the first **cross-game** deliverable: aggregate every game they have played, find what keeps going wrong, and turn that into a prioritized training plan backed by Lichess material. A follow-up request (run separately) added an interactive HTML version of the resulting report with persistent checkboxes, so the study plan can be worked through over time.
 
 ### Request 1 — the trend-analysis report
 
@@ -13,7 +13,7 @@ The user's request, restated:
 - Find **studies/exercises on Lichess.org** that would help close those gaps.
 - Organize the output with **one section per mistake category**; under each section list the studies/exercises that cover it, **sorted with the most relevant and impactful first**. Up to **100 URLs per section** are allowed if useful and relevant (a cap, not a target).
 - The report **may include other advice and takeaways** judged useful or important, formatted however is most effective (whole sections, sub-sections, etc.).
-- Output is written as a **report in the `report/` folder**; at the **bottom of the report**, list the **source PGN files** and the **corresponding game pages** (`games/` folder) used for the analysis.
+- Output is written as a **report in the `report/` folder** (the folder was later renamed to `reports/`); at the **bottom of the report**, list the **source PGN files** and the **corresponding game pages** (`games/` folder) used for the analysis.
 
 ### Request 2 — the HTML checklist version (follow-up, voice-transcribed)
 
@@ -29,8 +29,8 @@ The user's request, restated (transcription said "Liches"/"leads" — meaning Li
 
 | File | Purpose |
 |---|---|
-| `report/2026-07-13-recurring-mistakes-and-lichess-study-plan.md` | The cross-game trend-analysis report (Request 1) |
-| `report/<same name>.html` | Same content as the markdown, with persistent-checkbox link lists (Request 2) |
+| `reports/2026-07-13-recurring-mistakes-and-lichess-study-plan.md` | The cross-game trend-analysis report (Request 1) |
+| `reports/2026-07-13-recurring-mistakes-and-lichess-study-plan.html` | Same content as the markdown, with persistent-checkbox link lists (Request 2) |
 | `docs/0002-plan-multi-game-trend-analysis.md` | This plan |
 
 ## 1. Analysis method (Request 1)

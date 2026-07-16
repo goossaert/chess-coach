@@ -404,7 +404,7 @@ Phase 3.
 | `tools/build-drills.*`, `tools/build-progress.*` | Generators reading `analysis/*.json` |
 | `reports/progress.html` (new) | Progress dashboard |
 | `games/index.html` | A link to the drill deck (new marked region) |
-| `docs/0004-plan-faster-learning-loop.md` | This plan |
+| `docs/0005-plan-faster-learning-loop.md` | This plan |
 
 ## Verification (extends the existing step-6 checks)
 

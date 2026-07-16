@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>emgosr vs Maia 800 \u2014 Game Review</title>
+<title>emgosr vs Maia 800 — Game Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -585,9 +585,9 @@
     <div class="board-col">
       <div id="board-mount"></div>
       <div class="legend" id="board-legend" hidden>
-        <span class="legend-item"><i class="dot rust"></i>played</span>
-        <span class="legend-item"><i class="dot gold"></i>engine's pick</span>
-        <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i>human-findable</span>
+        <span class="legend-item"><i class="dot rust"></i><span id="legend-played">played</span></span>
+        <span class="legend-item"><i class="dot gold"></i><span id="legend-best">engine's pick</span></span>
+        <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i><span id="legend-human-text">human-findable</span></span>
       </div>
       <div class="controls">
         <button id="btn-start" title="Start position (Home)">|&laquo;</button>
@@ -641,6 +641,61 @@ const GAME = {
   estimatedEloNote: "Weak evidence: the fit across the 1100\u20131900 bands is nearly flat for this game \u2014 a long, mostly forced endgame says little about level. The phase split below is more telling than the headline number.",
   phaseElo: { opening: "\u22481800 \u00b7 10 moves", middlegame: "\u22481900 \u00b7 7 moves", endgame: "\u22481100 \u00b7 35 moves" },
   weakestPhase: "endgame",
+
+  // Engine's pick for every move you played (Maia human-findable where the
+  // engine move is near-unfindable at your level); mistake plies are covered
+  // by the mistakes entries below.
+  moveNotes: [
+    { ply: 0, best: "e4", bestArrow: ["e2","e4"] },
+    { ply: 2, best: "c4", bestArrow: ["c2","c4"], humanBest: "Nf3", humanBestArrow: ["g1","f3"] },
+    { ply: 4, best: "c4", bestArrow: ["c2","c4"] },
+    { ply: 6, best: "c4", bestArrow: ["c2","c4"] },
+    { ply: 8, best: "c4", bestArrow: ["c3","c4"], humanBest: "Bd3", humanBestArrow: ["f1","d3"] },
+    { ply: 10, best: "c4", bestArrow: ["c3","c4"], humanBest: "Nbd2", humanBestArrow: ["b1","d2"] },
+    { ply: 12, best: "c4", bestArrow: ["c3","c4"], humanBest: "Nbd2", humanBestArrow: ["b1","d2"] },
+    { ply: 14, best: "h3", bestArrow: ["h2","h3"] },
+    { ply: 16, best: "Nxe4", bestArrow: ["d2","e4"] },
+    { ply: 18, best: "Bxe4", bestArrow: ["d3","e4"] },
+    { ply: 20, best: "Qxf3", bestArrow: ["d1","f3"] },
+    { ply: 24, best: "a4", bestArrow: ["a2","a4"], humanBest: "c4", humanBestArrow: ["c3","c4"] },
+    { ply: 26, best: "dxc6", bestArrow: ["d5","c6"] },
+    { ply: 28, best: "Bxd5", bestArrow: ["f3","d5"] },
+    { ply: 30, best: "Bxd5", bestArrow: ["f3","d5"] },
+    { ply: 32, best: "Qb3", bestArrow: ["d1","b3"] },
+    { ply: 34, best: "Raxd1", bestArrow: ["a1","d1"] },
+    { ply: 36, best: "Bxb7", bestArrow: ["e4","b7"] },
+    { ply: 38, best: "Bxb7", bestArrow: ["e4","b7"] },
+    { ply: 40, best: "Re3", bestArrow: ["e1","e3"] },
+    { ply: 42, best: "Bxb7", bestArrow: ["e4","b7"] },
+    { ply: 44, best: "Rxe8+", bestArrow: ["e3","e8"] },
+    { ply: 46, best: "Bxe3", bestArrow: ["c5","e3"] },
+    { ply: 50, best: "Rd5", bestArrow: ["d6","d5"] },
+    { ply: 52, best: "Bd4", bestArrow: ["c5","d4"] },
+    { ply: 54, best: "Kf2", bestArrow: ["g1","f2"] },
+    { ply: 56, best: "Kg3", bestArrow: ["f2","g3"] },
+    { ply: 58, best: "Rd8", bestArrow: ["d5","d8"] },
+    { ply: 60, best: "Ke2", bestArrow: ["f3","e2"] },
+    { ply: 62, best: "Kg4", bestArrow: ["f4","g4"] },
+    { ply: 66, best: "Rxd4", bestArrow: ["d5","d4"] },
+    { ply: 68, best: "Kd5", bestArrow: ["d6","d5"] },
+    { ply: 70, best: "g3", bestArrow: ["g2","g3"] },
+    { ply: 72, best: "Rd3", bestArrow: ["d8","d3"] },
+    { ply: 74, best: "h3", bestArrow: ["h2","h3"] },
+    { ply: 76, best: "Kd6", bestArrow: ["c7","d6"] },
+    { ply: 78, best: "Kd6", bestArrow: ["c7","d6"] },
+    { ply: 80, best: "Kd5", bestArrow: ["c6","d5"] },
+    { ply: 82, best: "Kd4", bestArrow: ["d5","d4"] },
+    { ply: 84, best: "Ke5", bestArrow: ["d5","e5"] },
+    { ply: 86, best: "Rf1", bestArrow: ["a1","f1"] },
+    { ply: 90, best: "Ra4", bestArrow: ["a1","a4"] },
+    { ply: 92, best: "Kd3", bestArrow: ["e3","d3"] },
+    { ply: 94, best: "e5", bestArrow: ["e4","e5"] },
+    { ply: 96, best: "Kf4", bestArrow: ["f3","f4"] },
+    { ply: 98, best: "Kd3", bestArrow: ["e4","d3"] },
+    { ply: 100, best: "e7", bestArrow: ["e6","e7"] },
+    { ply: 102, best: "Kf3", bestArrow: ["e4","f3"] },
+    { ply: 104, best: "Kd5", bestArrow: ["e5","d5"] }
+  ],
 
   mistakes: [
     {
@@ -783,6 +838,7 @@ function initialBoard() {
 }
 
 function sqIndex(name) { return (name.charCodeAt(1) - 49) * 8 + (name.charCodeAt(0) - 97); }
+function sqName(i) { return FILES[i % 8] + (((i / 8) | 0) + 1); }
 function isWhitePiece(p) { return p === p.toUpperCase(); }
 
 // Does the piece on `from` attack `to` (geometry + clear path; pawn = capture moves only)?
@@ -1017,26 +1073,48 @@ function buildBoardSvg() {
   return svg;
 }
 
-function drawArrow(layer, fromName, toName, color) {
+// scale shrinks the shaft and head; offset shifts the whole arrow sideways
+// (perpendicular to its direction) so identical arrows can sit side by side.
+function drawArrow(layer, fromName, toName, color, scale, offset) {
+  scale = scale || 1;
+  offset = offset || 0;
   const [fx, fy] = sqXY(sqIndex(fromName));
   const [tx, ty] = sqXY(sqIndex(toName));
-  const x1 = fx + SQ / 2, y1 = fy + SQ / 2;
-  const x2 = tx + SQ / 2, y2 = ty + SQ / 2;
-  const dx = x2 - x1, dy = y2 - y1;
-  const len = Math.hypot(dx, dy);
+  const dx0 = (tx - fx), dy0 = (ty - fy);
+  const len = Math.hypot(dx0, dy0);
   if (!len) return;
-  const ux = dx / len, uy = dy / len;
-  const headLen = 0.62 * SQ, headHalf = 0.34 * SQ;
+  const ux = dx0 / len, uy = dy0 / len;
+  const px = -uy, py = ux;   // perpendicular
+  const x1 = fx + SQ / 2 + px * offset, y1 = fy + SQ / 2 + py * offset;
+  const x2 = tx + SQ / 2 + px * offset, y2 = ty + SQ / 2 + py * offset;
+  const headLen = 0.62 * SQ * scale, headHalf = 0.34 * SQ * scale;
   const bx = x2 - ux * headLen, by = y2 - uy * headLen;   // base of arrowhead
   layer.appendChild(svgEl("line", {
     x1: x1 + ux * SQ * 0.18, y1: y1 + uy * SQ * 0.18, x2: bx, y2: by,
-    stroke: color, "stroke-width": 9, "stroke-linecap": "butt", class: "arrow"
+    stroke: color, "stroke-width": 9 * scale, "stroke-linecap": "butt", class: "arrow"
   }));
-  const px = -uy, py = ux;   // perpendicular
   layer.appendChild(svgEl("polygon", {
     points: x2 + "," + y2 + " " + (bx + px * headHalf) + "," + (by + py * headHalf) + " " + (bx - px * headHalf) + "," + (by - py * headHalf),
     fill: color, class: "arrow"
   }));
+}
+
+// Draws a set of arrows [{from, to, color}]. Arrows sharing the exact same
+// from→to squares are thinned and offset so they show side by side instead of
+// stacking; arrows on distinct squares keep the full width.
+function drawArrowSet(layer, arrows) {
+  const groups = new Map();
+  for (const a of arrows) {
+    const key = a.from + a.to;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(a);
+  }
+  for (const group of groups.values()) {
+    const n = group.length;
+    const scale = n === 1 ? 1 : n === 2 ? 0.55 : 0.4;
+    const spacing = 2 * 0.34 * SQ * scale;   // scaled head width → heads sit edge to edge
+    group.forEach((a, k) => drawArrow(layer, a.from, a.to, a.color, scale, (k - (n - 1) / 2) * spacing));
+  }
 }
 
 // --------------------------------------------------------------------------
@@ -1279,6 +1357,12 @@ const mistakes = (GAME.mistakes || []).slice();
 const mistakeByPly = new Map();
 for (const mk of mistakes) mistakeByPly.set(mk.ply, mk);
 
+// Per-ply board annotations (played / engine's pick / human-findable arrows):
+// every moveNotes entry, with mistakes overriding their plies.
+const annoByPly = new Map();
+for (const n of GAME.moveNotes || []) annoByPly.set(n.ply, n);
+for (const mk of mistakes) annoByPly.set(mk.ply, mk);
+
 let current = 0;
 let piecesLayer = null, hlLayer = null, arrowsLayer = null;
 const moveButtons = [];
@@ -1328,14 +1412,20 @@ function renderPosition() {
   }
 
   arrowsLayer.innerHTML = "";
-  const atMistakeBefore = mistakeByPly.get(current);
-  if (atMistakeBefore) {
-    if (atMistakeBefore.playedArrow) drawArrow(arrowsLayer, atMistakeBefore.playedArrow[0], atMistakeBefore.playedArrow[1], "#c1502fcc");
-    if (atMistakeBefore.bestArrow) drawArrow(arrowsLayer, atMistakeBefore.bestArrow[0], atMistakeBefore.bestArrow[1], "#c9a24bcc");
-    if (atMistakeBefore.humanBestArrow) drawArrow(arrowsLayer, atMistakeBefore.humanBestArrow[0], atMistakeBefore.humanBestArrow[1], "#e7d7abcc");
+  const note = current < totalPlies ? annoByPly.get(current) : null;
+  if (note) {
+    const specs = [];
+    const last = positions[current + 1].last;   // the move actually played at this ply
+    if (last) specs.push({ from: sqName(last.from), to: sqName(last.to), color: "#c1502fcc" });
+    if (note.bestArrow) specs.push({ from: note.bestArrow[0], to: note.bestArrow[1], color: "#c9a24bcc" });
+    if (note.humanBestArrow) specs.push({ from: note.humanBestArrow[0], to: note.humanBestArrow[1], color: "#e7d7abcc" });
+    drawArrowSet(arrowsLayer, specs);
+    $("legend-played").textContent = "played " + GAME.movesSan[current];
+    $("legend-best").textContent = note.best ? "engine's pick " + note.best : "engine's pick";
+    if (note.humanBest) $("legend-human-text").textContent = "human-findable " + note.humanBest;
   }
-  $("board-legend").hidden = !atMistakeBefore;
-  $("legend-human").hidden = !(atMistakeBefore && atMistakeBefore.humanBestArrow);
+  $("board-legend").hidden = !note;
+  $("legend-human").hidden = !(note && note.humanBestArrow);
 
   // counter
   const counter = $("move-counter");
@@ -1465,6 +1555,7 @@ window.__review = {
   getPly: () => current,
   total: () => totalPlies,
   placement: (k) => positions ? fenPlacement(positions[k].board) : null,
+  noteAt: (ply) => annoByPly.get(ply) || null,
   error: parseError
 };
 

@@ -49,6 +49,13 @@ For each position where the user is to move, get (depth 20 is a good default):
 - the eval **after** the move actually played,
 - the **swing** = eval_after − eval_before (negative = the move hurt the user).
 
+Keep the best move (SAN + UCI) for **every** user move, not just the mistakes:
+it feeds the `moveNotes` array, which puts the played/engine's-pick arrows on the
+board for every move the user made (the played arrow is derived in-page from the
+replay, so a note only carries the engine's pick and the optional human-findable
+fields). On a Stockfish-only page, still emit `moveNotes` with `best`/`bestArrow`
+— only the human-findable fields depend on Maia.
+
 Reference loop with `python-chess`:
 
 ```python
@@ -98,7 +105,7 @@ playing it) and `value` (expected score 0–1 for the **side to move** against h
 opposition at that band). Generate the FENs with python-chess while replaying the
 PGN. Bands run 1100–1900 in steps of 100 — there is nothing below 1100.
 
-Compute three things:
+Compute four things:
 
 1. **Estimated strength** — for every position where the user is to move (skip
    forced/only-move positions), get the probability each band assigns to the move
@@ -122,6 +129,13 @@ Compute three things:
    within 0.5 of best and is not losing. If it differs from the engine's best,
    emit `humanBest`, `humanBestArrow`, `humanBestFindability`. Never recommend an
    engine-only move as the lesson when a human-findable one keeps the eval.
+4. **Per-move notes** — apply the same human-findable rule (item 3) to **every**
+   user move, at the fit band, and finish the `moveNotes` entries started in
+   step 2: each is `{ ply, best, bestArrow }` plus `humanBest`/`humanBestArrow`
+   when a human-findable alternative exists for that ply. Skip plies covered by
+   a `mistakes` entry — the template lets mistakes take precedence — and keep
+   the eval re-checks cheap (depth ~18, only for plies where `bestFindability`
+   < 10%).
 
 **Mistake selection** — rank by **swing × recurrence likelihood** instead of raw
 swing: weight each candidate's centipawn loss by `playedPopularity` (floored at
@@ -206,6 +220,20 @@ const GAME = {
   estimatedEloNote: "…",      //   Stockfish-only page and the template renders as v1
   phaseElo: { opening: "≈1450 · 10 moves", middlegame: "…", endgame: "…" }, // any key omittable
   weakestPhase: "endgame",    // which phase chip gets the "weakest" highlight
+  moveNotes: [{               // one entry per USER move — puts the arrows (played,
+                              //   engine's pick, human-findable) and the legend with
+                              //   the move names on EVERY move the user made, not
+                              //   just the mistakes. The played arrow is derived
+                              //   in-page from the replay. Plies that have a
+                              //   `mistakes` entry may be omitted (mistakes win).
+                              //   Identical arrows (played == best, etc.) render
+                              //   side by side automatically.
+    ply: 4,                   // 0-based, same convention as mistakes
+    best: "Nf3",              // engine's pick (SAN) — Stockfish only, so this
+    bestArrow: ["g1","f3"],   //   array belongs on Stockfish-only pages too
+    humanBest: "Nc3",                   // OPTIONAL, same rule as in mistakes: only
+    humanBestArrow: ["b1","c3"]         //   when best is near-unfindable at the
+  }, …],                                //   user's level and this keeps the eval
   mistakes: [{                // most important first — this is the display order
                               //   (with Maia: swing × recurrence, mates first)
     ply: 17,                  // 0-BASED index into movesSan of the move PLAYED.
@@ -269,6 +297,18 @@ browser auto-found via `PLAYWRIGHT_BROWSERS_PATH`). Load the generated file head
 Also sanity-check every `mistake.ply` points at the right move:
 `movesSan[ply]` must equal `mistake.played`.
 
+For `moveNotes` (any page that carries them):
+
+- every user move has an annotation: each user ply appears in `moveNotes` or in
+  `mistakes` (`window.__review.noteAt(ply)` must be non-null for all of them);
+- every note's `best` is **legal** in the position before its `ply`
+  (python-chess `parse_san`) and `bestArrow` matches that move's UCI;
+- in the Playwright pass: stepping onto any user-move position shows the legend
+  (with the played and engine's-pick SANs) and draws the arrows; when the played
+  move equals the engine's pick, the two arrows render side by side — thinner,
+  offset, not stacked (two `.arrow` line elements with equal from→to but
+  different positions); opponent-move positions show no arrows and no legend.
+
 When the page carries Maia data, also check:
 
 - every `humanBest` is **legal** in the position before its `ply` (python-chess
@@ -277,8 +317,8 @@ When the page carries Maia data, also check:
 - in the Playwright pass: the header strength line is visible iff `estimatedElo`
   is set, each mistake card shows a `.recur-tag` iff it has `recurrenceRisk`, the
   feedback panel shows the `.typ-badge` and `.find-row` iff the fields are set,
-  and the cream arrow + "human-findable" legend appear only for mistakes with
-  `humanBestArrow`;
+  and the cream arrow + "human-findable" legend appear only on positions whose
+  mistake or move note has `humanBestArrow`;
 - sanity: the Maia probability of the user's actual moves should average well
   above random at the fit band — if it doesn't, the FENs and moves are misaligned.
 

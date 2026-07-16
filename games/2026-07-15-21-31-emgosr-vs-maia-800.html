@@ -642,59 +642,60 @@ const GAME = {
   phaseElo: { opening: "\u22481800 \u00b7 10 moves", middlegame: "\u22481900 \u00b7 7 moves", endgame: "\u22481100 \u00b7 35 moves" },
   weakestPhase: "endgame",
 
-  // Engine's pick for every move you played (Maia human-findable where the
-  // engine move is near-unfindable at your level); mistake plies are covered
-  // by the mistakes entries below.
+  // Engine's pick and the human-findable move (Maia ≈1900, most popular move
+  // that keeps the eval — present on every entry, often the engine's pick
+  // itself) for every move you played; mistake plies are covered by the
+  // mistakes entries below.
   moveNotes: [
-    { ply: 0, best: "e4", bestArrow: ["e2","e4"] },
+    { ply: 0, best: "e4", bestArrow: ["e2","e4"], humanBest: "e4", humanBestArrow: ["e2","e4"] },
     { ply: 2, best: "c4", bestArrow: ["c2","c4"], humanBest: "Nf3", humanBestArrow: ["g1","f3"] },
-    { ply: 4, best: "c4", bestArrow: ["c2","c4"] },
-    { ply: 6, best: "c4", bestArrow: ["c2","c4"] },
+    { ply: 4, best: "c4", bestArrow: ["c2","c4"], humanBest: "Bf4", humanBestArrow: ["c1","f4"] },
+    { ply: 6, best: "c4", bestArrow: ["c2","c4"], humanBest: "c4", humanBestArrow: ["c2","c4"] },
     { ply: 8, best: "c4", bestArrow: ["c3","c4"], humanBest: "Bd3", humanBestArrow: ["f1","d3"] },
     { ply: 10, best: "c4", bestArrow: ["c3","c4"], humanBest: "Nbd2", humanBestArrow: ["b1","d2"] },
     { ply: 12, best: "c4", bestArrow: ["c3","c4"], humanBest: "Nbd2", humanBestArrow: ["b1","d2"] },
-    { ply: 14, best: "h3", bestArrow: ["h2","h3"] },
-    { ply: 16, best: "Nxe4", bestArrow: ["d2","e4"] },
-    { ply: 18, best: "Bxe4", bestArrow: ["d3","e4"] },
-    { ply: 20, best: "Qxf3", bestArrow: ["d1","f3"] },
+    { ply: 14, best: "h3", bestArrow: ["h2","h3"], humanBest: "h3", humanBestArrow: ["h2","h3"] },
+    { ply: 16, best: "Nxe4", bestArrow: ["d2","e4"], humanBest: "Nxe4", humanBestArrow: ["d2","e4"] },
+    { ply: 18, best: "Bxe4", bestArrow: ["d3","e4"], humanBest: "Bxe4", humanBestArrow: ["d3","e4"] },
+    { ply: 20, best: "Qxf3", bestArrow: ["d1","f3"], humanBest: "Qxf3", humanBestArrow: ["d1","f3"] },
     { ply: 24, best: "a4", bestArrow: ["a2","a4"], humanBest: "c4", humanBestArrow: ["c3","c4"] },
-    { ply: 26, best: "dxc6", bestArrow: ["d5","c6"] },
-    { ply: 28, best: "Bxd5", bestArrow: ["f3","d5"] },
-    { ply: 30, best: "Bxd5", bestArrow: ["f3","d5"] },
-    { ply: 32, best: "Qb3", bestArrow: ["d1","b3"] },
-    { ply: 34, best: "Raxd1", bestArrow: ["a1","d1"] },
-    { ply: 36, best: "Bxb7", bestArrow: ["e4","b7"] },
-    { ply: 38, best: "Bxb7", bestArrow: ["e4","b7"] },
-    { ply: 40, best: "Re3", bestArrow: ["e1","e3"] },
-    { ply: 42, best: "Bxb7", bestArrow: ["e4","b7"] },
-    { ply: 44, best: "Rxe8+", bestArrow: ["e3","e8"] },
-    { ply: 46, best: "Bxe3", bestArrow: ["c5","e3"] },
-    { ply: 50, best: "Rd5", bestArrow: ["d6","d5"] },
-    { ply: 52, best: "Bd4", bestArrow: ["c5","d4"] },
-    { ply: 54, best: "Kf2", bestArrow: ["g1","f2"] },
-    { ply: 56, best: "Kg3", bestArrow: ["f2","g3"] },
-    { ply: 58, best: "Rd8", bestArrow: ["d5","d8"] },
-    { ply: 60, best: "Ke2", bestArrow: ["f3","e2"] },
-    { ply: 62, best: "Kg4", bestArrow: ["f4","g4"] },
-    { ply: 66, best: "Rxd4", bestArrow: ["d5","d4"] },
-    { ply: 68, best: "Kd5", bestArrow: ["d6","d5"] },
-    { ply: 70, best: "g3", bestArrow: ["g2","g3"] },
-    { ply: 72, best: "Rd3", bestArrow: ["d8","d3"] },
-    { ply: 74, best: "h3", bestArrow: ["h2","h3"] },
-    { ply: 76, best: "Kd6", bestArrow: ["c7","d6"] },
-    { ply: 78, best: "Kd6", bestArrow: ["c7","d6"] },
-    { ply: 80, best: "Kd5", bestArrow: ["c6","d5"] },
-    { ply: 82, best: "Kd4", bestArrow: ["d5","d4"] },
-    { ply: 84, best: "Ke5", bestArrow: ["d5","e5"] },
-    { ply: 86, best: "Rf1", bestArrow: ["a1","f1"] },
-    { ply: 90, best: "Ra4", bestArrow: ["a1","a4"] },
-    { ply: 92, best: "Kd3", bestArrow: ["e3","d3"] },
-    { ply: 94, best: "e5", bestArrow: ["e4","e5"] },
-    { ply: 96, best: "Kf4", bestArrow: ["f3","f4"] },
-    { ply: 98, best: "Kd3", bestArrow: ["e4","d3"] },
-    { ply: 100, best: "e7", bestArrow: ["e6","e7"] },
-    { ply: 102, best: "Kf3", bestArrow: ["e4","f3"] },
-    { ply: 104, best: "Kd5", bestArrow: ["e5","d5"] }
+    { ply: 26, best: "dxc6", bestArrow: ["d5","c6"], humanBest: "Bg5", humanBestArrow: ["c1","g5"] },
+    { ply: 28, best: "Bxd5", bestArrow: ["f3","d5"], humanBest: "cxd5", humanBestArrow: ["c4","d5"] },
+    { ply: 30, best: "Bxd5", bestArrow: ["f3","d5"], humanBest: "Bxd5", humanBestArrow: ["f3","d5"] },
+    { ply: 32, best: "Qb3", bestArrow: ["d1","b3"], humanBest: "Bxe4", humanBestArrow: ["d5","e4"] },
+    { ply: 34, best: "Raxd1", bestArrow: ["a1","d1"], humanBest: "Raxd1", humanBestArrow: ["a1","d1"] },
+    { ply: 36, best: "Bxb7", bestArrow: ["e4","b7"], humanBest: "Bxb7", humanBestArrow: ["e4","b7"] },
+    { ply: 38, best: "Bxb7", bestArrow: ["e4","b7"], humanBest: "Bxb7", humanBestArrow: ["e4","b7"] },
+    { ply: 40, best: "Re3", bestArrow: ["e1","e3"], humanBest: "Re3", humanBestArrow: ["e1","e3"] },
+    { ply: 42, best: "Bxb7", bestArrow: ["e4","b7"], humanBest: "Bxb7", humanBestArrow: ["e4","b7"] },
+    { ply: 44, best: "Rxe8+", bestArrow: ["e3","e8"], humanBest: "Rxe8+", humanBestArrow: ["e3","e8"] },
+    { ply: 46, best: "Bxe3", bestArrow: ["c5","e3"], humanBest: "Bxe3", humanBestArrow: ["c5","e3"] },
+    { ply: 50, best: "Rd5", bestArrow: ["d6","d5"], humanBest: "Rd5", humanBestArrow: ["d6","d5"] },
+    { ply: 52, best: "Bd4", bestArrow: ["c5","d4"], humanBest: "Bxa7", humanBestArrow: ["c5","a7"] },
+    { ply: 54, best: "Kf2", bestArrow: ["g1","f2"], humanBest: "Kf2", humanBestArrow: ["g1","f2"] },
+    { ply: 56, best: "Kg3", bestArrow: ["f2","g3"], humanBest: "Kf3", humanBestArrow: ["f2","f3"] },
+    { ply: 58, best: "Rd8", bestArrow: ["d5","d8"], humanBest: "Rd7", humanBestArrow: ["d5","d7"] },
+    { ply: 60, best: "Ke2", bestArrow: ["f3","e2"], humanBest: "Kf4", humanBestArrow: ["f3","f4"] },
+    { ply: 62, best: "Kg4", bestArrow: ["f4","g4"], humanBest: "Ke5", humanBestArrow: ["f4","e5"] },
+    { ply: 66, best: "Rxd4", bestArrow: ["d5","d4"], humanBest: "Rxd4", humanBestArrow: ["d5","d4"] },
+    { ply: 68, best: "Kd5", bestArrow: ["d6","d5"], humanBest: "Ke7", humanBestArrow: ["d6","e7"] },
+    { ply: 70, best: "g3", bestArrow: ["g2","g3"], humanBest: "g3", humanBestArrow: ["g2","g3"] },
+    { ply: 72, best: "Rd3", bestArrow: ["d8","d3"], humanBest: "g3", humanBestArrow: ["g2","g3"] },
+    { ply: 74, best: "h3", bestArrow: ["h2","h3"], humanBest: "Rxa7", humanBestArrow: ["a8","a7"] },
+    { ply: 76, best: "Kd6", bestArrow: ["c7","d6"], humanBest: "Kd6", humanBestArrow: ["c7","d6"] },
+    { ply: 78, best: "Kd6", bestArrow: ["c7","d6"], humanBest: "Kd6", humanBestArrow: ["c7","d6"] },
+    { ply: 80, best: "Kd5", bestArrow: ["c6","d5"], humanBest: "Kd5", humanBestArrow: ["c6","d5"] },
+    { ply: 82, best: "Kd4", bestArrow: ["d5","d4"], humanBest: "e5", humanBestArrow: ["e4","e5"] },
+    { ply: 84, best: "Ke5", bestArrow: ["d5","e5"], humanBest: "Rh1", humanBestArrow: ["a1","h1"] },
+    { ply: 86, best: "Rf1", bestArrow: ["a1","f1"], humanBest: "Rh1", humanBestArrow: ["a1","h1"] },
+    { ply: 90, best: "Ra4", bestArrow: ["a1","a4"], humanBest: "Rxg1", humanBestArrow: ["a1","g1"] },
+    { ply: 92, best: "Kd3", bestArrow: ["e3","d3"], humanBest: "Kf4", humanBestArrow: ["e3","f4"] },
+    { ply: 94, best: "e5", bestArrow: ["e4","e5"], humanBest: "e5", humanBestArrow: ["e4","e5"] },
+    { ply: 96, best: "Kf4", bestArrow: ["f3","f4"], humanBest: "Kf4", humanBestArrow: ["f3","f4"] },
+    { ply: 98, best: "Kd3", bestArrow: ["e4","d3"], humanBest: "Kf3", humanBestArrow: ["e4","f3"] },
+    { ply: 100, best: "e7", bestArrow: ["e6","e7"], humanBest: "e7", humanBestArrow: ["e6","e7"] },
+    { ply: 102, best: "Kf3", bestArrow: ["e4","f3"], humanBest: "Kf3", humanBestArrow: ["e4","f3"] },
+    { ply: 104, best: "Kd5", bestArrow: ["e5","d5"], humanBest: "Ke4", humanBestArrow: ["e5","e4"] }
   ],
 
   mistakes: [
@@ -712,6 +713,9 @@ const GAME = {
       bestArrow: ["a1","h1"],
       playedPopularity: "17%",
       bestFindability: "46%",
+      humanBest: "Rh1",
+      humanBestArrow: ["a1","h1"],
+      humanBestFindability: "46%",
       expectedPointsLost: "\u00b10.00",
       recurrenceRisk: "medium",
       takeaways: [
@@ -739,6 +743,9 @@ const GAME = {
       bestArrow: ["e5","f4"],
       playedPopularity: "51%",
       bestFindability: "50%",
+      humanBest: "Kf4",
+      humanBestArrow: ["e5","f4"],
+      humanBestFindability: "49%",
       expectedPointsLost: "\u00b10.00",
       recurrenceRisk: "high",
       takeaways: [
@@ -766,6 +773,9 @@ const GAME = {
       bestArrow: ["c5","a3"],
       playedPopularity: "7%",
       bestFindability: "0.8%",
+      humanBest: "Be7",
+      humanBestArrow: ["c5","e7"],
+      humanBestFindability: "2%",
       recurrenceRisk: "low",
       takeaways: [
         {
@@ -792,6 +802,9 @@ const GAME = {
       bestArrow: ["d4","e5"],
       playedPopularity: "26%",
       bestFindability: "16%",
+      humanBest: "dxe5",
+      humanBestArrow: ["d4","e5"],
+      humanBestFindability: "16%",
       expectedPointsLost: "\u00b10.00",
       recurrenceRisk: "high",
       takeaways: [
@@ -1207,7 +1220,7 @@ function makeFindRow(mk) {
   div.className = "find-row";
   let html = "Engine pick <b>" + mk.best + "</b> — found by <b>" + mk.bestFindability +
     "</b> of players at your level.";
-  if (mk.humanBest) {
+  if (mk.humanBest && mk.humanBest !== mk.best) {
     html += " The human-findable <span class=\"hb\">" + mk.humanBest +
       "</span> (cream arrow) keeps the eval, and <b>" + mk.humanBestFindability + "</b> play it.";
   }

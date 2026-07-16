@@ -651,14 +651,16 @@ const GAME = {
 
   // Per-move annotations for EVERY move the user played (optional). Each entry
   // carries the engine's pick for that ply — the played arrow is derived from
-  // the replay itself — plus the human-findable alternative when the engine's
-  // move is near-unfindable at the user's level (same rule as mistakes).
+  // the replay itself — plus the human-findable move. On a page with Maia data
+  // humanBest/humanBestArrow are ALWAYS present (the most popular move at the
+  // user's level that keeps the eval; often the engine's pick itself — never
+  // omit them just because they coincide, identical arrows render side by
+  // side). Omit the humanBest fields only on Stockfish-only pages.
   // Plies covered by a mistake entry may be omitted: mistakes take precedence.
   moveNotes: [
-    { ply: 1, best: "e5", bestArrow: ["e7","e5"] },     // played == best → the two
-    { ply: 3, best: "Nc6", bestArrow: ["b8","c6"] }     //   arrows render side by side
+    { ply: 1, best: "e5", bestArrow: ["e7","e5"], humanBest: "e5", humanBestArrow: ["e7","e5"] },
+    { ply: 3, best: "Nc6", bestArrow: ["b8","c6"], humanBest: "Nc6", humanBestArrow: ["b8","c6"] }
     // ply 5 is covered by the mistake entry below
-    // optional per entry: humanBest, humanBestArrow — cream arrow, as in mistakes
   ],
 
   // The key mistakes, most important first — with Maia, the display order is
@@ -682,9 +684,13 @@ const GAME = {
       // Maia fields (all optional; real Maia-1100 numbers for this position):
       playedPopularity: "15%",        // share of the user's level that plays the played move
       bestFindability: "36%",         // share of the user's level that finds the best move
-      // humanBest / humanBestArrow / humanBestFindability: only when the engine's
-      // best is near-unfindable and a human-findable alternative keeps the eval —
-      // here the best move IS the human move, so they are omitted.
+      // humanBest / humanBestArrow / humanBestFindability: always present on a
+      // Maia page — here the best move IS the human move, so they coincide and
+      // the cream arrow renders beside the gold one; the find-row text only
+      // brings humanBest up when it differs from the engine's pick.
+      humanBest: "g6",
+      humanBestArrow: ["g7","g6"],
+      humanBestFindability: "36%",
       expectedPointsLost: "−0.30",    // WDL-based cost in expected score at the user's level
       recurrenceRisk: "medium",       // "high" | "medium" | "low" → card tag & badge tone
       takeaways: [
@@ -1100,7 +1106,7 @@ function makeFindRow(mk) {
   div.className = "find-row";
   let html = "Engine pick <b>" + mk.best + "</b> — found by <b>" + mk.bestFindability +
     "</b> of players at your level.";
-  if (mk.humanBest) {
+  if (mk.humanBest && mk.humanBest !== mk.best) {
     html += " The human-findable <span class=\"hb\">" + mk.humanBest +
       "</span> (cream arrow) keeps the eval, and <b>" + mk.humanBestFindability + "</b> play it.";
   }

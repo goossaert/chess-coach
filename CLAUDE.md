@@ -123,19 +123,24 @@ Compute four things:
    after the played move), both from the **user's** perspective — the after
    positions have the opponent to move, so use `1 − value`. Display as a signed
    number ("−0.21"), or "±0.00" when the human-outcome cost is negligible.
-3. **The human-findable alternative** — when the engine's best move is
-   near-unfindable at the user's level (roughly `bestFindability` < 10%), find the
-   highest-probability move whose Stockfish eval (re-check at depth ~18) stays
-   within 0.5 of best and is not losing. If it differs from the engine's best,
-   emit `humanBest`, `humanBestArrow`, `humanBestFindability`. Never recommend an
-   engine-only move as the lesson when a human-findable one keeps the eval.
-4. **Per-move notes** — apply the same human-findable rule (item 3) to **every**
-   user move, at the fit band, and finish the `moveNotes` entries started in
-   step 2: each is `{ ply, best, bestArrow }` plus `humanBest`/`humanBestArrow`
-   when a human-findable alternative exists for that ply. Skip plies covered by
-   a `mistakes` entry — the template lets mistakes take precedence — and keep
-   the eval re-checks cheap (depth ~18, only for plies where `bestFindability`
-   < 10%).
+3. **The human-findable move** — for **every** position where the user is to
+   move: scanning the fit band's moves by descending probability, the first one
+   whose Stockfish eval (re-check at depth ~18; skip the re-check when the
+   candidate IS the engine's best) stays within 0.5 of best. The engine's best
+   always qualifies, so this move **always exists** — often it simply is the
+   engine's pick, and then the two arrows render side by side on the page.
+   Emit `humanBest` + `humanBestArrow` (plus `humanBestFindability` on
+   mistakes) on **every** mistake and every `moveNotes` entry of a Maia page —
+   never omit them, not even when `humanBest` equals `best` or the played move;
+   a missing cream arrow on a user move is a data bug, not a display choice.
+   (The find-row text only highlights `humanBest` when it differs from `best`.)
+   Never recommend an engine-only move as the lesson when a human-findable one
+   keeps the eval.
+4. **Per-move notes** — finish the `moveNotes` entries started in step 2 with
+   item 3's result: each entry is `{ ply, best, bestArrow, humanBest,
+   humanBestArrow }`, all fields present. Skip plies covered by a `mistakes`
+   entry — the template lets mistakes take precedence — but those carry the
+   same (mandatory) `humanBest` fields.
 
 **Mistake selection** — rank by **swing × recurrence likelihood** instead of raw
 swing: weight each candidate's centipawn loss by `playedPopularity` (floored at
@@ -231,9 +236,9 @@ const GAME = {
     ply: 4,                   // 0-based, same convention as mistakes
     best: "Nf3",              // engine's pick (SAN) — Stockfish only, so this
     bestArrow: ["g1","f3"],   //   array belongs on Stockfish-only pages too
-    humanBest: "Nc3",                   // OPTIONAL, same rule as in mistakes: only
-    humanBestArrow: ["b1","c3"]         //   when best is near-unfindable at the
-  }, …],                                //   user's level and this keeps the eval
+    humanBest: "Nc3",                   // REQUIRED on a Maia page, on every entry
+    humanBestArrow: ["b1","c3"]         //   (often equals best/played — emit it
+  }, …],                                //   anyway; identical arrows split apart)
   mistakes: [{                // most important first — this is the display order
                               //   (with Maia: swing × recurrence, mates first)
     ply: 17,                  // 0-BASED index into movesSan of the move PLAYED.
@@ -251,9 +256,9 @@ const GAME = {
     bestArrow: ["e8","d8"],             // gold arrow, from→to
     playedPopularity: "38%",            // OPTIONAL Maia fields, per mistake:
     bestFindability: "6%",              //   share of the user's level playing/finding these
-    humanBest: "Nf5",                   // best human-findable move; only when it
-    humanBestArrow: ["d3","f5"],        //   differs from `best` (drawn as a cream arrow)
-    humanBestFindability: "47%",
+    humanBest: "Nf5",                   // human-findable move — REQUIRED on a Maia
+    humanBestArrow: ["d3","f5"],        //   page even when equal to `best` (cream
+    humanBestFindability: "47%",        //   arrow always; find-row cites it only when it differs)
     expectedPointsLost: "−0.21",        // human-outcome cost in expected score; "±0.00" ok
     recurrenceRisk: "high",             // "high" | "medium" | "low" → card tag
     takeaways: [{ lesson: "…", detail: "…" }, …]   // plain text
@@ -311,6 +316,11 @@ For `moveNotes` (any page that carries them):
 
 When the page carries Maia data, also check:
 
+- **every** `moveNotes` entry and **every** mistake carries `humanBest` +
+  `humanBestArrow` — a Maia page where any user move lacks them is broken data
+  (the human-findable move always exists; at worst it equals the engine's best).
+  In the Playwright pass this means the cream arrow and the "human-findable"
+  legend item are visible on **every** user-move position, without exception;
 - every `humanBest` is **legal** in the position before its `ply` (python-chess
   `parse_san`) and its re-checked Stockfish eval is within tolerance of best;
 - percentage fields parse as percentages, `expectedPointsLost` as a signed number;

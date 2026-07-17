@@ -6,7 +6,7 @@ parts sequentially, one fresh session each:
 1. `docs/0005-plan-learning-loop-1-foundation.md` — sidecars, taxonomy, accuracy, drill links
 2. `docs/0006-plan-learning-loop-2-practice.md` — **this plan**
 3. `docs/0007-plan-learning-loop-3-insight.md` — eval graph, progress dashboard, honest Elo
-4. `docs/0008-plan-learning-loop-4-polish.md` — highlights, opening report, trend regen, clocks, backfill
+4. `docs/0009-plan-learning-loop-4-polish.md` — highlights, opening report, trend regen, clocks, backfill
 
 **Prerequisites — verify before starting**: part 1 must be complete.
 Check that `analysis/` contains one `.json` sidecar per `pgn/*.txt` game

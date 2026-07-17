@@ -174,7 +174,7 @@ dashboard (one commit each, per the plan's commit conventions)
   established "generated file vs. hand-edited template" split — do not
   hand-edit the generated dashboard; fix UI in the template and re-run
   `tools/build-progress.py`.
-- Part 4 (`docs/0008-plan-learning-loop-4-polish.md`) is expected to
+- Part 4 (`docs/0009-plan-learning-loop-4-polish.md`) is expected to
   regenerate/backfill existing `games/*.html` pages; this part
   deliberately left all nine existing pages untouched (no `evals` field
   added retroactively), consistent with the plan's "existing games/*.html

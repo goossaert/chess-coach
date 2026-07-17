@@ -8,7 +8,7 @@ one's outputs:
 1. `docs/0005-plan-learning-loop-1-foundation.md` — **this plan**
 2. `docs/0006-plan-learning-loop-2-practice.md` — retry mode + personal drill deck
 3. `docs/0007-plan-learning-loop-3-insight.md` — eval graph, progress dashboard, honest Elo
-4. `docs/0008-plan-learning-loop-4-polish.md` — highlights, opening report, trend regen, clocks, backfill
+4. `docs/0009-plan-learning-loop-4-polish.md` — highlights, opening report, trend regen, clocks, backfill
 
 **Prerequisites for this part: none** — it starts from the repo as-is.
 

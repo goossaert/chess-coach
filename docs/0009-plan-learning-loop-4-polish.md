@@ -6,7 +6,7 @@ parts sequentially, one fresh session each:
 1. `docs/0005-plan-learning-loop-1-foundation.md` — sidecars, taxonomy, accuracy, drill links
 2. `docs/0006-plan-learning-loop-2-practice.md` — retry mode + personal drill deck
 3. `docs/0007-plan-learning-loop-3-insight.md` — eval graph, progress dashboard, honest Elo
-4. `docs/0008-plan-learning-loop-4-polish.md` — **this plan**
+4. `docs/0009-plan-learning-loop-4-polish.md` — **this plan**
 
 **Prerequisites — verify before starting**: parts 1–3 complete. Check for:
 `analysis/*.json` sidecars (one per `pgn/*.txt`), `drills/index.html` +

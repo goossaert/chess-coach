@@ -1,6 +1,6 @@
 # chess-coach
 
-**Version 2**
+**Version 3**
 
 This repository turns chess games into interactive coaching pages. When the user
 uploads a game and asks for feedback, analyze it and generate one HTML review page
@@ -14,6 +14,15 @@ alternative when the engine's best move is one no human would see, mistake
 selection weighted by recurrence, an estimated playing strength (overall and per
 phase), and eval swings expressed as expected score against human opposition.
 Pages generated under version 1 remain valid — every new field is optional.
+
+Version 3 (per `docs/0005-plan-learning-loop-1-foundation.md`, part 1 of the
+faster-learning-loop series) adds the **learning-loop foundation**: a
+machine-readable analysis sidecar per game in `analysis/` (step 4b), a
+controlled mistake taxonomy (`tags`), Lichess-style accuracy / ACPL /
+move-quality numbers (step 2c), win-probability framing on every mistake
+(`winBefore`/`winAfter`), and curated practice links per mistake
+(`drillLinks`, from `tools/drill-links.json`). As before, every new GAME
+field is optional — pages generated under versions 1 and 2 remain valid.
 
 ## Trigger
 
@@ -122,7 +131,9 @@ Compute four things:
    `expectedPointsLost` = (expected score after the best move) − (expected score
    after the played move), both from the **user's** perspective — the after
    positions have the opponent to move, so use `1 − value`. Display as a signed
-   number ("−0.21"), or "±0.00" when the human-outcome cost is negligible.
+   number ("−0.21"); when it rounds to ±0.00 (typical in already-decided
+   positions), **omit the field** — the win% row from step 2c tells that story,
+   and a printed "±0.00" is a shrug, not information.
 3. **The human-findable move** — for **every** position where the user is to
    move: scanning the fit band's moves by descending probability, the first one
    whose Stockfish eval (re-check at depth ~18; skip the re-check when the
@@ -161,6 +172,40 @@ sandbox, Maia-1 bands stand in").
 Stockfish-only analysis and omit every Maia field — the template then renders
 exactly as version 1. Say so in `analysisNote` and to the user.
 
+### 2c. Accuracy, win probability, and move quality (Lichess-style)
+
+Computed from the Stockfish pass alone — no new engine work, so these numbers
+belong on **every** page, including engine games and Maia-less pages. Formulas
+(source: lichess.org/page/accuracy and the lichess-org/lila repository):
+
+- **Win probability**: `win% = 50 + 50 · (2 / (1 + exp(−0.00368208 · cp)) − 1)`,
+  centipawns from the **user's** perspective, clamped to ±1000 (map mate scores
+  through a large mate score first, e.g. python-chess
+  `score.score(mate_score=100000)`, then clamp). Sanity anchors: cp 0 → 50%,
+  ±100 → ≈59%/41%, the clamp caps everything at ≈97.5%/2.5%.
+- **Move classification** by win% drop (win% before − win% after the user's
+  move): **inaccuracy** ≥ 10, **mistake** ≥ 20, **blunder** ≥ 30 percentage
+  points; count each move once, at its worst label. This is the `moveQuality`
+  tally (`?!` / `?` / `??`).
+- **Per-move accuracy**:
+  `103.1668 · exp(−0.04354 · (win%_before − win%_after)) − 3.1669`,
+  clamped to [0, 100] (a move that gains win% counts as 100).
+- **Game accuracy**: aggregate as Lichess does — the mean of a
+  volatility-weighted mean (weights = stdev of the win% sequence over a sliding
+  window of `clamp(plies/10, 2, 8)` positions, clamped to [0.5, 12]) and the
+  harmonic mean of the per-move accuracies. A plain mean-of-(weighted, harmonic)
+  is an acceptable approximation — note which was used in `analysisNote`.
+- **ACPL**: average centipawn loss vs. the engine's best over the user's moves,
+  each loss clamped to [0, 1000].
+- Compute all of it **per phase** too, reusing the phase boundaries defined for
+  `phaseElo` (opening ≈ first 10 full moves, endgame from queens off / few
+  pieces, middlegame between).
+
+This feeds the optional GAME fields `accuracy`, `acpl`, `moveQuality`,
+`phaseAccuracy` (stat strip + phase chips in the header) and the per-mistake
+`winBefore`/`winAfter` (the "your winning chances: 92% → 45%" row in the
+feedback panel).
+
 ### 3. Write the coaching content
 
 For each selected mistake, write:
@@ -175,6 +220,24 @@ For each selected mistake, write:
   - `detail`: how to apply or practice it in future games (a habit, a checklist step, a drill).
 - arrows: `playedArrow` and `bestArrow` as `["from","to"]` square names (take them
   from the moves' UCI, e.g. `g8f6` → `["g8","f6"]`).
+- `tags` — 1–3 tags from the **mistake taxonomy** below. You are already
+  diagnosing the mechanism while writing the explanation; the tag records that
+  diagnosis in a form that can be counted across games. Controlled vocabulary
+  (fixed so recurrence is countable — extending it is allowed but deliberate,
+  and renaming a tag means updating old sidecars):
+
+  `hanging-piece`, `unsafe-capture`, `wrong-recapture`, `missed-tactic`,
+  `missed-mate`, `slow-mate`, `king-safety`, `unsafe-king-move`,
+  `pawn-break-timing`, `conversion-drift`, `promotion-race`,
+  `endgame-technique`, `opening-principle`, `time-trouble` (reserved until
+  clock data exists).
+
+- `drillLinks` — 1–3 `{ label, url }` practice links picked from
+  `tools/drill-links.json` by the mistake's tags ("where to practice", rendered
+  at the bottom of the takeaways box). Only use URLs from that file:
+  lichess.org cannot be fetched from this sandbox, and every URL in the file
+  traces back to the verified list in
+  `reports/2026-07-13-recurring-mistakes-and-lichess-study-plan.md`.
 
 With Maia data, let typicality steer the diagnosis: a mistake many peers share
 (`recurrenceRisk` high) is a **knowledge gap** — write a pattern to drill; a move
@@ -207,7 +270,68 @@ Regex that does the replacement safely (Python, `re.S`):
   file whose name matches the generated page. For `games/<stamp>-<white>-vs-<black>.html`
   the source lives at `pgn/<stamp>-<white>-vs-<black>.txt`. This keeps the raw input
   next to the page it produced, so any game can be re-analyzed later. Write the PGN
-  before (or alongside) the page, and commit the two together.
+  before (or alongside) the page, and commit it together with the page and the
+  analysis sidecar (step 4b) — the three files ship as one unit.
+
+### 4b. Write the analysis sidecar
+
+The pipeline already computed everything; persist it so later sessions can
+count recurrence, draw trends, and build drills **without re-running engines**.
+For each game write `analysis/<stamp>.json` (same filename stamp as the page)
+and commit it together with the page and the PGN. Schema (`schema: 1`):
+
+```jsonc
+{
+  "schema": 1,
+  "game": { "white": "…", "black": "…", "result": "…", "date": "…",
+            "event": "…", "opening": "…", "userColor": "white",
+            "pgnFile": "pgn/<stamp>.txt", "pageFile": "games/<stamp>.html" },
+  "engine": { "stockfish": "depth 20", "maia": "…", "generated": "…" },
+  "plies": [ {              // one entry per HALF-MOVE of the game
+    "ply": 0, "san": "d4", "uci": "d2d4", "user": true,
+    "phase": "opening",                       // "opening" | "middlegame" | "endgame"
+    "fenBefore": "…",                         // full FEN before the move
+    "evalBefore": 0.2, "evalAfter": 0.3,      // numeric pawns, user's perspective;
+                                              //   mates as {"mate": 3} (negative =
+                                              //   user gets mated; a game-over mate is
+                                              //   {"mate": 0, "winner": "user"|"opponent"})
+    "winBefore": 52.1, "winAfter": 48.7,      // win% (step 2c), user's perspective
+    "bestUci": "g1f3",                        // engine's best from fenBefore
+    "evalBest": 0.3,                          // user moves: eval after the best move
+    "swing": -0.1,                            // user moves: evalAfter − evalBefore, on the
+                                              //   ±10-pawn clamped scale
+    "humanBestUci": "g1f3",                   // user moves on Maia pages
+    "maia": { "1100": { "played": 0.31, "best": 0.22, "value": 0.55 }, "…": {} }
+                                              // user moves: per band, probability of the
+                                              //   played/best move and expected score of
+                                              //   the position (side to move)
+  } ],
+  "accuracy": { "game": 87.2, "acpl": 34,
+    "quality": { "inaccuracies": 3, "mistakes": 2, "blunders": 1 },
+    "method": "…",                            // which game-accuracy aggregation was used
+    "phases": { "opening": { "accuracy": 94.0, "acpl": 12,
+                             "quality": { "…": 0 }, "plies": 20, "userMoves": 10 },
+                "middlegame": {}, "endgame": {} } },
+  "eloFit": { "best": 1100, "flat": true, "positions": 43,
+              "logProbByBand": { "1100": -1.9, "…": 0 } },   // null on Stockfish-only runs
+  "mistakes": [ {           // one per GAME mistake, same order; every GAME mistake
+                            //   field (title, explanation, takeaways, …), plus:
+    "tags": ["conversion-drift"],             // from the step-3 taxonomy
+    "fenBefore": "…",
+    "playedUci": "…", "bestUci": "…", "humanBestUci": "…",
+    "winBefore": 92.1, "winAfter": 45.3
+  } ]
+}
+```
+
+Omit what wasn't computed (e.g. `maia`, `humanBestUci`, `eloFit` on a
+Stockfish-only run) — like the GAME fields, every consumer treats sidecar
+fields as optional. The sidecar is data for machines: numbers stay numeric
+(no `−` typography, no `"%"` strings).
+
+**Workflow rule**: write the sidecar alongside the page and commit the three
+files together — `pgn/<stamp>.txt` + `games/<stamp>.html` +
+`analysis/<stamp>.json`.
 
 ### GAME data reference
 
@@ -225,6 +349,11 @@ const GAME = {
   estimatedEloNote: "…",      //   Stockfish-only page and the template renders as v1
   phaseElo: { opening: "≈1450 · 10 moves", middlegame: "…", endgame: "…" }, // any key omittable
   weakestPhase: "endgame",    // which phase chip gets the "weakest" highlight
+  accuracy: "87%",            // OPTIONAL accuracy fields (step 2c) — Stockfish-only,
+  acpl: 34,                   //   so they belong on every new page (number, not string)
+  moveQuality: { inaccuracies: 3, mistakes: 2, blunders: 1 },   // ?! / ? / ?? stat strip
+  phaseAccuracy: { opening: "94%", middlegame: "88%", endgame: "71%" }, // merged into the
+                              //   phase chips (or shown alone when no phaseElo)
   moveNotes: [{               // one entry per USER move — puts the arrows (played,
                               //   engine's pick, human-findable) and the legend with
                               //   the move names on EVERY move the user made, not
@@ -254,12 +383,20 @@ const GAME = {
     explanation: "…",                   // HTML allowed
     playedArrow: ["b7","b5"],           // rust arrow, from→to
     bestArrow: ["e8","d8"],             // gold arrow, from→to
+    winBefore: "92%", winAfter: "45%",  // OPTIONAL win% framing (step 2c): the feedback
+                                        //   panel shows "your winning chances: 92% → 45%"
+    tags: ["conversion-drift"],         // OPTIONAL, 1–3 from the step-3 taxonomy → card chips
+    drillLinks: [{ label: "Hanging pieces — Lichess puzzle theme",
+                   url: "https://lichess.org/training/hangingPiece" }],
+                                        // OPTIONAL, 1–3 from tools/drill-links.json →
+                                        //   "where to practice" list in the takeaways box
     playedPopularity: "38%",            // OPTIONAL Maia fields, per mistake:
     bestFindability: "6%",              //   share of the user's level playing/finding these
     humanBest: "Nf5",                   // human-findable move — REQUIRED on a Maia
     humanBestArrow: ["d3","f5"],        //   page even when equal to `best` (cream
     humanBestFindability: "47%",        //   arrow always; find-row cites it only when it differs)
-    expectedPointsLost: "−0.21",        // human-outcome cost in expected score; "±0.00" ok
+    expectedPointsLost: "−0.21",        // human-outcome cost in expected score; OMIT when
+                                        //   it rounds to ±0.00 (winBefore/After carry it)
     recurrenceRisk: "high",             // "high" | "medium" | "low" → card tag
     takeaways: [{ lesson: "…", detail: "…" }, …]   // plain text
   }, …]
@@ -332,8 +469,25 @@ When the page carries Maia data, also check:
 - sanity: the Maia probability of the user's actual moves should average well
   above random at the fit band — if it doesn't, the FENs and moves are misaligned.
 
-Then commit the new page together with its `pgn/*.txt` source and the updated
-`games/index.html`, and push.
+For the version-3 fields (any page that carries them):
+
+- the header stat strip (`#head-stats`) is visible iff `accuracy` / `acpl` /
+  `moveQuality` is set; phase chips show the phase accuracy iff
+  `phaseAccuracy` is set;
+- each mistake card shows tag chips (`.tag-chip`) iff the mistake has `tags`,
+  and every tag is in the step-3 vocabulary;
+- the feedback panel shows the win% row (`.win-row`) iff `winBefore`/`winAfter`
+  are set, and the drill-links list (`.drill-links`) iff `drillLinks` is set;
+  every drill URL comes from `tools/drill-links.json`;
+- math sanity: win% values follow the step-2c formula (cp 0 → 50%, symmetric
+  around 50 for ±cp), accuracy ∈ [0, 100], and `expectedPointsLost` never
+  displays as "±0.00" (omit it instead);
+- the sidecar exists at `analysis/<stamp>.json`, every `plies[i].san` replays
+  legally with python-chess, its mistakes match the page's GAME mistakes
+  (ply / played / best), and their `tags` are all from the vocabulary.
+
+Then commit the new page together with its `pgn/*.txt` source, its
+`analysis/*.json` sidecar, and the updated `games/index.html`, and push.
 
 ## Repo layout
 
@@ -345,11 +499,19 @@ Then commit the new page together with its `pgn/*.txt` source and the updated
 - `pgn/` — the raw source for each analyzed game (metadata + PGN movetext), one `.txt`
   file per page with a matching filename (`pgn/<stamp>-<white>-vs-<black>.txt`
   pairs with `games/<stamp>-<white>-vs-<black>.html`). Saved in workflow step 4.
+- `analysis/` — one machine-readable sidecar per analyzed game
+  (`analysis/<stamp>.json`, workflow step 4b): per-ply FENs/evals/win%,
+  per-band Maia numbers, accuracy/quality tallies, Elo fit, and the tagged
+  mistakes. The foundation later parts of the learning-loop series read.
 - `games/index.html` — the game list: one link per analyzed game, newest first.
   Must be updated whenever a page is added (see workflow step 5).
 - `tools/maia/` — the Maia harness for workflow step 2b: `setup.sh` (fetches and
   patches the zerofish WASM engine, downloads the Maia-1 weights), `serve.mjs`
   (COOP/COEP static server), `host.html` + `query.cjs` (batch UCI queries through
   headless Chromium). `vendor/` and `weights/` are gitignored, re-fetched per session.
+- `tools/drill-links.json` — the mistake-taxonomy → Lichess practice-link map
+  used for `drillLinks` (workflow step 3). Only verified URLs; do not add
+  unverified ones (lichess.org is unreachable from this sandbox).
 - `docs/` — the design plans behind the template and this workflow;
-  `docs/0003-plan-maia-engine.md` is the plan version 2 implements.
+  `docs/0003-plan-maia-engine.md` is the plan version 2 implements,
+  `docs/0005-plan-learning-loop-1-foundation.md` the version-3 foundation.

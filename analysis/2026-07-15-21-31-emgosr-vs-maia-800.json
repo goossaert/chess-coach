@@ -4517,5 +4517,30 @@
     ]
    }
   }
- ]
+ ],
+ "highlights": [
+  {
+   "ply": 10,
+   "move": "O-O",
+   "note": "Castled by move 6, before the centre opened — fewer than 1% of your band gets the king safe this early in this structure. Your 87%-accuracy game grew out of a textbook setup.",
+   "arrow": [
+    "e1",
+    "g1"
+   ]
+  },
+  {
+   "ply": 32,
+   "move": "Bxe4",
+   "note": "When Maia tried the …e4 trick you calmly took with the d5-bishop — the one clean way through the small tactics, staying a full piece up at +5.",
+   "arrow": [
+    "d5",
+    "e4"
+   ]
+  }
+ ],
+ "openingReport": {
+  "bookExitPly": 4,
+  "note": "Your 3.e3 left book quietly — solid, but 3.c4 or 3.Bf4 are the moves that press against Maia's Chigorin-style …Nc6 setup. The first improvable decision came much later (8.e4, 53.9% → 46.5%); the opening itself was your cleanest yet. Third analyzed game with 1.d4 d5 — worth 20 minutes of study.",
+  "explorerUrl": "https://lichess.org/analysis"
+ }
 }

@@ -2867,5 +2867,30 @@
     ]
    }
   }
- ]
+ ],
+ "highlights": [
+  {
+   "ply": 16,
+   "move": "O-O-O",
+   "note": "Castling long here is the engine's pick — and fewer than 1% of players at your level do it. One move connected the rooks and planted one on the d-file.",
+   "arrow": [
+    "e1",
+    "c1"
+   ]
+  },
+  {
+   "ply": 24,
+   "move": "Qf4",
+   "note": "With your queen attacked by …h5 you found the one square that kept her active and kept e5 defended — precise defence in an uncomfortable position, found by 12% of your band.",
+   "arrow": [
+    "g4",
+    "f4"
+   ]
+  }
+ ],
+ "openingReport": {
+  "bookExitPly": 3,
+  "note": "Book ended with Stockfish's 2…c6. Your first improvable decision was 3.e5 (59.0% → 53.6%): the space grab released the central tension before a single piece was developed — 3.Bd3 keeps the options open. The premature e5 push is a repeat offender across your White games; this …e6 structure has appeared in two of them.",
+  "explorerUrl": "https://lichess.org/analysis"
+ }
 }

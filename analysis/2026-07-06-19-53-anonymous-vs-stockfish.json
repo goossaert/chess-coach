@@ -5364,5 +5364,30 @@
     ]
    }
   }
- ]
+ ],
+ "highlights": [
+  {
+   "ply": 4,
+   "move": "e4",
+   "note": "After Stockfish's odd 2…Qe7 you took the whole centre with 3.e4 — the engine's first choice, and the reason you stood clearly better out of the opening.",
+   "arrow": [
+    "e2",
+    "e4"
+   ]
+  },
+  {
+   "ply": 122,
+   "move": "Kf2",
+   "note": "In the bishop endgame you marched your king up the board instead of pushing pawns — exactly right: in the endgame the king is a fighting piece.",
+   "arrow": [
+    "g1",
+    "f2"
+   ]
+  }
+ ],
+ "openingReport": {
+  "bookExitPly": 3,
+  "note": "Against 2…Qe7 — out of book on move 2 — your 3.e4 was the perfect answer (see below). The first improvable decision was 5.Ng5: the same knight's second move before any other piece developed, when 5.Bg5 hit the queen and developed something new. You have now faced this …e6 French-style setup in two analyzed games.",
+  "explorerUrl": "https://lichess.org/analysis"
+ }
 }

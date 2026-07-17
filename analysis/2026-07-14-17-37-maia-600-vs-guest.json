@@ -4821,5 +4821,30 @@
     ]
    }
   }
- ]
+ ],
+ "highlights": [
+  {
+   "ply": 9,
+   "move": "Ne4",
+   "note": "Instead of automatically recapturing on e5 you jumped 5…Ne4, meeting a threat with a threat — the zwischenzug habit in action, found by just 12% of your level.",
+   "arrow": [
+    "f6",
+    "e4"
+   ]
+  },
+  {
+   "ply": 37,
+   "move": "Bc5",
+   "note": "…Bc5 forced the trade of White's last active piece straight into a won king-and-pawn endgame — simplifying at the right moment is exactly how big advantages get converted.",
+   "arrow": [
+    "d6",
+    "c5"
+   ]
+  }
+ ],
+ "openingReport": {
+  "bookExitPly": 2,
+  "note": "Maia's offbeat 2.Be3 left book on move 2. The first improvable decision was your 4…e5 break (51.5% → 35.3%, the mistake card below) — one developing move too early; 4…Bf5 first and the same break wins. This is your third analyzed game in the 1.d4 d5 structure.",
+  "explorerUrl": "https://lichess.org/analysis"
+ }
 }

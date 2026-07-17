@@ -2906,5 +2906,30 @@
     ]
    }
   }
- ]
+ ],
+ "highlights": [
+  {
+   "ply": 7,
+   "move": "e5",
+   "note": "…e5 struck at the centre before White had finished developing — the engine's top move, played by only 9% of your level. Your best chess this game came right here.",
+   "arrow": [
+    "e7",
+    "e5"
+   ]
+  },
+  {
+   "ply": 9,
+   "move": "a5",
+   "note": "5…a5 hit the overextended b4-pawn immediately — barely 1% of your level finds this, and the engine confirms it as best. This is where you won the initiative.",
+   "arrow": [
+    "a7",
+    "a5"
+   ]
+  }
+ ],
+ "openingReport": {
+  "bookExitPly": 3,
+  "note": "You met the Queen's Gambit with the Marshall Defence 2…Nf6 — playable, but theory prefers 2…e6 or 2…c6, and only White's 3.c5?? let you equalize on the spot. You have now reached the 1.d4 d5 queen's-pawn structure in three analyzed games — 20 minutes on the main replies would pay for itself.",
+  "explorerUrl": "https://lichess.org/analysis"
+ }
 }

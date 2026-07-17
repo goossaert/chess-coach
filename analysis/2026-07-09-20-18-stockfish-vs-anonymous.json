@@ -5163,5 +5163,30 @@
     ]
    }
   }
- ]
+ ],
+ "highlights": [
+  {
+   "ply": 3,
+   "move": "e5",
+   "note": "Against Stockfish's passive 1.e3 you simply took the full centre with …d5 and …e5 — the principled answer, and the engine's own choice both times.",
+   "arrow": [
+    "e7",
+    "e5"
+   ]
+  },
+  {
+   "ply": 35,
+   "move": "Nd4",
+   "note": "…Nd4 planted the knight on a supported central square it could never be evicted from, keeping your +2.8 edge — the position was completely won before the later slips.",
+   "arrow": [
+    "f5",
+    "d4"
+   ]
+  }
+ ],
+ "openingReport": {
+  "bookExitPly": 0,
+  "note": "Stockfish's 1.e3 has no theory to leave — and you answered it the model way, taking the full centre with …d5 and …e5. The first improvable decision came at 6…Nxd4 (59.3% → 51.1%): recapturing with the e-pawn (6…exd4) keeps the pawn duo and the structure.",
+  "explorerUrl": "https://lichess.org/analysis"
+ }
 }

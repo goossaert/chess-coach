@@ -4567,5 +4567,39 @@
     ]
    }
   }
- ]
+ ],
+ "highlights": [
+  {
+   "ply": 21,
+   "move": "axb4",
+   "note": "The queenside file-opening you built with …a5 and …axb4 was the right plan at the right moment — the a-file pressure and the passed b-pawn that won this game started here.",
+   "arrow": [
+    "a5",
+    "b4"
+   ]
+  },
+  {
+   "ply": 49,
+   "move": "Ne5",
+   "note": "Same square as the move-17 blunder, opposite result: this time …Ne5 came with tempo — hitting the f3-bishop and the d3-pawn — and nothing hung. Only 11% of your level centralizes here.",
+   "arrow": [
+    "g4",
+    "e5"
+   ]
+  },
+  {
+   "ply": 55,
+   "move": "Bd7",
+   "note": "A quiet regrouping in a winning attack — …Bd7 heading for a4 to harass the defenders. Just 7% of players at your level find this move; you outplayed your band here.",
+   "arrow": [
+    "c8",
+    "d7"
+   ]
+  }
+ ],
+ "openingReport": {
+  "bookExitPly": 1,
+  "note": "Stockfish's 1.Nc3 (Van Geet) leaves book almost immediately and 1…Nf6 is a fine reply. The first real opening slip came at 6…Nb4 (57.9% → 34.2%): the knight jumped to a square White could kick, when 6…Bb4+ developed the bishop with check instead.",
+  "explorerUrl": "https://lichess.org/analysis"
+ }
 }

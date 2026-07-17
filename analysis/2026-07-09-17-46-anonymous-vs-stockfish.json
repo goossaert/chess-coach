@@ -3347,5 +3347,30 @@
     ]
    }
   }
- ]
+ ],
+ "highlights": [
+  {
+   "ply": 14,
+   "move": "Bb5",
+   "note": "8.Bb5 developed with a threat against the c6-knight while Stockfish shuffled its bishop backwards — a new piece out on nearly every move is why you were clearly better by move 10.",
+   "arrow": [
+    "f1",
+    "b5"
+   ]
+  },
+  {
+   "ply": 22,
+   "move": "c4",
+   "note": "The winning habit your other games have been missing: at +3 you struck with 12.c4 to open lines for your pieces instead of sitting on the advantage. 16% of your level plays it.",
+   "arrow": [
+    "c3",
+    "c4"
+   ]
+  }
+ ],
+ "openingReport": {
+  "bookExitPly": 2,
+  "note": "1.d4 Nc6 2.Nf3 left known theory with a perfectly sound developing move — no harm done. The first improvable decision was 4.e5 (72.8% → 59.1%), pushing past a capture that was simply free: 4.exd5 wins a clean pawn. Check every central capture before every push.",
+  "explorerUrl": "https://lichess.org/analysis"
+ }
 }

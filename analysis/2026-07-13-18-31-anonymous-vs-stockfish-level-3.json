@@ -3258,5 +3258,30 @@
     ]
    }
   }
- ]
+ ],
+ "highlights": [
+  {
+   "ply": 50,
+   "move": "gxf4",
+   "note": "The recapture question, answered correctly: when the rook took on f4 you recaptured with the g-pawn — winning the exchange and keeping your king's cover intact. This one was checked, not automatic.",
+   "arrow": [
+    "g3",
+    "f4"
+   ]
+  },
+  {
+   "ply": 62,
+   "move": "Nd2",
+   "note": "At +3 you didn't grab or lash out — 32.Nd2 quietly rerouted the knight to cover the light squares first. Only 5% of your level plays this kind of consolidating move in a winning position.",
+   "arrow": [
+    "b3",
+    "d2"
+   ]
+  }
+ ],
+ "openingReport": {
+  "bookExitPly": 3,
+  "note": "Book ended on Black's 2…e6. The first improvable decision was 3.e5 again (59.8% → 53.3%) — the third White game where an early unprovoked e5 push gave back part of the edge; the break wants preparation (3.c4 or a developing move first).",
+  "explorerUrl": "https://lichess.org/analysis"
+ }
 }

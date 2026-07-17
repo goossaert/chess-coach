@@ -672,6 +672,28 @@
   @keyframes flashfade { from { opacity: 0.85; } to { opacity: 0; } }
   .grade-flash { animation: flashfade 900ms ease-out forwards; }
 
+  /* ---------- Eval graph (learning loop part 3) ----------
+     Renders only when GAME.evals is present — older pages never show it. */
+  .eval-graph {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 8px 8px 4px;
+  }
+  .eval-graph[hidden] { display: none; }
+  .eval-graph svg { display: block; width: 100%; height: auto; cursor: crosshair; }
+  .eval-graph .graph-dot { cursor: pointer; }
+  .eval-graph .graph-dot:hover { stroke: var(--cream); }
+  .graph-caption {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding: 3px 0 1px;
+  }
+
   footer {
     max-width: 980px;
     margin: 40px auto 0;
@@ -727,6 +749,7 @@
       </div>
       <div class="move-counter" id="move-counter"></div>
       <div class="kbd-hint">&larr; &rarr; move &middot; shift+&larr;&rarr; jump 10 &middot; home/end</div>
+      <div class="eval-graph" id="eval-graph" hidden></div>
     </div>
 
     <aside class="fb-panel" id="fb-panel"></aside>
@@ -787,6 +810,11 @@ const GAME = {
   acpl: 333,                         // average centipawn loss (number, not string)
   moveQuality: { inaccuracies: 0, mistakes: 0, blunders: 1 },  // ?! / ? / ?? tally
   phaseAccuracy: { opening: "44%" }, // merged into the phase chips (or shown alone)
+
+  // Win% after each half-move, user's perspective — one number per entry of
+  // movesSan (optional; the whole series or nothing). Powers the clickable
+  // eval graph under the board. Real Stockfish depth-20 numbers.
+  evals: [47.0, 47.8, 52.8, 51.8, 51.7, 2.5, 0.0],
 
   // Per-move annotations for EVERY move the user played (optional). Each entry
   // carries the engine's pick for that ply — the played arrow is derived from
@@ -1617,6 +1645,15 @@ function renderPosition() {
   document.querySelectorAll(".mistake-card").forEach((card) => {
     card.classList.toggle("active", !!mk && Number(card.dataset.ply) === mk.ply);
   });
+
+  updateGraphCursor();
+}
+
+// What clicking a mistake card does: retry when the practice-first toggle is
+// on and the mistake supports it, otherwise jump to the position + feedback.
+// The graph's mistake dots share this exact behavior.
+function openMistake(mk) {
+  if (practiceFirstOn() && mk.retry) startRetry(mk); else goTo(mk.ply);
 }
 
 function goTo(ply) {
@@ -1770,6 +1807,87 @@ function retryFinish(outcome, uci) {
     : outcome === "acceptable" ? "rgba(231,215,171,0.8)" : "rgba(193,80,47,0.75)");
 }
 
+// --------------------------------------------------------------------------
+// Eval graph: win% per ply as a clickable SVG sparkline, two-way synced with
+// the replay. Renders only when GAME.evals is present (one win% entry per
+// half-move, user's perspective) — older pages never show it.
+// --------------------------------------------------------------------------
+
+const GRAPH_W = 390, GRAPH_H = 84, GPAD_X = 6, GPAD_Y = 8;
+let graphCursor = null;   // the vertical current-ply marker; null = no graph
+
+function graphX(ply) { return GPAD_X + (GRAPH_W - 2 * GPAD_X) * ply / totalPlies; }
+function graphY(win) {
+  const w = Math.max(0, Math.min(100, win));
+  return GPAD_Y + (GRAPH_H - 2 * GPAD_Y) * (1 - w / 100);
+}
+// win% at replay position k: 50 at the start, then GAME.evals[k-1] after ply k
+function graphWin(k) { return k === 0 ? 50 : GAME.evals[k - 1]; }
+
+function buildEvalGraph() {
+  const mount = $("eval-graph");
+  const svg = svgEl("svg", { viewBox: "0 0 " + GRAPH_W + " " + GRAPH_H });
+
+  svg.appendChild(svgEl("line", {
+    x1: GPAD_X, y1: graphY(50), x2: GRAPH_W - GPAD_X, y2: graphY(50),
+    stroke: "#8b93a1", "stroke-width": 0.75, "stroke-dasharray": "3 3", opacity: 0.5
+  }));
+
+  const pts = [];
+  for (let k = 0; k <= totalPlies; k++) pts.push(graphX(k) + "," + graphY(graphWin(k)));
+  svg.appendChild(svgEl("polygon", {
+    points: pts.join(" ") + " " + graphX(totalPlies) + "," + graphY(0) + " " + graphX(0) + "," + graphY(0),
+    fill: "rgba(201,162,75,0.10)", stroke: "none"
+  }));
+  svg.appendChild(svgEl("polyline", {
+    points: pts.join(" "), fill: "none", stroke: "#c9a24b",
+    "stroke-width": 1.6, "stroke-linejoin": "round", "stroke-linecap": "round"
+  }));
+
+  graphCursor = svgEl("line", {
+    x1: graphX(0), y1: GPAD_Y - 2, x2: graphX(0), y2: GRAPH_H - GPAD_Y + 2,
+    stroke: "#ece7da", "stroke-width": 1, opacity: 0.65
+  });
+  svg.appendChild(graphCursor);
+
+  // clicking anywhere on the graph jumps the replay to that ply
+  svg.addEventListener("click", (evt) => {
+    const rect = svg.getBoundingClientRect();
+    const x = (evt.clientX - rect.left) * (GRAPH_W / rect.width);
+    goTo(Math.round((x - GPAD_X) / (GRAPH_W - 2 * GPAD_X) * totalPlies));
+  });
+
+  // mistake dots sit on the point after the played move; clicking one behaves
+  // exactly like clicking that mistake's card
+  for (const mk of mistakes) {
+    if (mk.ply + 1 > totalPlies) continue;
+    const dot = svgEl("circle", {
+      cx: graphX(mk.ply + 1), cy: graphY(graphWin(mk.ply + 1)), r: 3.4,
+      fill: "#c1502f", stroke: "#12161d", "stroke-width": 1,
+      class: "graph-dot", "data-ply": mk.ply
+    });
+    const tip = document.createElementNS(SVG_NS, "title");
+    tip.textContent = sanLabel(mk.ply, mk.played) + (mk.title ? " — " + mk.title.replace(/<[^>]*>/g, "") : "");
+    dot.appendChild(tip);
+    dot.addEventListener("click", (e) => { e.stopPropagation(); openMistake(mk); });
+    svg.appendChild(dot);
+  }
+
+  mount.appendChild(svg);
+  const cap = document.createElement("div");
+  cap.className = "graph-caption";
+  cap.textContent = "your winning chances by move · click to jump";
+  mount.appendChild(cap);
+  mount.hidden = false;
+}
+
+function updateGraphCursor() {
+  if (!graphCursor) return;
+  const x = graphX(current);
+  graphCursor.setAttribute("x1", x);
+  graphCursor.setAttribute("x2", x);
+}
+
 if (positions) {
   const svg = buildBoardSvg();
   $("board-mount").appendChild(svg);
@@ -1840,7 +1958,7 @@ if (positions) {
     card.appendChild(text);
     card.appendChild(badges);
     card.addEventListener("click", () => {
-      if (practiceFirstOn() && mk.retry) startRetry(mk); else goTo(mk.ply);
+      openMistake(mk);
       card.blur();
     });
     mlist.appendChild(card);
@@ -1857,6 +1975,11 @@ if (positions) {
     box.addEventListener("change", () => {
       try { localStorage.setItem("chess-coach-practice-first", box.checked ? "1" : "0"); } catch (e) { /* ignore */ }
     });
+  }
+
+  // eval graph — only when the pipeline emitted a complete win% series
+  if (Array.isArray(GAME.evals) && GAME.evals.length === totalPlies && totalPlies > 0) {
+    buildEvalGraph();
   }
 
   // controls
@@ -1898,6 +2021,8 @@ window.__review = {
   retryState: () => retry
     ? { ply: retry.mk.ply, attempts: retry.attempts, status: retry.status, outcome: retry.outcome }
     : null,
+  graphPly: () => graphCursor ? current : null,
+  graphClick: (ply) => { if (graphCursor) goTo(ply); },
   error: parseError
 };
 

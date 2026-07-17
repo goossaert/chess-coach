@@ -219,6 +219,12 @@ This feeds the optional GAME fields `accuracy`, `acpl`, `moveQuality`,
 `winBefore`/`winAfter` (the "your winning chances: 92% → 45%" row in the
 feedback panel).
 
+Also emit the full per-ply series as the GAME `evals` field — one win%
+number per half-move (after that ply, user's perspective, the same numbers
+as the sidecar's `winAfter`). It powers the clickable eval graph under the
+board: the whole series or nothing (the template only renders the graph
+when `evals.length` equals the ply count).
+
 ### 2d. Retry grading (precomputed — the page stays engine-free)
 
 For each **selected** mistake, run one extra Stockfish probe with
@@ -420,6 +426,11 @@ const GAME = {
   moveQuality: { inaccuracies: 3, mistakes: 2, blunders: 1 },   // ?! / ? / ?? stat strip
   phaseAccuracy: { opening: "94%", middlegame: "88%", endgame: "71%" }, // merged into the
                               //   phase chips (or shown alone when no phaseElo)
+  evals: [52.1, 48.7, /*…*/], // OPTIONAL (step 2c): win% after each half-move, user's
+                              //   perspective, one number per movesSan entry — the whole
+                              //   series or nothing. Renders the clickable eval graph
+                              //   under the board (rust dots = mistakes, two-way synced
+                              //   with the replay); omitted → no graph, exactly as v1–3.
   moveNotes: [{               // one entry per USER move — puts the arrows (played,
                               //   engine's pick, human-findable) and the legend with
                               //   the move names on EVERY move the user made, not
@@ -569,6 +580,20 @@ For the version-3 fields (any page that carries them):
 - the sidecar exists at `analysis/<stamp>.json`, every `plies[i].san` replays
   legally with python-chess, its mistakes match the page's GAME mistakes
   (ply / played / best), and their `tags` are all from the vocabulary.
+
+For the eval graph (any page with `evals`):
+
+- `evals` has exactly one entry per half-move, every value is within
+  [0, 100], and each equals the step-2c win% after that ply (a ply where the
+  user delivers mate plots near 100, one where the user gets mated near 0);
+- in the Playwright pass: the graph (`#eval-graph`) is visible iff `evals`
+  is set; the polyline has plies + 1 points; clicking a rust `.graph-dot`
+  behaves exactly like clicking that mistake's card (`getPly()` lands on the
+  mistake's ply, `#fb-panel` gains `mistake-active`, and with the
+  practice-first toggle on it starts a retry); `graphClick(ply)` /
+  clicking mid-graph jumps the replay; stepping the replay moves the cursor
+  (`graphPly()` tracks `getPly()`). On a page without `evals`, no graph
+  renders and `graphPly()` returns null.
 
 For retry mode and the drill deck (version 4):
 

@@ -8,8 +8,11 @@ cd "$(dirname "$0")"
 mkdir -p vendor weights
 
 # 1. zerofish: WASM lc0 with a UCI interface, runs in Chromium.
+#    (npm chatter captured; shown only if the pack fails)
 if [ ! -f vendor/package/dist/zerofishEngine.js ]; then
-  npm pack zerofish@0.0.36 --pack-destination vendor >/dev/null
+  if ! out=$(npm pack zerofish@0.0.36 --pack-destination vendor 2>&1); then
+    echo "$out" >&2; exit 1
+  fi
   tar -xzf vendor/zerofish-0.0.36.tgz -C vendor
 fi
 
@@ -24,9 +27,8 @@ broken = 'function vb(a){h.qb(a?R(t,a):"")}'
 patched = 'function vb(a){(h.qb||console.error)(a?R(t,a):"")}'
 if broken in src:
     open(path, 'w').write(src.replace(broken, patched))
-    print('zerofishEngine.js patched')
 elif patched in src:
-    print('zerofishEngine.js already patched')
+    pass
 else:
     raise SystemExit('patch target not found — zerofish version changed? '
                      'Look for the h.qb error callback and adapt the patch.')

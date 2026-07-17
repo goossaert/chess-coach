@@ -4,7 +4,9 @@
 
 # Recurring Mistakes & Lichess Study Plan
 
-**Player:** Anonymous · **Games analyzed:** 7 (July 5 – July 13, 2026) · **Engine:** Stockfish 16, depth 20, every move you played · **Evals:** always from your perspective (positive = good for you)
+<!-- TREND:META -->
+**Player:** Anonymous · **Games analyzed:** 9 (July 5 – July 15, 2026) · **Engine:** Stockfish, depth 20, every move you played · **Evals:** always from your perspective (positive = good for you)
+<!-- END TREND:META -->
 
 ---
 
@@ -14,19 +16,43 @@ You reached a **winning position (+3.3 or better) in six of the seven games and 
 
 ### Scoreboard
 
-| Game | You played | Result for you | Avg. eval loss/move¹ | Mistakes² | Blunders³ | Peak eval before collapse |
-|---|---|---|---|---|---|---|
-| 2026-07-05 vs Stockfish | Black | **Won** | 63 cp | 10 | 3 | (won, despite 3 gifts) |
-| 2026-07-06 vs Stockfish | White | Lost | 84 cp | 11 | 4 | **+34** (forced mate on the board) |
-| 2026-07-09 (12:11) vs Stockfish | White | Lost | 152 cp | 7 | 6 | +1.3 (opening) |
-| 2026-07-09 (17:46) vs Stockfish | White | **Won** | 39 cp | 5 | 1 | — |
-| 2026-07-09 (20:18) vs Stockfish | Black | Lost | 45 cp | 7 | 2 | **+3.5** |
-| 2026-07-11 vs Stockfish level 3 | Black | Lost | 143 cp | 11 | 5 | **+5.1** |
-| 2026-07-13 vs Stockfish level 3 | White | Lost | 121 cp | 9 | 5 | **+7.6** |
+<!-- TREND:SCOREBOARD -->
+| Game | You played | Result for you | ACPL¹ | Accuracy | Mistakes² | Blunders³ | Peak eval |
+|---|---|---|---|---|---|---|---|
+| [2026-07-05 14:50 vs Stockfish](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) | Black | **Won** | 63 | 73% | 2 | 2 | mate on the board |
+| [2026-07-06 19:53 vs Stockfish](../games/2026-07-06-19-53-anonymous-vs-stockfish.html) | White | Lost | 83 | 40% | 0 | 2 | mate on the board |
+| [2026-07-09 12:11 vs Stockfish](../games/2026-07-09-12-11-anonymous-vs-stockfish.html) | White | Lost | 148 | 67% | 1 | 1 | +1.4 |
+| [2026-07-09 17:46 vs Stockfish](../games/2026-07-09-17-46-anonymous-vs-stockfish.html) | White | **Won** | 30 | 92% | 0 | 0 | mate on the board |
+| [2026-07-09 20:18 vs Stockfish](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) | Black | Lost | 47 | 83% | 2 | 0 | +3.5 |
+| [2026-07-11 15:49 vs Stockfish-level-3](../games/2026-07-11-15-49-anonymous-vs-anonymous.html) | Black | Lost | 143 | 60% | 4 | 1 | +5.3 |
+| [2026-07-13 18:31 vs Stockfish-level-3](../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html) | White | Lost | 124 | 60% | 1 | 2 | +8.1 |
+| [2026-07-14 17:37 vs Maia 600](../games/2026-07-14-17-37-maia-600-vs-guest.html) | Black | **Won** | 30 | 94% | 0 | 0 | mate on the board |
+| [2026-07-15 21:31 vs Maia 800](../games/2026-07-15-21-31-emgosr-vs-maia-800.html) | White | Lost | 38 | 87% | 0 | 1 | +5.7 |
 
-¹ average centipawn loss vs. Stockfish's best move (clamped at ±10.00). ² moves losing 1.00–2.99 vs. best. ³ moves losing ≥3.00 vs. best.
+¹ average centipawn loss vs. Stockfish's best move (each loss clamped to [0, 1000] cp). ² moves dropping your win probability by ≥20 points (?). ³ moves dropping it by ≥30 points (??).
+<!-- END TREND:SCOREBOARD -->
 
-The mistake categories below are **sorted by how much they cost you across these seven games**. Within each category, studies/exercises are sorted with the most relevant and impactful first. (Free lichess account recommended — it tracks your puzzle history and unlocks the dashboard.)
+### Where the points went
+
+<!-- TREND:CATEGORIES -->
+| Category | Mistakes | Games | Win% lost (total)⁴ | Worst single moment |
+|---|---|---|---|---|
+| `hanging-piece` | 8 | 6 | −284 | [66.Be5?? (07-06 19:53 (W))](../games/2026-07-06-19-53-anonymous-vs-stockfish.html) |
+| `missed-tactic` | 8 | 7 | −207 | [29.Qg4?? (07-09 12:11 (W))](../games/2026-07-09-12-11-anonymous-vs-stockfish.html) |
+| `wrong-recapture` | 3 | 3 | −67 | [24…Rxh5?? (07-11 15:49 (B))](../games/2026-07-11-15-49-anonymous-vs-anonymous.html) |
+| `opening-principle` | 4 | 3 | −66 | [6…Nb4? (07-05 14:50 (B))](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) |
+| `conversion-drift` | 3 | 3 | −54 | [25.Rd6?? (07-15 21:31 (W))](../games/2026-07-15-21-31-emgosr-vs-maia-800.html) |
+| `pawn-break-timing` | 3 | 3 | −45 | [21…g5? (07-09 20:18 (B))](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) |
+| `endgame-technique` | 2 | 2 | −40 | [63.g3?? (07-06 19:53 (W))](../games/2026-07-06-19-53-anonymous-vs-stockfish.html) |
+| `unsafe-capture` | 4 | 4 | −26 | [35.Qxb2?! (07-13 18:31 (W))](../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html) |
+| `unsafe-king-move` | 2 | 1 | −22 | [33.Kd6?! (07-15 21:31 (W))](../games/2026-07-15-21-31-emgosr-vs-maia-800.html) |
+| `king-safety` | 1 | 1 | ≈0 (missed wins, not losses) | [41…c4 (07-09 20:18 (B))](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) |
+| `missed-mate` | 3 | 3 | ≈0 (missed wins, not losses) | [36…Ra2 (07-05 14:50 (B))](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) |
+
+⁴ each analyzed mistake counted once, under its first taxonomy tag; cost = win-probability points lost on that move (winBefore − winAfter from the sidecar).
+<!-- END TREND:CATEGORIES -->
+
+The curated study sections below keep their original order; the table above carries the current cost ranking. Within each category, studies/exercises are sorted with the most relevant and impactful first. (Free lichess account recommended — it tracks your puzzle history and unlocks the dashboard.)
 
 ---
 
@@ -36,15 +62,18 @@ The mistake categories below are **sorted by how much they cost you across these
 
 What the engine found:
 
-| Game | Move | What happened | Cost |
-|---|---|---|---|
-| 07-13 (W) | 33.Bh5?? | Parked the bishop on the one square the h5-knight... covered — from +3.7 to −3.9 | **−7.6** |
-| 07-05 (B) | 17…Ne5?? | Knight to a "strong" central square that nobody actually defended — +3.5 to −2.5 | **−6.0** |
-| 07-11 (B) | 20…Bf6 → 23…Qd7 | Your h5-knight stood attacked for **four consecutive moves** (20…Ng3! saved it with a fork every time); on the 4th it fell | −3.5 to −4.2 per move |
-| 07-06 (W) | 66.Be5?? | Hung the bishop for nothing — one move earlier 66.Bxb8! simply won Black's bishop (+7.3); the final losing move | **−14.0** |
-| 07-09 12:11 (W) | 17.b4?? | Pushed the pawn past the square that defended your a4-knight; the knight simply fell | −3.1 |
-| 07-05 (B) | 23…Ng4? | Re-routed the knight that was the only guard of the h5-knight | −4.7 |
-| 07-09 17:46 (W) | 25.Qa3? | Passed up 25.Rb1! — the rook that never joined the game all match (won anyway) | −3.6 |
+<!-- TREND:EVIDENCE tags=hanging-piece -->
+| Game | Move | What happened | Your win% | Cost |
+|---|---|---|---|---|
+| [07-06 19:53 (W)](../games/2026-07-06-19-53-anonymous-vs-stockfish.html) | 66.Be5?? | Stepped next to the enemy bishop instead of taking it | 93% → 9% | −42.21 |
+| [07-13 18:31 (W)](../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html) | 33.Bh5?? | The bishop landed on the knight's square | 79% → 22% | −7.27 |
+| [07-05 14:50 (B)](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) | 17…Ne5?? | Parked a knight on e5 that nobody actually guarded | 78% → 30% | −5.95 |
+| [07-13 18:31 (W)](../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html) | 8.Ne4? | Two pieces on one pawn's path | 66% → 38% | −3.24 |
+| [07-05 14:50 (B)](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) | 23…Ng4? | Reassigned the bodyguard and left h5 to the rook | 88% → 64% | −4.51 |
+| [07-09 12:11 (W)](../games/2026-07-09-12-11-anonymous-vs-stockfish.html) | 17.b4?! | b4 instead of b3 — and the a4-knight simply fell | 31% → 13% | −2.99 |
+| [07-11 15:49 (B)](../games/2026-07-11-15-49-anonymous-vs-anonymous.html) | 25…Bh3?! | The toughest defence was still on the board | 24% → 10% | −3.16 |
+| [07-09 20:18 (B)](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) | 30…Rg5?! | Traded rooks on a square the sleeping bishop could see | 16% → 5% | −3.23 |
+<!-- END TREND:EVIDENCE -->
 
 **The habit to build:** before *releasing* any piece (or pawn), name out loud every enemy unit that attacks the landing square — including bishops still sitting on their home squares behind pawns (that's exactly how 33.Bh5 and 17…Ne5 died) — and everything the moving piece was defending. This is a 5-second scan; it would have saved roughly four of these seven games.
 
@@ -80,15 +109,17 @@ What the engine found:
 
 What the engine found:
 
-| Game | Move | What happened | Cost |
-|---|---|---|---|
-| 07-13 (W) | 35.Qxb2?? | Took the "free" bishop on b2 — it was bait pulling your queen off the defense: 35…Qg6+ 36.Kh1 Qg2# | −4.8 → **mate in 2 against you** |
-| 07-11 (B) | 24…Rxh5?? | The automatic recapture; from +1.0 to −4.1 in one move — "the recapture that gave the game back" | **−5.2** |
-| 07-09 20:18 (B) | 22…fxg5? | Recaptured toward the attacker and opened the c1–h6 diagonal through your own king position; everything after flowed through that diagonal | −2.3 (and the game) |
-| 07-09 20:18 (B) | 38…Qxf6 | Took the bishop that was bait for the d5 royal fork | queen lost |
-| 07-11 (B) | 28…Kxf6?? | Took a rook with the king in the open — walked from −19 into forced mate | mate in 14 |
-| 07-13 (W) | 24.Nxh4? | Grabbed the h4-pawn with the knight; …Rxh4 took the knight (the rook was watching) | −2.1 |
-| 07-09 17:46 (W) | 20.Rxc6? | Grabbed the c6-pawn while a threat was pending; cost a knight for two pawns in the wash (won anyway) | −1.6 |
+<!-- TREND:EVIDENCE tags=unsafe-capture,wrong-recapture -->
+| Game | Move | What happened | Your win% | Cost |
+|---|---|---|---|---|
+| [07-11 15:49 (B)](../games/2026-07-11-15-49-anonymous-vs-anonymous.html) | 24…Rxh5?? | The recapture that gave the game back | 60% → 20% | −5.06 |
+| [07-09 20:18 (B)](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) | 22…fxg5? | The automatic recapture opened the diagonal that forked you | 56% → 32% | −2.44 |
+| [07-13 18:31 (W)](../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html) | 35.Qxb2?! | Took the bishop, dropped the diagonal, walked into mate | 13% → 2% | mate |
+| [07-09 12:11 (W)](../games/2026-07-09-12-11-anonymous-vs-stockfish.html) | 26.Bxh5 | Grabbed a pawn on h5 while your king burned on c1 | 10% → 2% | −9.31 |
+| [07-09 17:46 (W)](../games/2026-07-09-17-46-anonymous-vs-stockfish.html) | 20.Rxc6 | Grabbed the c6-pawn and lost a knight in the wash | 94% → 90% | −1.80 |
+| [07-09 20:18 (B)](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) | 38…Qxf6 | Took the bishop that was bait for a royal fork | 5% → 3% | −1.77 |
+| [07-14 17:37 (B)](../games/2026-07-14-17-37-maia-600-vs-guest.html) | 11…Kxd8 | One recapture walked into castling-with-check | 90% → 88% | −0.72 |
+<!-- END TREND:EVIDENCE -->
 
 **The habit to build:** treat every capture — *especially* recaptures — as a brand-new move. Ask: **"Why am I allowed to take this?"** If a full-strength opponent leaves something en prise, assume it's a deflection or attraction until you've checked every check and capture in reply. And after any exchange, re-scan which lines just opened (every pawn capture opens two lines — yours *and* theirs).
 
@@ -115,12 +146,16 @@ What the engine found:
 
 The 07-09 20:18 game is the textbook case: the engine had you **+3.5 out of a sleepy 1.e3 opening**, and 21…g5?? (pushing a pawn onto a square attacked twice, in front of your own castled-long king's flank) followed by 22…fxg5? opened the c1–h6 diagonal — one bishop then ate a pawn, a knight, a rook and finally your queen through that one diagonal. In the 12:11 game your king sat on c1 under a queenside pawn storm while you spent tempi grabbing the h5-pawn (26.Bxh5?, −3.6); the attack arrived first, and 24.bxa5?? even opened the b-file into your own king (mate in 5 against you). In the 07-11 game the king walked forward into the open (28…Kxf6) straight into a mating net.
 
-| Game | Move | What happened | Cost |
-|---|---|---|---|
-| 07-09 20:18 (B) | 21…g5?? | Pawn push in front of your own king onto a twice-attacked square, +3.5 → +0.4, and the losing mechanism | **−3.1 and the game** |
-| 07-09 12:11 (W) | 22.Qf4? / 23.Qh4? / 26.Bxh5? | Queen went pawn-hunting on the kingside while your c1-king was being stormed on the queenside | −6.4, −2.7, −3.6 |
-| 07-09 12:11 (W) | 24.bxa5?? | Opened the b-file toward your own king — forced mate in 5 | mate |
-| 07-11 (B) | 28…Kxf6??, 29…Be6? | King caught in the open; every move had to be about the king, and wasn't | mate in 14 / 9 |
+<!-- TREND:EVIDENCE tags=king-safety,unsafe-king-move,pawn-break-timing -->
+| Game | Move | What happened | Your win% | Cost |
+|---|---|---|---|---|
+| [07-09 20:18 (B)](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) | 21…g5? | Pushed …g5 into the h4-pawn's teeth — with a bishop watching from c1 | 76% → 54% | −3.02 |
+| [07-15 21:31 (W)](../games/2026-07-15-21-31-emgosr-vs-maia-800.html) | 33.Kd6?! | The king marched forward when its job was to walk home | 45% → 26% | −2.77 |
+| [07-14 17:37 (B)](../games/2026-07-14-17-37-maia-600-vs-guest.html) | 4…e5?! | The centre break came a move before it was ready | 52% → 35% | −1.86 |
+| [07-09 17:46 (W)](../games/2026-07-09-17-46-anonymous-vs-stockfish.html) | 11.Na3 | A tempo on the rim while the centre break waited | 78% → 71% | −1.24 |
+| [07-15 21:31 (W)](../games/2026-07-15-21-31-emgosr-vs-maia-800.html) | 45.Ke3 | The king stepped onto the promotion diagonal — and made the deflection work | 5% → 2% | mate |
+| [07-09 20:18 (B)](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) | 41…c4 | A pawn push on the wrong errand while the mating net closed | 2% → 2% | mate |
+<!-- END TREND:EVIDENCE -->
 
 **The habit to build:** the pawns in front of your king move only when you can name a concrete gain that outweighs the permanent weakness — and *never* while enemy pieces are aimed at that flank. When your king is under attack, material is irrelevant: count attackers vs. defenders around the king before counting pawns. (Note the asymmetry in your one won game as Black: the …g5/…g4 storm on 07-05 worked because *White's* king was stuck in the center and yours had the extra defender — the rule is about *your* king's coverage, not about pawn pushes in general.)
 
@@ -146,13 +181,21 @@ The 07-09 20:18 game is the textbook case: the engine had you **+3.5 out of a sl
 
 This one is stark in the data. Across the seven games you missed:
 
-| Game | What was on the board | What happened |
-|---|---|---|
-| 07-09 17:46 (W) | **Mate in 1, twice in a row** (34.Qc8#, then 35.Qa8#) | played checks instead (34.Qc6+?, 35.Qxc7?) — won anyway, 2 moves later |
-| 07-09 17:46 (W) | Qxf7+ forcing mate next move — available **three moves running** (31–33) | pushed pawns instead |
-| 07-05 (B) | 40…Rd2+ **forced mate in 2**; 35…Ra1+ / 36…Ra1+ **forced mate in 3**; 37…Ra1+ forced mate in 5 | shuffled knights; won anyway 16 moves later |
-| 07-06 (W) | With two queens on the board, a **forced mate (#4–#14) available for ten consecutive moves** (42–51) | never looked for the forcing line; traded both queens instead — and eventually *lost* |
-| 07-09 12:11 (W) | Down −11, **29.Bxf7+! held a perpetual-check draw — twice** (moves 29 and 30) | played quiet moves; lost |
+<!-- TREND:EVIDENCE tags=missed-mate,slow-mate,missed-tactic -->
+| Game | Move | What happened | Your win% | Cost |
+|---|---|---|---|---|
+| [07-09 12:11 (W)](../games/2026-07-09-12-11-anonymous-vs-stockfish.html) | 29.Qg4?? | You had a draw on f7 and never looked for it | 50% → 4% | −8.84 |
+| [07-13 18:31 (W)](../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html) | 10.Nb7?? | b7: one square in, no squares out | 70% → 27% | −5.09 |
+| [07-05 14:50 (B)](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) | 9…Nd7?? | Backed away from a pawn tension you were winning | 70% → 36% | −3.73 |
+| [07-11 15:49 (B)](../games/2026-07-11-15-49-anonymous-vs-anonymous.html) | 23…Qd7? | Fourth invitation declined — and the knight finally fell | 86% → 59% | −3.92 |
+| [07-11 15:49 (B)](../games/2026-07-11-15-49-anonymous-vs-anonymous.html) | 17…Bh8? | Retreated to the corner with the door hanging off its hinges | 84% → 57% | −4.42 |
+| [07-09 17:46 (W)](../games/2026-07-09-17-46-anonymous-vs-stockfish.html) | 4.e5?! | Pushed past a pawn that was free to take | 73% → 59% | −1.64 |
+| [07-06 19:53 (W)](../games/2026-07-06-19-53-anonymous-vs-stockfish.html) | 52.Qe3 | Offered a queen trade when you could just win the queen | 98% → 89% | mate lost |
+| [07-15 21:31 (W)](../games/2026-07-15-21-31-emgosr-vs-maia-800.html) | 12.d5 | The center push released the pressure — the capture won a pawn | 57% → 50% | −0.86 |
+| [07-05 14:50 (B)](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) | 36…Ra2 | Three checks from the finish line, you looked away | 98% → 98% | missed #3 |
+| [07-09 17:46 (W)](../games/2026-07-09-17-46-anonymous-vs-stockfish.html) | 34.Qc6+ | Mate in one — missed twice | 98% → 98% | missed #1 |
+| [07-14 17:37 (B)](../games/2026-07-14-17-37-maia-600-vs-guest.html) | 50…Qa1+ | Mate in one, promoted two moves late | 98% → 98% | missed #1 |
+<!-- END TREND:EVIDENCE -->
 
 Two skills are missing, and they're the same skill pointed in opposite directions: **when winning, check every check before every quiet move; when losing, hunt for the perpetual first.** You have the patterns (you *did* mate cleanly in two games) — you're just not *scanning* for forcing moves systematically.
 
@@ -199,11 +242,15 @@ Two skills are missing, and they're the same skill pointed in opposite direction
 
 The outcome-level leak that the previous categories feed. The record across these seven games:
 
-- **07-06:** +34 (a bishop, knight and unstoppable b-pawn up, forced mate available) → knight wandered to b8 and was given away (60.Nb8??), 63.g3?? let the eval hit 0.00, 66.Be5?? hung the bishop → **lost**.
-- **07-13:** a clean piece up, **+7.6 by move 24** → 33.Bh5??, 35.Qxb2?? → **lost** (mated).
-- **07-11:** **+5.1 by move 8** (the engine's top move was the central break …exf3 on **seven consecutive moves**, then the saving fork 20…Ng3! four times) → passive retreats instead, then 24…Rxh5?? → **lost**.
-- **07-09 20:18:** **+3.5 by move 21** → 21…g5?? → **lost**.
-- **07-09 17:46:** +7 → converted, but only after declining two mates-in-one and letting the a1-rook sleep all game.
+<!-- TREND:EVIDENCE tags=conversion-drift,endgame-technique,promotion-race -->
+| Game | Move | What happened | Your win% | Cost |
+|---|---|---|---|---|
+| [07-06 19:53 (W)](../games/2026-07-06-19-53-anonymous-vs-stockfish.html) | 63.g3?? | Shuffled a pawn while your king sat idle | 88% → 50% | −7.05 |
+| [07-15 21:31 (W)](../games/2026-07-15-21-31-emgosr-vs-maia-800.html) | 25.Rd6?? | One rook move gave the whole piece back | 85% → 50% | −4.80 |
+| [07-13 18:31 (W)](../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html) | 15.Qd3?! | The queen stepped into the c-pawn's headlights | 88% → 71% | −3.19 |
+| [07-09 17:46 (W)](../games/2026-07-09-17-46-anonymous-vs-stockfish.html) | 25.Qa3 | The a1-rook never joined the game | 93% → 90% | −1.69 |
+| [07-14 17:37 (B)](../games/2026-07-14-17-37-maia-600-vs-guest.html) | 28…g6 | The king had an escort job — you sent the g-pawn instead | 98% → 95% | −2.80 |
+<!-- END TREND:EVIDENCE -->
 
 Three sub-habits are missing:
 
@@ -247,14 +294,14 @@ Three sub-habits are missing:
 
 The least costly category in eval terms, but it set up several of the disasters above. Recurring items:
 
-| Game | Moves | Pattern |
-|---|---|---|
-| 07-13 (W) | 8.Ne4?→10.Nb7?? | A knight tour (Ne4–c5–b7) into a square with **zero retreat squares**; the knight spent the game entombed on b7 (−5.1 across two moves) |
-| 07-09 12:11 (W) | 8.Qg4?! then 12.Na4? | Queen out on move 8 before any minor-piece harmony; knight to the rim where it became a target and fell |
-| 07-09 17:46 (W) | 4.e5? | Declined a free central pawn (4.exd5) to push past — "check every capture before every push" (−1.6) |
-| 07-06 (W) | 5.Ng5, 10.Nf3 | The same knight moved three times before a single other piece developed |
-| 07-11 (B) | 9…Nh5?, 12…O-O (instead of 12…Bxh4 free pawn) | Rim knight; declined free material out of habit |
-| 07-09 17:46 (W) | a1-rook | Never moved all game (the engine's two biggest improvement suggestions were both Rb1) |
+<!-- TREND:EVIDENCE tags=opening-principle -->
+| Game | Move | What happened | Your win% | Cost |
+|---|---|---|---|---|
+| [07-05 14:50 (B)](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) | 6…Nb4? | A one-move threat that abandoned the e5-pawn | 58% → 34% | −2.74 |
+| [07-09 20:18 (B)](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) | 9…Nb5?! | Retreated a monster knight that nobody was attacking | 67% → 50% | −1.74 |
+| [07-09 12:11 (W)](../games/2026-07-09-12-11-anonymous-vs-stockfish.html) | 12.Na4?! | Sent the knight to the rim, where it became a target | 51% → 36% | −1.58 |
+| [07-09 12:11 (W)](../games/2026-07-09-12-11-anonymous-vs-stockfish.html) | 8.Qg4?! | The queen went adventuring before the pieces were out | 56% → 45% | −1.31 |
+<!-- END TREND:EVIDENCE -->
 
 **The habit to build:** in the first 10–12 moves — develop a new piece each move toward the center, castle before starting operations, don't move the queen out early, don't move the same piece twice without a concrete reason, and *always* check whether a central capture is simply free. Before any knight jump, count its retreat squares: zero means it's lost.
 
@@ -335,12 +382,16 @@ Every position where you were to move was analyzed with **Stockfish 16 at depth 
 
 ## Sources used for this report
 
-| # | Source PGN (`pgn/`) | Coach page (`games/`) | You played | Result |
+<!-- TREND:SOURCES -->
+| # | Source PGN (pgn/) | Coach page (games/) | You played | Result |
 |---|---|---|---|---|
-| 1 | [2026-07-05-14-50-stockfish-vs-anonymous.txt](../pgn/2026-07-05-14-50-stockfish-vs-anonymous.txt) | [2026-07-05-14-50-stockfish-vs-anonymous.html](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) | Black | 0–1 (win) |
-| 2 | [2026-07-06-19-53-anonymous-vs-stockfish.txt](../pgn/2026-07-06-19-53-anonymous-vs-stockfish.txt) | [2026-07-06-19-53-anonymous-vs-stockfish.html](../games/2026-07-06-19-53-anonymous-vs-stockfish.html) | White | 0–1 (loss) |
-| 3 | [2026-07-09-12-11-anonymous-vs-stockfish.txt](../pgn/2026-07-09-12-11-anonymous-vs-stockfish.txt) | [2026-07-09-12-11-anonymous-vs-stockfish.html](../games/2026-07-09-12-11-anonymous-vs-stockfish.html) | White | 0–1 (loss) |
-| 4 | [2026-07-09-17-46-anonymous-vs-stockfish.txt](../pgn/2026-07-09-17-46-anonymous-vs-stockfish.txt) | [2026-07-09-17-46-anonymous-vs-stockfish.html](../games/2026-07-09-17-46-anonymous-vs-stockfish.html) | White | 1–0 (win) |
-| 5 | [2026-07-09-20-18-stockfish-vs-anonymous.txt](../pgn/2026-07-09-20-18-stockfish-vs-anonymous.txt) | [2026-07-09-20-18-stockfish-vs-anonymous.html](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) | Black | 1–0 (loss) |
-| 6 | [2026-07-11-15-49-anonymous-vs-anonymous.txt](../pgn/2026-07-11-15-49-anonymous-vs-anonymous.txt) | [2026-07-11-15-49-anonymous-vs-anonymous.html](../games/2026-07-11-15-49-anonymous-vs-anonymous.html) | Black | 1–0 (loss) |
-| 7 | [2026-07-13-18-31-anonymous-vs-stockfish-level-3.txt](../pgn/2026-07-13-18-31-anonymous-vs-stockfish-level-3.txt) | [2026-07-13-18-31-anonymous-vs-stockfish-level-3.html](../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html) | White | 0–1 (loss) |
+| 1 | [2026-07-05-14-50-stockfish-vs-anonymous.txt](../pgn/2026-07-05-14-50-stockfish-vs-anonymous.txt) | [2026-07-05-14-50-stockfish-vs-anonymous.html](../games/2026-07-05-14-50-stockfish-vs-anonymous.html) | Black | 0–1 (won) |
+| 2 | [2026-07-06-19-53-anonymous-vs-stockfish.txt](../pgn/2026-07-06-19-53-anonymous-vs-stockfish.txt) | [2026-07-06-19-53-anonymous-vs-stockfish.html](../games/2026-07-06-19-53-anonymous-vs-stockfish.html) | White | 0–1 (lost) |
+| 3 | [2026-07-09-12-11-anonymous-vs-stockfish.txt](../pgn/2026-07-09-12-11-anonymous-vs-stockfish.txt) | [2026-07-09-12-11-anonymous-vs-stockfish.html](../games/2026-07-09-12-11-anonymous-vs-stockfish.html) | White | 0–1 (lost) |
+| 4 | [2026-07-09-17-46-anonymous-vs-stockfish.txt](../pgn/2026-07-09-17-46-anonymous-vs-stockfish.txt) | [2026-07-09-17-46-anonymous-vs-stockfish.html](../games/2026-07-09-17-46-anonymous-vs-stockfish.html) | White | 1–0 (won) |
+| 5 | [2026-07-09-20-18-stockfish-vs-anonymous.txt](../pgn/2026-07-09-20-18-stockfish-vs-anonymous.txt) | [2026-07-09-20-18-stockfish-vs-anonymous.html](../games/2026-07-09-20-18-stockfish-vs-anonymous.html) | Black | 1–0 (lost) |
+| 6 | [2026-07-11-15-49-anonymous-vs-anonymous.txt](../pgn/2026-07-11-15-49-anonymous-vs-anonymous.txt) | [2026-07-11-15-49-anonymous-vs-anonymous.html](../games/2026-07-11-15-49-anonymous-vs-anonymous.html) | Black | 1–0 (lost) |
+| 7 | [2026-07-13-18-31-anonymous-vs-stockfish-level-3.txt](../pgn/2026-07-13-18-31-anonymous-vs-stockfish-level-3.txt) | [2026-07-13-18-31-anonymous-vs-stockfish-level-3.html](../games/2026-07-13-18-31-anonymous-vs-stockfish-level-3.html) | White | 0–1 (lost) |
+| 8 | [2026-07-14-17-37-maia-600-vs-guest.txt](../pgn/2026-07-14-17-37-maia-600-vs-guest.txt) | [2026-07-14-17-37-maia-600-vs-guest.html](../games/2026-07-14-17-37-maia-600-vs-guest.html) | Black | 0–1 (won) |
+| 9 | [2026-07-15-21-31-emgosr-vs-maia-800.txt](../pgn/2026-07-15-21-31-emgosr-vs-maia-800.txt) | [2026-07-15-21-31-emgosr-vs-maia-800.html](../games/2026-07-15-21-31-emgosr-vs-maia-800.html) | White | 0–1 (lost) |
+<!-- END TREND:SOURCES -->

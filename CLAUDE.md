@@ -1,6 +1,6 @@
 # chess-coach
 
-**Version 3**
+**Version 4**
 
 This repository turns chess games into interactive coaching pages. When the user
 uploads a game and asks for feedback, analyze it and generate one HTML review page
@@ -23,6 +23,19 @@ move-quality numbers (step 2c), win-probability framing on every mistake
 (`winBefore`/`winAfter`), and curated practice links per mistake
 (`drillLinks`, from `tools/drill-links.json`). As before, every new GAME
 field is optional — pages generated under versions 1 and 2 remain valid.
+
+Version 4 (per `docs/0006-plan-learning-loop-2-practice.md`, part 2 of the
+series) turns review into **active practice**: every mistake carries a
+precomputed `retry` object so the page can grade the user's own attempt at
+the position (step 2d, retry mode), and all mistakes ever analyzed aggregate
+into a standing spaced-repetition **drill deck** at `drills/index.html`
+(step 4c, `tools/build-drills.py`). The design leans on active-recall
+principles throughout: retrieval before re-reading (retry mode and the
+"practice first" toggle), recall of the verbal lesson before it is shown
+(the drill deck's "recall the lesson" stage), spaced repetition (Leitner
+boxes), and interleaving (due drills are mixed across games). Every new
+field remains optional — pages generated under versions 1–3 stay valid and
+show no retry UI.
 
 ## Trigger
 
@@ -206,6 +219,27 @@ This feeds the optional GAME fields `accuracy`, `acpl`, `moveQuality`,
 `winBefore`/`winAfter` (the "your winning chances: 92% → 45%" row in the
 feedback panel).
 
+### 2d. Retry grading (precomputed — the page stays engine-free)
+
+For each **selected** mistake, run one extra Stockfish probe with
+`multipv=5` (depth 18 is fine; seconds of extra runtime) on the position
+before the mistake, and build the per-mistake `retry` object that powers
+retry mode on the page and the drill deck:
+
+- `solutions` — the engine best + `humanBest` UCIs, deduped;
+- `acceptable` — the probed moves whose eval stays within **0.5 pawns** of
+  best, minus the solutions and the move actually played (evals clamped to
+  ±10 pawns before comparing, mates through `mate_score` — the same clamping
+  the human-findable scan uses);
+- `legal` — the full legal-move list from python-chess, sorted;
+- `fen` — the position before the mistake (redundant safety).
+
+Emit it as the mistake's `retry` GAME field **and** store the identical
+object in the sidecar mistake entry (step 4b) so the drill deck can reuse it
+without re-running engines. `tools/build-drills.py` computes the same thing
+for old sidecars that predate the field, so if a run must skip this step the
+deck generator will backfill it later.
+
 ### 3. Write the coaching content
 
 For each selected mistake, write:
@@ -319,7 +353,14 @@ and commit it together with the page and the PGN. Schema (`schema: 1`):
     "tags": ["conversion-drift"],             // from the step-3 taxonomy
     "fenBefore": "…",
     "playedUci": "…", "bestUci": "…", "humanBestUci": "…",
-    "winBefore": 92.1, "winAfter": 45.3
+    "winBefore": 92.1, "winAfter": 45.3,
+    "retry": {                                // step-2d grading, reused by the
+      "fen": "…",                             //   drill deck without engines
+      "solutions": ["b2b1q"],                 // engine best + humanBest, deduped
+      "acceptable": ["c1b2"],                 // within 0.5 pawns of best (multipv-5),
+                                              //   minus solutions and the played move
+      "legal": ["…"]                          // full legal-move list, sorted
+    }
   } ]
 }
 ```
@@ -332,6 +373,31 @@ fields as optional. The sidecar is data for machines: numbers stay numeric
 **Workflow rule**: write the sidecar alongside the page and commit the three
 files together — `pgn/<stamp>.txt` + `games/<stamp>.html` +
 `analysis/<stamp>.json`.
+
+### 4c. Regenerate the drill deck
+
+After writing the page and the sidecar, re-run the deck generator and commit
+the refreshed deck **with** the game's files:
+
+```bash
+/tmp/chess-venv/bin/python tools/build-drills.py
+```
+
+It reads every `analysis/*.json`, backfills `retry` into any sidecar mistake
+that lacks it (one Stockfish multipv-5 probe each, written back so the probe
+runs once ever), and rewrites `drills/index.html` from `drills-template.html`
+by replacing only the marked `const DRILLS = […];` block — the same
+replace-only-the-data-block discipline as `template.html`. The output is
+deterministic: running it twice is byte-identical. Fix deck UI issues in
+`drills-template.html`, never in `drills/index.html`.
+
+The deck front end keeps its schedule in `localStorage` (key
+`chess-drills-v1`): a Leitner scheme keyed by `<stamp>:<ply>` — stable
+across regenerations — with boxes 1–4 (fail → box 1, due immediately;
+first-attempt solve → next box, due in 1/3/7 days). Due drills are
+interleaved round-robin across source games, each drill ends with a
+"recall the lesson" stage (the takeaway stays hidden until the user has
+tried to state it), and a tag filter scopes a session to one weakness.
 
 ### GAME data reference
 
@@ -398,10 +464,22 @@ const GAME = {
     expectedPointsLost: "−0.21",        // human-outcome cost in expected score; OMIT when
                                         //   it rounds to ±0.00 (winBefore/After carry it)
     recurrenceRisk: "high",             // "high" | "medium" | "low" → card tag
+    retry: {                            // OPTIONAL retry-mode grading (step 2d);
+      fen: "…",                         //   when present the card gets a "↻ retry"
+      solutions: ["b2b1q"],             //   chip and the board takes click-to-move
+      acceptable: ["c1b2"],             //   input: solutions → solved, acceptable →
+      legal: ["…"]                      //   "also fine", other legal → one more try
+    },                                  //   then reveal; illegal clicks ignored
     takeaways: [{ lesson: "…", detail: "…" }, …]   // plain text
   }, …]
 };
 ```
+
+When any mistake carries `retry`, the page also shows a **practice first**
+toggle above the mistake list (persisted in `localStorage`): with it on,
+clicking a mistake card starts a retry instead of revealing the coaching, so
+every mistake is attempted before it is read — retrieval practice first,
+explanation second.
 
 Conventions: all evals from the **user's** perspective (positive = good for the user);
 mate scores as `#3` / `#−2` (negative = user gets mated). Use the minus sign `−` in
@@ -422,6 +500,12 @@ go at the top). Each entry carries:
 
 Copy an existing entry and edit it — never change the index's markup or CSS outside
 the list. Verify every `href` in the index resolves to a file in `games/`.
+
+Above the game list sits a separate `TOOLS` / `END TOOLS` marked region
+holding the standing links (currently the drill-deck card pointing at
+`../drills/index.html`). Like the game list, edit only inside the markers;
+game entries never go in the TOOLS region and tool links never go in the
+game list.
 
 ### 6. Verify before delivering
 
@@ -486,8 +570,33 @@ For the version-3 fields (any page that carries them):
   legally with python-chess, its mistakes match the page's GAME mistakes
   (ply / played / best), and their `tags` are all from the vocabulary.
 
+For retry mode and the drill deck (version 4):
+
+- **retry data**, for every mistake with `retry` (page and sidecar):
+  `solutions ⊆ legal`, `acceptable ⊆ legal`, `solutions ∩ acceptable = ∅`,
+  every UCI legal per python-chess in `retry.fen`, `retry.fen` equals the
+  mistake's `fenBefore`, `solutions` contains the mistake's `best` in UCI,
+  and the played move appears in neither list;
+- **retry UI** (Playwright, via the `window.__review.retryStart(i)` /
+  `retryPlay(uci)` / `retryState()` hooks): starting a retry hides the
+  arrows, legend, and eval compare; playing a solution flips the state to
+  `solved` and reveals the feedback with the `.retry-result` banner; a wrong
+  legal move leaves one more try, a second one reveals; an illegal UCI or
+  click changes nothing; navigating away cancels the retry. Old pages
+  (no `retry` fields) still load with `__review.error === null` and show no
+  `.retry-chip` and no practice-first toggle;
+- **drill deck**: after re-running `tools/build-drills.py` twice, the output
+  is byte-identical; the deck's entry count equals the total number of
+  sidecar mistakes; every drill's source-game link resolves to a file in
+  `games/`; in Playwright (`window.__drills` hooks): solving a drill
+  advances its Leitner box and survives a reload, failing one sends it to
+  box 1 and re-queues it, the tag filter leaves only matching drills, the
+  lesson stays hidden until the recall button is clicked, and the headless
+  console shows no script errors.
+
 Then commit the new page together with its `pgn/*.txt` source, its
-`analysis/*.json` sidecar, and the updated `games/index.html`, and push.
+`analysis/*.json` sidecar, the regenerated `drills/index.html`, and the
+updated `games/index.html`, and push.
 
 ## Repo layout
 
@@ -504,7 +613,16 @@ Then commit the new page together with its `pgn/*.txt` source, its
   per-band Maia numbers, accuracy/quality tallies, Elo fit, and the tagged
   mistakes. The foundation later parts of the learning-loop series read.
 - `games/index.html` — the game list: one link per analyzed game, newest first.
-  Must be updated whenever a page is added (see workflow step 5).
+  Must be updated whenever a page is added (see workflow step 5). Also hosts
+  the `TOOLS` marked region with the drill-deck link.
+- `drills-template.html` — the drill-deck template (self-contained; FEN board
+  renderer, click-to-move grading, Leitner scheduler, lesson-recall stage).
+  Only its `const DRILLS = […];` block is replaced in the generated deck.
+- `drills/index.html` — the generated drill deck covering every sidecar
+  mistake. Never edited by hand: regenerate with `tools/build-drills.py`
+  (workflow step 4c).
+- `tools/build-drills.py` — the deck generator; also backfills step-2d
+  `retry` objects into sidecars that predate them.
 - `tools/maia/` — the Maia harness for workflow step 2b: `setup.sh` (fetches and
   patches the zerofish WASM engine, downloads the Maia-1 weights), `serve.mjs`
   (COOP/COEP static server), `host.html` + `query.cjs` (batch UCI queries through
@@ -514,4 +632,5 @@ Then commit the new page together with its `pgn/*.txt` source, its
   unverified ones (lichess.org is unreachable from this sandbox).
 - `docs/` — the design plans behind the template and this workflow;
   `docs/0003-plan-maia-engine.md` is the plan version 2 implements,
-  `docs/0005-plan-learning-loop-1-foundation.md` the version-3 foundation.
+  `docs/0005-plan-learning-loop-1-foundation.md` the version-3 foundation,
+  `docs/0006-plan-learning-loop-2-practice.md` the version-4 practice layer.

@@ -1,6 +1,6 @@
 # chess-coach
 
-**Version 5**
+**Version 6**
 
 This repository turns chess games into interactive coaching pages. When the user
 uploads a game and asks for feedback, analyze it and generate one HTML review page
@@ -49,6 +49,19 @@ number (step 2b; `flat`/`floor`/`spread` recorded in the sidecar
 `eloFit`). Pages generated under versions 1–4 remain valid and show no
 graph.
 
+Version 6 (per `docs/0009-plan-learning-loop-4-polish.md`, the final part of
+the series) adds **polish**: 1–3 "what you did well" `highlights` per game
+(calmer gold cards under the mistake list, step 3b), an `openingReport`
+block with offline left-theory detection against the committed Polyglot
+book `tools/book/gm2001.bin` (step 3b), the cross-game trend report recast
+as a regenerable artifact (`tools/build-trend-report.py`, step 4e — data
+tables regenerate from the sidecars, curated prose and the verified Lichess
+link checklists are preserved verbatim between marked regions), and
+**clock-aware analysis** that stays dormant until a PGN carries `%clk`
+comments (the `timeSpent` GAME field and the thin time bar under the eval
+graph; the reserved `time-trouble` tag becomes usable). Every new field
+remains optional — pages generated under versions 1–5 stay valid.
+
 Since `docs/0008-plan-pipeline-efficiency.md` the engine work and the
 verification run as two consolidated tools: `tools/analyze-game.py` executes
 steps 2/2b/2c/2d in one call (one JSON out, sidecar draft written to
@@ -70,6 +83,10 @@ One uploaded game = one generated page. Multiple games = one page each.
 
 Extract the headers (`White`, `Black`, `Result`, `Date`, `Event`, `Opening`/ECO) and
 the full SAN move list (strip comments, variations, NAGs, and the result token).
+The stripping applies to the **movetext parsing only** — the file saved to
+`pgn/` in step 4 stays verbatim, comments included. If the PGN carries
+`%clk` clock comments (Lichess exports do; maiachess.com PGNs don't), keep
+them for the clock-aware pass in step 2e.
 
 Determine which color the **user** played. Use what they say, or their name in the
 headers. If it cannot be inferred, ask before analyzing — every evaluation on the
@@ -93,9 +110,11 @@ retry probes — with exactly the parameters specified in these steps, and
 prints one JSON document holding everything steps 3, 4, and 4b consume:
 GAME-ready `display` values, `moveNotes`, `evals`, ranked
 `mistakeCandidates` (each with display fields, numeric sidecar fields, and
-`retry`), the `accuracy`/`eloFit` blocks, and a compact `userPlies`
-summary for writing the prose. It also writes the step-4b sidecar draft
-(everything except `mistakes`) straight to `analysis/<stamp>.json`:
+`retry`), the `accuracy`/`eloFit` blocks, the step-3b inputs
+(`highlightCandidates`, `bookExitPly`, `openingRecurrence`), and a compact
+`userPlies` summary for writing the prose. It also writes the step-4b
+sidecar draft (everything except the editorial `mistakes`, `highlights`,
+and openingReport `note`) straight to `analysis/<stamp>.json`:
 
 ```bash
 # save the PGN to pgn/<stamp>.txt first (step 4) — its stamp names the sidecar
@@ -329,6 +348,28 @@ without re-running engines. `tools/build-drills.py` computes the same thing
 for old sidecars that predate the field, so if a run must skip this step the
 deck generator will backfill it later.
 
+### 2e. Clock-aware analysis (only when the PGN carries `%clk` comments)
+
+Dormant until clock data exists — maiachess.com PGNs carry none, Lichess
+exports do (tell the user once: *export games from Lichess with clocks
+included — it unlocks time-management coaching*). When `%clk` comments are
+present:
+
+- Parse per-move time spent with python-chess (`game.mainline()` nodes have
+  `node.clock()`): time spent on a ply = previous clock of the same side −
+  clock after the move + any increment from the `TimeControl` header. One
+  number per half-move, seconds, both sides.
+- Emit the full series as the GAME `timeSpent` field (mirrors `evals`: the
+  whole series or nothing, one entry per `movesSan` entry) and store it on
+  the sidecar plies as `timeSpent` (numeric seconds). The template renders
+  the thin time bar under the eval graph only when the field is present —
+  user moves in gold, user moves under 10 seconds in rust, clickable like
+  the graph.
+- When a selected mistake was played fast (< 10s) in a critical position,
+  add the reserved `time-trouble` tag (this is its intended use), and when
+  the blunders cluster on fast moves write a pacing takeaway ("spend 30
+  seconds minimum on every capture and every check").
+
 ### 3. Write the coaching content
 
 For each selected mistake, write:
@@ -374,6 +415,40 @@ Also write a 2–4 sentence `summary` of the whole game and an eye-catching seri
 `title`/`subtitle` for the page header (the `<em>…</em>` and `<br>` tags carry the
 house style — see `games/` for examples).
 
+### 3b. Highlights and the opening report
+
+Two more coaching blocks, both fed by fields `tools/analyze-game.py`
+already printed (`highlightCandidates`, `bookExitPly`, `openingRecurrence`)
+— no extra engine work.
+
+**Highlights ("what you did well", 1–3 per game).** Candidates are the
+positions where the user played the engine's best move in a non-forced
+(> 3 legal moves), undecided (|eval| ≤ 6) position; on Maia pages the
+script ranks them by ascending `bestFindability` — a best move few peers
+find means the user outperformed their band, the strongest praise the data
+can back. Pick 1–3: prefer low findability, spread them across phases, and
+prefer moments that mirror the mistake taxonomy from the *right* side (a
+checked recapture, a break played while winning, a king marched up an
+endgame board) — reinforcement works best when it names the same habit the
+mistakes drill. Write each `note` in the same voice as the explanations,
+quoting the findability percentage when it sharpens the praise. Emit the
+GAME `highlights` field (`{ ply, move, note, arrow }` — `move` must equal
+`movesSan[ply]`, `arrow` is the played move's from→to) and store the same
+array in the sidecar. Never put a highlight on a mistake ply.
+
+**Opening report (one bordered paragraph on the page).** `bookExitPly` is
+the first ply with no entry in `tools/book/gm2001.bin` (offline Polyglot
+lookup; if the book is ever missing, judge the exit by hand and say so in
+`analysisNote`). Write a one-sentence `note` on the first improvable
+opening decision — the earliest opening-phase user move with a meaningful
+win% drop, quoting the numbers — and when `openingRecurrence` shows the
+same early structure in ≥ 2 sidecars, say so ("third analyzed game with
+1.d4 d5 — worth 20 minutes of study"). `explorerUrl` is optional and must
+come from a verified URL family (`https://lichess.org/analysis` is the
+safe default; lichess.org cannot be fetched from this sandbox to verify
+anything deeper). Emit the GAME `openingReport` field and store it in the
+sidecar too.
+
 ### 4. Generate the page
 
 - Output file: `games/YYYY-MM-DD-HH-MM-<white>-vs-<black>.html`
@@ -403,8 +478,10 @@ count recurrence, draw trends, and build drills **without re-running engines**.
 For each game write `analysis/<stamp>.json` (same filename stamp as the page)
 and commit it together with the page and the PGN. `tools/analyze-game.py`
 already wrote this file as a draft — schema, game, engine, plies, accuracy,
-and eloFit, with `"mistakes": []` — so this step is normally just editing
-the selected mistakes into that array: each entry is the GAME mistake's
+eloFit, and the openingReport `bookExitPly`, with `"mistakes": []` and
+`"highlights": []` — so this step is normally just editing the selected
+mistakes into that array (plus the step-3b `highlights` and the
+openingReport `note`/`explorerUrl`): each entry is the GAME mistake's
 fields plus the numeric `sidecar` fields the script printed for that
 candidate (`fenBefore`, `playedUci`, `bestUci`, `humanBestUci`,
 `winBefore`/`winAfter`, `retry`, and your `tags`). Schema (`schema: 1`):
@@ -430,10 +507,12 @@ candidate (`fenBefore`, `playedUci`, `bestUci`, `humanBestUci`,
     "swing": -0.1,                            // user moves: evalAfter − evalBefore, on the
                                               //   ±10-pawn clamped scale
     "humanBestUci": "g1f3",                   // user moves on Maia pages
-    "maia": { "1100": { "played": 0.31, "best": 0.22, "value": 0.55 }, "…": {} }
+    "maia": { "1100": { "played": 0.31, "best": 0.22, "value": 0.55 }, "…": {} },
                                               // user moves: per band, probability of the
                                               //   played/best move and expected score of
                                               //   the position (side to move)
+    "timeSpent": 12.5                         // seconds spent on this move (step 2e;
+                                              //   only when the PGN carried %clk)
   } ],
   "accuracy": { "game": 87.2, "acpl": 34,
     "quality": { "inaccuracies": 3, "mistakes": 2, "blunders": 1 },
@@ -459,7 +538,12 @@ candidate (`fenBefore`, `playedUci`, `bestUci`, `humanBestUci`,
                                               //   minus solutions and the played move
       "legal": ["…"]                          // full legal-move list, sorted
     }
-  } ]
+  } ],
+  "highlights": [ {         // step 3b, same objects as the GAME field
+    "ply": 55, "move": "Bd7", "note": "…", "arrow": ["c8", "d7"] } ],
+  "openingReport": {        // step 3b; analyze-game.py drafts bookExitPly,
+    "bookExitPly": 3,       //   note and explorerUrl are editorial
+    "note": "…", "explorerUrl": "https://lichess.org/analysis" }
 }
 ```
 
@@ -544,6 +628,26 @@ const GAME = {
                               //   series or nothing. Renders the clickable eval graph
                               //   under the board (rust dots = mistakes, two-way synced
                               //   with the replay); omitted → no graph, exactly as v1–3.
+  timeSpent: [4, 6, /*…*/],   // OPTIONAL (step 2e): seconds spent per half-move, from
+                              //   the PGN's %clk comments — one number per movesSan
+                              //   entry, the whole series or nothing. Renders the thin
+                              //   clickable time bar under the eval graph (user moves
+                              //   gold, user moves under 10s rust); omitted → no bar.
+  openingReport: {            // OPTIONAL (step 3b): one bordered paragraph between the
+    bookExitPly: 3,           //   summary and the move list. 0-based ply of the first
+                              //   move with no entry in tools/book/gm2001.bin (page
+                              //   renders "left known theory on …" + a jump link)
+    note: "…",                //   one sentence on the first improvable opening decision
+                              //   and any cross-game structure repetition; HTML allowed
+    explorerUrl: "https://lichess.org/analysis"   // optional; verified URL families only
+  },
+  highlights: [{              // OPTIONAL (step 3b), 1–3 entries: "what you did well" —
+    ply: 30,                  //   calmer gold cards under the mistake list, clickable
+    move: "Bxd5",             //   exactly like mistake cards (board jump + gold panel).
+    note: "…",                //   move must equal movesSan[ply]; never on a mistake
+    arrow: ["e4","d5"]        //   ply. arrow = the played move's from→to (data for
+  }],                        //   cross-game consumers; the board's arrows come from
+                              //   moveNotes as usual)
   moveNotes: [{               // one entry per USER move — puts the arrows (played,
                               //   engine's pick, human-findable) and the legend with
                               //   the move names on EVERY move the user made, not
@@ -608,6 +712,32 @@ explanation second.
 Conventions: all evals from the **user's** perspective (positive = good for the user);
 mate scores as `#3` / `#−2` (negative = user gets mated). Use the minus sign `−` in
 displayed evals to match the house style.
+
+### 4e. Regenerate the trend report (on request)
+
+The cross-game trend report
+(`reports/<date>-recurring-mistakes-and-lichess-study-plan.md` + its
+checkbox `.html` twin) is a generated artifact since version 6:
+
+```bash
+python3 tools/build-trend-report.py    # no venv or engines needed
+```
+
+The script reads every sidecar and rebuilds only the marked
+`<!-- TREND:… -->` regions of the **newest** matching pair, in place: the
+games-analyzed line, the scoreboard, the categories-by-cost table, the
+per-section evidence tables (each sidecar mistake appears once, under its
+first tag), and the sources table. Everything outside the markers — the
+curated prose and the verified Lichess link checklists — is preserved
+byte-for-byte, so edit those by hand and never edit inside the markers.
+Running it twice is byte-identical. The `.html`'s checkbox state keys are
+URL-derived (per `docs/0002-plan-multi-game-trend-analysis.md`) so ticks
+survive regeneration — keep that keying if the checklists are ever edited.
+
+**Cadence rule**: regenerate on request — it is NOT part of the per-game
+workflow — and proactively suggest a regeneration to the user whenever the
+sidecar count in `analysis/` exceeds the report's "Games analyzed" number
+by 3 or more.
 
 ### 5. Update the games index
 
@@ -735,6 +865,28 @@ For the eval graph (any page with `evals`):
   (`graphPly()` tracks `getPly()`). On a page without `evals`, no graph
   renders and `graphPly()` returns null.
 
+For the version-6 fields (any page that carries them):
+
+- **highlights**: one `.highlight-card` per entry and the "What you did
+  well" section visible iff `highlights` is non-empty; clicking a card
+  puts `getPly()` on the highlight's ply and gives `#fb-panel` the
+  `highlight-active` class (gold accent); every `ply` is a user move and
+  not a mistake ply, `move` equals `movesSan[ply]`, `arrow` matches the
+  played move's UCI; the sidecar `highlights` align with its plies and
+  match the page's;
+- **opening report**: the `#opening-report` block is visible iff
+  `openingReport` is present; `bookExitPly` equals the first out-of-book
+  ply per `tools/book/gm2001.bin`; `explorerUrl` (when set) is a
+  lichess.org URL; the sidecar's `bookExitPly` matches the page's;
+- **time bar**: `#time-bar` is visible iff `timeSpent` is present with one
+  non-negative number per half-move; one bar per half-move; clicking a bar
+  jumps the replay. On a page without the field, no bar renders.
+
+After a trend-report regeneration (step 4e): running the generator twice
+is byte-identical, the curated sections are untouched (diff against the
+pre-regeneration file), every checkbox `data-key` that persists is
+unchanged, and the evidence-table rows total the sidecar mistake count.
+
 For retry mode and the drill deck (version 4):
 
 - **retry data**, for every mistake with `retry` (page and sidecar):
@@ -819,6 +971,13 @@ and push.
   patches the zerofish WASM engine, downloads the Maia-1 weights), `serve.mjs`
   (COOP/COEP static server), `host.html` + `query.cjs` (batch UCI queries through
   headless Chromium). `vendor/` and `weights/` are gitignored, re-fetched per session.
+- `tools/build-trend-report.py` — the trend-report generator (workflow step
+  4e, plain python3): rebuilds the marked `TREND:` regions of the newest
+  `reports/*-recurring-mistakes-and-lichess-study-plan` `.md`/`.html` pair
+  from the sidecars, preserving the curated prose and link checklists.
+- `tools/book/` — the offline Polyglot opening book (`gm2001.bin`, see the
+  README there for provenance) behind `bookExitPly` in the opening report
+  (step 3b). Committed — no network needed.
 - `tools/drill-links.json` — the mistake-taxonomy → Lichess practice-link map
   used for `drillLinks` (workflow step 3). Only verified URLs; do not add
   unverified ones (lichess.org is unreachable from this sandbox).

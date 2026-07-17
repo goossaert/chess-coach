@@ -49,6 +49,15 @@ number (step 2b; `flat`/`floor`/`spread` recorded in the sidecar
 `eloFit`). Pages generated under versions 1–4 remain valid and show no
 graph.
 
+Since `docs/0008-plan-pipeline-efficiency.md` the engine work and the
+verification run as two consolidated tools: `tools/analyze-game.py` executes
+steps 2/2b/2c/2d in one call (one JSON out, sidecar draft written to
+`analysis/`), and `tools/verify-game.py` runs the whole step-6 checklist in
+one call (one PASS/FAIL summary). This changed nothing about what is
+computed or checked — same depths, bands, formulas, and assertions, still
+normatively described in the steps below — only how many tool calls and how
+much output it takes.
+
 ## Trigger
 
 The user uploads or pastes a chess game in **PGN** format (they may call it "PNG" —
@@ -75,6 +84,31 @@ Prefer real engine analysis. Setup that is known to work in this environment
 apt-get install -y stockfish            # binary lands at /usr/games/stockfish
 python3 -m venv /tmp/chess-venv && /tmp/chess-venv/bin/pip install chess
 ```
+
+**Run the whole engine pipeline as one call.** `tools/analyze-game.py`
+executes steps 2, 2b, 2c, and 2d together — the Stockfish pass, the Maia
+pass (it runs `tools/maia/setup.sh` and starts `serve.mjs` itself when
+needed), the accuracy/win% math, the mistake ranking, and the depth-18
+retry probes — with exactly the parameters specified in these steps, and
+prints one JSON document holding everything steps 3, 4, and 4b consume:
+GAME-ready `display` values, `moveNotes`, `evals`, ranked
+`mistakeCandidates` (each with display fields, numeric sidecar fields, and
+`retry`), the `accuracy`/`eloFit` blocks, and a compact `userPlies`
+summary for writing the prose. It also writes the step-4b sidecar draft
+(everything except `mistakes`) straight to `analysis/<stamp>.json`:
+
+```bash
+# save the PGN to pgn/<stamp>.txt first (step 4) — its stamp names the sidecar
+/tmp/chess-venv/bin/python tools/analyze-game.py pgn/<stamp>.txt --color white
+```
+
+`--no-maia` forces a Stockfish-only run; on any Maia failure the script
+falls back to that on its own (a `maiaError` field appears in the output —
+note it in `analysisNote` and tell the user). The rest of steps 2–2d is
+the normative description of what the script computes: read them to
+interpret its output, and drive the passes by hand only if the script
+itself cannot run. Never change its analysis parameters (depths, bands,
+formulas) to save time.
 
 For each position where the user is to move, get (depth 20 is a good default):
 
@@ -132,6 +166,9 @@ tools/maia/setup.sh                                  # zerofish engine + Maia-1 
 node tools/maia/serve.mjs &                          # COOP/COEP static server, port 8123
 NODE_PATH=/opt/node22/lib/node_modules node tools/maia/query.cjs job.json > maia.json
 ```
+
+(`tools/analyze-game.py` runs all three of these itself; the manual calls
+are only needed when driving the harness directly.)
 
 `job.json` is `{ "bands": [1100, …, 1900], "positions": ["<FEN>", …] }`; the
 output maps each band to, per FEN, `moves` (UCI → percent of humans in that band
@@ -364,7 +401,13 @@ Regex that does the replacement safely (Python, `re.S`):
 The pipeline already computed everything; persist it so later sessions can
 count recurrence, draw trends, and build drills **without re-running engines**.
 For each game write `analysis/<stamp>.json` (same filename stamp as the page)
-and commit it together with the page and the PGN. Schema (`schema: 1`):
+and commit it together with the page and the PGN. `tools/analyze-game.py`
+already wrote this file as a draft — schema, game, engine, plies, accuracy,
+and eloFit, with `"mistakes": []` — so this step is normally just editing
+the selected mistakes into that array: each entry is the GAME mistake's
+fields plus the numeric `sidecar` fields the script printed for that
+candidate (`fenBefore`, `playedUci`, `bestUci`, `humanBestUci`,
+`winBefore`/`winAfter`, `retry`, and your `tags`). Schema (`schema: 1`):
 
 ```jsonc
 {
@@ -591,8 +634,24 @@ in the game list.
 
 ### 6. Verify before delivering
 
-Playwright and Chromium are pre-installed (`NODE_PATH=/opt/node22/lib/node_modules`,
-browser auto-found via `PLAYWRIGHT_BROWSERS_PATH`). Load the generated file headless and check:
+Run the whole checklist as one call:
+
+```bash
+/tmp/chess-venv/bin/python tools/verify-game.py games/<stamp>.html
+```
+
+It loads the page once in headless Chromium (Playwright and Chromium are
+pre-installed — `NODE_PATH=/opt/node22/lib/node_modules`, browser auto-found
+via `PLAYWRIGHT_BROWSERS_PATH`; `tools/verify-game.cjs` is the script's
+browser half), runs every in-page check below in that single load, runs
+every python-chess cross-check in the same process (including the depth-18
+humanBest re-check probes; `--no-engine` skips only those), and prints one
+summary: a healthy page yields a single `all checks passed` line, and each
+failure prints one line naming the check and the ply. Checks for fields a
+page doesn't carry are skipped, not failed, so older pages verify clean.
+Fix the data and re-run until it passes — the checklist below is the
+normative list of what the script asserts. Loaded headless, the page must
+satisfy:
 
 - `window.__review.error` is `null` and the `#error-banner` is hidden — a non-null
   error means a bad SAN or wrong movetext; **fix the data, never ship a page with the banner**.
@@ -731,6 +790,12 @@ and push.
 - `drills/index.html` — the generated drill deck covering every sidecar
   mistake. Never edited by hand: regenerate with `tools/build-drills.py`
   (workflow step 4c).
+- `tools/analyze-game.py` — the consolidated engine pipeline (workflow steps
+  2/2b/2c/2d in one call): one JSON to stdout with everything steps 3/4/4b
+  consume, sidecar draft written to `analysis/<stamp>.json`.
+- `tools/verify-game.py` — the consolidated step-6 verifier (with
+  `tools/verify-game.cjs` as its headless-Chromium half): every checklist
+  assertion in one call, one PASS/FAIL summary.
 - `tools/build-drills.py` — the deck generator; also backfills step-2d
   `retry` objects into sidecars that predate them.
 - `progress-template.html` — the progress-dashboard template (self-contained;

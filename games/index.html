@@ -202,15 +202,15 @@
 </header>
 
 <nav class="tabs" role="tablist" aria-label="Content">
-  <button class="tab" id="tab-btn-games" role="tab" aria-selected="true" aria-controls="panel-games">Games</button>
+  <button class="tab" id="tab-btn-main" role="tab" aria-selected="true" aria-controls="panel-main">Main</button>
+  <button class="tab" id="tab-btn-games" role="tab" aria-selected="false" aria-controls="panel-games">Games</button>
   <button class="tab" id="tab-btn-reports" role="tab" aria-selected="false" aria-controls="panel-reports">Reports</button>
 </nav>
 
 <main>
-<section id="panel-games" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-games">
+<section id="panel-main" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-main">
   <!-- ======================================================================
-       TOOLS — standing practice pages, kept above the game list.
-       Edit only inside this region.
+       TOOLS — standing practice pages. Edit only inside this region.
        ====================================================================== -->
 
   <a class="game-card" href="../drills/index.html" style="border-color:rgba(201,162,75,0.45);">
@@ -238,7 +238,9 @@
   </a>
 
   <!-- END TOOLS -->
+</section>
 
+<section id="panel-games" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-games" hidden>
   <!-- ======================================================================
        GAME LIST — one <a class="game-card"> per analyzed game.
        Keep sorted by the filename's date-time stamp, NEWEST FIRST:

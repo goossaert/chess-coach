@@ -516,7 +516,7 @@ per-phase accuracy and a tag-recurrence table (each mistake counted once,
 under its **first** tag — order tags accordingly in step 3) — the "is the
 gap shrinking after drilling it?" view. Fix dashboard UI issues in
 `progress-template.html`, never in `reports/progress.html`. The dashboard
-is linked from the `TOOLS` region of `games/index.html`.
+is linked from the `TOOLS` region in the **Main** tab of `games/index.html`.
 
 ### GAME data reference
 
@@ -625,12 +625,18 @@ go at the top). Each entry carries:
 Copy an existing entry and edit it — never change the index's markup or CSS outside
 the list. Verify every `href` in the index resolves to a file in `games/`.
 
-Above the game list sits a separate `TOOLS` / `END TOOLS` marked region
-holding the standing links (currently the drill-deck card pointing at
-`../drills/index.html` and the progress-dashboard card pointing at
-`../reports/progress.html`). Like the game list, edit only inside the
-markers; game entries never go in the TOOLS region and tool links never go
-in the game list.
+`games/index.html` has three tabs, in this order: **Main**, **Games**, **Reports**
+(`nav.tabs` — `#tab-btn-main` / `#tab-btn-games` / `#tab-btn-reports`, panels
+`#panel-main` / `#panel-games` / `#panel-reports`). The GAME LIST above lives in
+the Games tab and holds only entries that link to a generated `games/*.html`
+review page — never tool links.
+
+The **Main** tab holds a separate `TOOLS` / `END TOOLS` marked region with the
+standing links (currently the drill-deck card pointing at `../drills/index.html`
+and the progress-dashboard card pointing at `../reports/progress.html`). Like the
+game list, edit only inside the markers; game entries never go in the TOOLS
+region and tool links never go in the game list. Main is the default-selected
+tab (leftmost, `aria-selected="true"` on load).
 
 ### 6. Verify before delivering
 
@@ -781,9 +787,10 @@ and push.
   (`analysis/<stamp>.json`, workflow step 4b): per-ply FENs/evals/win%,
   per-band Maia numbers, accuracy/quality tallies, Elo fit, and the tagged
   mistakes. The foundation later parts of the learning-loop series read.
-- `games/index.html` — the game list: one link per analyzed game, newest first.
-  Must be updated whenever a page is added (see workflow step 5). Also hosts
-  the `TOOLS` marked region with the drill-deck link.
+- `games/index.html` — three tabs: **Main** (the `TOOLS` region: drill-deck and
+  progress-dashboard links), **Games** (the game list, one link per analyzed
+  game, newest first — must be updated whenever a page is added, see workflow
+  step 5), **Reports** (the report list).
 - `drills-template.html` — the drill-deck template (self-contained; FEN board
   renderer, click-to-move grading, Leitner scheduler, lesson-recall stage).
   Only its `const DRILLS = […];` block is replaced in the generated deck.

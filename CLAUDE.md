@@ -1,6 +1,6 @@
 # chess-coach
 
-**Version 4**
+**Version 5**
 
 This repository turns chess games into interactive coaching pages. When the user
 uploads a game and asks for feedback, analyze it and generate one HTML review page
@@ -36,6 +36,18 @@ principles throughout: retrieval before re-reading (retry mode and the
 boxes), and interleaving (due drills are mixed across games). Every new
 field remains optional — pages generated under versions 1–3 stay valid and
 show no retry UI.
+
+Version 5 (per `docs/0007-plan-learning-loop-3-insight.md`, part 3 of the
+series) adds **insight**: a clickable win% eval graph under the board on
+every new page (the optional `evals` GAME field, step 2c), a standing
+progress dashboard at `reports/progress.html` charting accuracy / ACPL /
+blunders / strength / tag recurrence across all games (step 4d,
+`tools/build-progress.py`), and **honest Elo estimation** — the strength
+fit now excludes low-information positions and mechanically renders flat
+or floor-railed fits as "unclear" / "≤1100" instead of a confident middle
+number (step 2b; `flat`/`floor`/`spread` recorded in the sidecar
+`eloFit`). Pages generated under versions 1–4 remain valid and show no
+graph.
 
 ## Trigger
 
@@ -129,15 +141,44 @@ PGN. Bands run 1100–1900 in steps of 100 — there is nothing below 1100.
 
 Compute four things:
 
-1. **Estimated strength** — for every position where the user is to move (skip
-   forced/only-move positions), get the probability each band assigns to the move
-   actually played. The best-fit band maximizes the mean log-probability (floor
-   tiny probabilities at 0.1% so one weird move can't dominate). Report it as
-   `estimatedElo` ("≈1300"); if the fit is flat, say so in `estimatedEloNote`.
-   Repeat per phase for `phaseElo` (opening ≈ first 10 full moves, endgame from
-   when queens are off or few pieces remain, middlegame between; include the
-   sample size, e.g. "≈1300 · 43 moves", and set `weakestPhase`). Small per-phase
-   samples are normal — the ≈ carries the uncertainty.
+1. **Estimated strength** — for every position where the user is to move, get
+   the probability each band assigns to the move actually played. **Exclude
+   low-information positions from the fit**: forced/only-move positions, and
+   positions where |eval| > 6 pawns (dead-won/dead-lost conversion phases say
+   nothing about strength) — unless that exclusion would leave a fit (the game
+   fit, or a phase fit) with no sample at all, in which case relax the eval
+   cut for that fit. The best-fit band maximizes the mean log-probability
+   (floor tiny probabilities at 0.1% so one weird move can't dominate).
+
+   **Honest display rule (mechanical — the pipeline decides, not editorial
+   judgment).** Compute `spread` = best band's mean log-prob − worst band's,
+   in nats per move, and set two flags: `flat` = spread < 0.15, `floor` =
+   best band is 1100 (the bottom of the Maia-1 range — there is nothing
+   below it). Then:
+
+   - `flat` → `estimatedElo: "unclear"` — the data doesn't distinguish the
+     bands, so never print a confident-looking middle number;
+   - else `floor` → `estimatedElo: "≤1100"` — the fit railed at the bottom
+     of the measurable range, so the true strength may be anywhere at or
+     below it;
+   - else → `estimatedElo: "≈<band>"` as before.
+
+   Record `flat`, `floor`, and `spread` in the sidecar's `eloFit` block.
+   In `estimatedEloNote`, add an approximate corroborating signal from the
+   game's ACPL (rough rapid-pool ballparks from published Lichess-data
+   regressions — corroboration only, never the headline number):
+   ACPL ≤ 20 → ~2000+, 20–35 → ~1700–2000, 35–55 → ~1400–1700,
+   55–85 → ~1100–1400, 85–120 → ~900–1100, > 120 → below ~900.
+   Example note: "band fit ≤1100 (floor); ACPL 78 is typical of ~900–1100
+   rapid — two weak signals agreeing beat one flat fit."
+
+   Repeat per phase for `phaseElo` (opening ≈ first 10 full moves, endgame
+   from when queens are off or few pieces remain, middlegame between; include
+   the sample size, e.g. "≈1300 · 43 moves", and set `weakestPhase`), applying
+   the same exclusions and the same flat/floor display rule per phase
+   ("unclear · 12 moves" beats a confident number a dead-won 35-move endgame
+   produced). Small per-phase samples are normal — the ≈ carries the
+   uncertainty.
 2. **Per-mistake numbers**, at the best-fit band, for the 10–20 positions where
    Stockfish flagged a meaningful swing: `playedPopularity` = probability of the
    played move; `bestFindability` = probability of the engine's best move;
@@ -176,7 +217,12 @@ Select 3–6 mistakes; prefer instructive moments over near-duplicates. Derive
 **Caveats**: most games in `pgn/` are against engines, whose off-beat play can
 push positions outside Maia's human-vs-human training data — take probabilities
 in weird positions with a grain of salt, and keep forced positions out of the Elo
-fit. Percentages in the first ~5 moves are approximate too. Name the model and
+fit. Percentages in the first ~5 moves are approximate too. The Elo fit can
+never say less than "≤1100" because 1100 is the lowest Maia-1 band; a
+long-term option (documented here, deliberately not built) is sub-1100
+inference by measuring how much *less* probable the user's moves are than
+the 1100 band's own median predictability, and Maia-2/3 (with sub-1100
+coverage) is worth revisiting if the sandbox network policy ever changes. Name the model and
 conditioning band in `analysisNote` (e.g. "human model: Maia rating-band networks
 (lc0 via zerofish WASM), conditioned at ≈1300; Maia-3 unreachable from this
 sandbox, Maia-1 bands stand in").
@@ -218,6 +264,12 @@ This feeds the optional GAME fields `accuracy`, `acpl`, `moveQuality`,
 `phaseAccuracy` (stat strip + phase chips in the header) and the per-mistake
 `winBefore`/`winAfter` (the "your winning chances: 92% → 45%" row in the
 feedback panel).
+
+Also emit the full per-ply series as the GAME `evals` field — one win%
+number per half-move (after that ply, user's perspective, the same numbers
+as the sidecar's `winAfter`). It powers the clickable eval graph under the
+board: the whole series or nothing (the template only renders the graph
+when `evals.length` equals the ply count).
 
 ### 2d. Retry grading (precomputed — the page stays engine-free)
 
@@ -346,7 +398,10 @@ and commit it together with the page and the PGN. Schema (`schema: 1`):
     "phases": { "opening": { "accuracy": 94.0, "acpl": 12,
                              "quality": { "…": 0 }, "plies": 20, "userMoves": 10 },
                 "middlegame": {}, "endgame": {} } },
-  "eloFit": { "best": 1100, "flat": true, "positions": 43,
+  "eloFit": { "best": 1100, "flat": true, "floor": true, "spread": 0.12,
+              "positions": 43,                  // flat/floor/spread per the step-2b
+                                                //   honest display rule; positions =
+                                                //   count after the fit exclusions
               "logProbByBand": { "1100": -1.9, "…": 0 } },   // null on Stockfish-only runs
   "mistakes": [ {           // one per GAME mistake, same order; every GAME mistake
                             //   field (title, explanation, takeaways, …), plus:
@@ -399,6 +454,27 @@ interleaved round-robin across source games, each drill ends with a
 "recall the lesson" stage (the takeaway stays hidden until the user has
 tried to state it), and a tag filter scopes a session to one weakness.
 
+### 4d. Regenerate the progress dashboard
+
+After the page, sidecar, and drill deck, re-run the progress builder and
+commit the refreshed dashboard **with** the game's files:
+
+```bash
+python3 tools/build-progress.py            # no venv or engines needed
+```
+
+It reads every `analysis/*.json` and rewrites `reports/progress.html` from
+`progress-template.html` by replacing only the marked
+`const PROGRESS = {…};` block — the same replace-only-the-data-block
+discipline as the other templates, and byte-identical when run twice. The
+dashboard charts accuracy, ACPL, blunders, and the honest Elo reading per
+game over time (flat/floor fits draw as hollow points, per step 2b), plus
+per-phase accuracy and a tag-recurrence table (each mistake counted once,
+under its **first** tag — order tags accordingly in step 3) — the "is the
+gap shrinking after drilling it?" view. Fix dashboard UI issues in
+`progress-template.html`, never in `reports/progress.html`. The dashboard
+is linked from the `TOOLS` region of `games/index.html`.
+
 ### GAME data reference
 
 ```js
@@ -420,6 +496,11 @@ const GAME = {
   moveQuality: { inaccuracies: 3, mistakes: 2, blunders: 1 },   // ?! / ? / ?? stat strip
   phaseAccuracy: { opening: "94%", middlegame: "88%", endgame: "71%" }, // merged into the
                               //   phase chips (or shown alone when no phaseElo)
+  evals: [52.1, 48.7, /*…*/], // OPTIONAL (step 2c): win% after each half-move, user's
+                              //   perspective, one number per movesSan entry — the whole
+                              //   series or nothing. Renders the clickable eval graph
+                              //   under the board (rust dots = mistakes, two-way synced
+                              //   with the replay); omitted → no graph, exactly as v1–3.
   moveNotes: [{               // one entry per USER move — puts the arrows (played,
                               //   engine's pick, human-findable) and the legend with
                               //   the move names on EVERY move the user made, not
@@ -503,9 +584,10 @@ the list. Verify every `href` in the index resolves to a file in `games/`.
 
 Above the game list sits a separate `TOOLS` / `END TOOLS` marked region
 holding the standing links (currently the drill-deck card pointing at
-`../drills/index.html`). Like the game list, edit only inside the markers;
-game entries never go in the TOOLS region and tool links never go in the
-game list.
+`../drills/index.html` and the progress-dashboard card pointing at
+`../reports/progress.html`). Like the game list, edit only inside the
+markers; game entries never go in the TOOLS region and tool links never go
+in the game list.
 
 ### 6. Verify before delivering
 
@@ -551,7 +633,11 @@ When the page carries Maia data, also check:
   and the cream arrow + "human-findable" legend appear only on positions whose
   mistake or move note has `humanBestArrow`;
 - sanity: the Maia probability of the user's actual moves should average well
-  above random at the fit band — if it doesn't, the FENs and moves are misaligned.
+  above random at the fit band — if it doesn't, the FENs and moves are misaligned;
+- `estimatedElo` obeys the step-2b honest display rule: `"unclear"` iff the
+  sidecar's `eloFit.flat` is true, else `"≤1100"` iff `eloFit.floor`, else
+  `"≈<band>"` with the band equal to `eloFit.best` — a flat or floor fit must
+  never render as a confident middle number.
 
 For the version-3 fields (any page that carries them):
 
@@ -569,6 +655,20 @@ For the version-3 fields (any page that carries them):
 - the sidecar exists at `analysis/<stamp>.json`, every `plies[i].san` replays
   legally with python-chess, its mistakes match the page's GAME mistakes
   (ply / played / best), and their `tags` are all from the vocabulary.
+
+For the eval graph (any page with `evals`):
+
+- `evals` has exactly one entry per half-move, every value is within
+  [0, 100], and each equals the step-2c win% after that ply (a ply where the
+  user delivers mate plots near 100, one where the user gets mated near 0);
+- in the Playwright pass: the graph (`#eval-graph`) is visible iff `evals`
+  is set; the polyline has plies + 1 points; clicking a rust `.graph-dot`
+  behaves exactly like clicking that mistake's card (`getPly()` lands on the
+  mistake's ply, `#fb-panel` gains `mistake-active`, and with the
+  practice-first toggle on it starts a retry); `graphClick(ply)` /
+  clicking mid-graph jumps the replay; stepping the replay moves the cursor
+  (`graphPly()` tracks `getPly()`). On a page without `evals`, no graph
+  renders and `graphPly()` returns null.
 
 For retry mode and the drill deck (version 4):
 
@@ -594,9 +694,19 @@ For retry mode and the drill deck (version 4):
   lesson stays hidden until the recall button is clicked, and the headless
   console shows no script errors.
 
+For the progress dashboard (after step 4d):
+
+- running `tools/build-progress.py` twice is byte-identical; every series
+  has one entry per sidecar; every game link in the page resolves to a file
+  in `games/`; each game's tag-table column sums to that sidecar's mistake
+  count; each game's Elo reading obeys the step-2b honest display rule
+  (hollow point iff `flat` or `floor`); the page loads headless with no
+  script errors (`window.__progress.games()` equals the sidecar count).
+
 Then commit the new page together with its `pgn/*.txt` source, its
-`analysis/*.json` sidecar, the regenerated `drills/index.html`, and the
-updated `games/index.html`, and push.
+`analysis/*.json` sidecar, the regenerated `drills/index.html`, the
+regenerated `reports/progress.html`, and the updated `games/index.html`,
+and push.
 
 ## Repo layout
 
@@ -623,6 +733,16 @@ updated `games/index.html`, and push.
   (workflow step 4c).
 - `tools/build-drills.py` — the deck generator; also backfills step-2d
   `retry` objects into sidecars that predate them.
+- `progress-template.html` — the progress-dashboard template (self-contained;
+  inline-SVG charts, tag-recurrence table). Only its `const PROGRESS = {…};`
+  block is replaced in the generated dashboard.
+- `reports/progress.html` — the generated progress dashboard: accuracy /
+  ACPL / blunders / honest-Elo / phase-accuracy series over every analyzed
+  game plus the tag-recurrence table. Never edited by hand: regenerate with
+  `tools/build-progress.py` (workflow step 4d). Other cross-game reports
+  live in `reports/` too.
+- `tools/build-progress.py` — the dashboard generator (plain python3, reads
+  the sidecars only).
 - `tools/maia/` — the Maia harness for workflow step 2b: `setup.sh` (fetches and
   patches the zerofish WASM engine, downloads the Maia-1 weights), `serve.mjs`
   (COOP/COEP static server), `host.html` + `query.cjs` (batch UCI queries through

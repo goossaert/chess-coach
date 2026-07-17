@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progress — Chess Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12161d;
+    --panel: #181e27;
+    --panel-border: #262f3b;
+    --cream: #ece7da;
+    --muted: #8b93a1;
+    --gold: #c9a24b;
+    --rust: #c1502f;
+    /* chart series colors, validated for the dark surface (CVD-safe trio) */
+    --s-gold: #b28a36;
+    --s-blue: #5e8ecc;
+    --s-rust: #c1502f;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body { padding: 0 0 64px; }
+
+  header.page-head {
+    padding: 48px 20px 28px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .eyebrow-top {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 14px;
+  }
+  h1.title {
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.05;
+    margin: 0 0 14px;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+  }
+  h1.title em { font-style: italic; color: var(--rust); }
+  p.subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    max-width: 62ch;
+  }
+
+  main { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .chart-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 16px 16px 10px;
+  }
+  .chart-card h2 {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 2px;
+  }
+  .chart-card .chart-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0 0 10px;
+    line-height: 1.5;
+  }
+  .chart-card svg { display: block; width: 100%; height: auto; }
+  .chart-note {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    margin: 6px 0 2px;
+    line-height: 1.5;
+  }
+  .chart-legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 6px 0 2px;
+  }
+  .chart-legend .li { display: flex; align-items: center; gap: 5px; }
+  .chart-legend .sw { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+
+  h2.section-head {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 24px;
+    margin: 44px 0 6px;
+    color: var(--cream);
+  }
+  p.section-sub {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 0 0 18px;
+    line-height: 1.6;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 8px;
+  }
+  table.tag-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .tag-table th, .tag-table td {
+    padding: 7px 9px;
+    text-align: center;
+    border-bottom: 1px solid var(--panel-border);
+    white-space: nowrap;
+  }
+  .tag-table thead th { color: var(--muted); font-weight: 500; font-size: 11px; }
+  .tag-table thead th a {
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(139,147,161,0.5);
+  }
+  .tag-table thead th a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+  .tag-table td.tag-name, .tag-table th.tag-name { text-align: left; color: var(--cream); }
+  .tag-table td.total { color: var(--gold); font-weight: 600; }
+  .tag-table td.zero { color: rgba(139,147,161,0.35); }
+  .tag-table tbody tr:last-child td { border-bottom: none; }
+
+  footer {
+    max-width: 980px;
+    margin: 40px auto 0;
+    padding: 20px 20px 0;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    border-top: 1px solid var(--panel-border);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 400px) { h1.title { font-size: 32px; } }
+</style>
+</head>
+<body>
+
+<nav style="max-width:1000px;margin:0 auto;padding:16px 24px 0;display:flex;justify-content:space-between;align-items:baseline;font-family:var(--sans);font-size:13px;letter-spacing:.02em;">
+  <a href="../games/index.html" style="color:var(--gold);text-decoration:none;">&larr;&nbsp;Back to index</a>
+  <span style="color:var(--muted);">Progress dashboard</span>
+</nav>
+
+<header class="page-head">
+  <span class="eyebrow-top">chess coach · progress</span>
+  <h1 class="title">Is the training working?<br><em>Watch the needle.</em></h1>
+  <p class="subtitle">Every analyzed game as one point on each dial — accuracy, centipawn loss, blunders, estimated strength, and which mistakes keep coming back. Regenerated from the analysis sidecars with every new game.</p>
+</header>
+
+<main>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h2>Accuracy per game</h2>
+      <p class="chart-sub">Lichess-style game accuracy, 0–100%. Up and to the right is the goal.</p>
+      <div id="chart-accuracy"></div>
+    </div>
+    <div class="chart-card">
+      <h2>Average centipawn loss</h2>
+      <p class="chart-sub">Mean loss vs the engine's best move — lower is better.</p>
+      <div id="chart-acpl"></div>
+    </div>
+    <div class="chart-card">
+      <h2>Blunders per game</h2>
+      <p class="chart-sub">Moves that dropped win probability by 30+ points (the ?? tally).</p>
+      <div id="chart-blunders"></div>
+    </div>
+    <div class="chart-card">
+      <h2>Estimated strength</h2>
+      <p class="chart-sub">Best-fit Maia band per game. Hollow points are fits the pipeline flagged as unreliable — flat (bands indistinguishable) or railed at the 1100 floor.</p>
+      <div id="chart-elo"></div>
+      <p class="chart-note" id="elo-note"></p>
+    </div>
+    <div class="chart-card" style="grid-column: 1 / -1;">
+      <h2>Accuracy by phase</h2>
+      <p class="chart-sub">The same accuracy number, split by game phase — the weakest line is where the training hours pay most.</p>
+      <div id="chart-phases"></div>
+      <div class="chart-legend" id="phase-legend"></div>
+    </div>
+  </div>
+
+  <h2 class="section-head">Mistakes by type, game by game</h2>
+  <p class="section-sub">Each analyzed mistake counted once, under its primary tag — the feedback signal: after drilling a weakness, does its row go quiet? Column headers link to each game's review page.</p>
+  <div class="table-wrap" id="tag-table"></div>
+</main>
+
+<footer id="page-footer"></footer>
+
+<script>
+// ============================================================================
+// === PROGRESS DATA — replace everything between this line and END PROGRESS
+// === DATA. Placeholder data demonstrating the expected shape; the real file
+// === is generated by tools/build-progress.py from the analysis sidecars.
+// ============================================================================
+const PROGRESS = {
+  games: [
+    {
+      stamp: "2026-01-01-10-00-demo-vs-demo",
+      date: "2026-01-01", time: "10:00",
+      label: "Demo vs Demo", result: "1-0", userColor: "white",
+      page: "../games/2026-01-01-10-00-demo-vs-demo.html",
+      accuracy: 68.0, acpl: 74, blunders: 2, mistakes: 4,
+      phases: { opening: 82.0, middlegame: 61.0 },
+      elo: { display: "≤1100", band: 1100, flat: false, floor: true,
+             note: "ACPL 74 is typical of ~1100–1400 rapid" },
+      tags: { "hanging-piece": 2, "missed-tactic": 1, "king-safety": 1 }
+    },
+    {
+      stamp: "2026-01-03-18-30-demo-vs-demo",
+      date: "2026-01-03", time: "18:30",
+      label: "Demo vs Demo", result: "0-1", userColor: "black",
+      page: "../games/2026-01-03-18-30-demo-vs-demo.html",
+      accuracy: 79.5, acpl: 51, blunders: 1, mistakes: 3,
+      phases: { opening: 85.0, middlegame: 74.0, endgame: 80.0 },
+      elo: { display: "unclear", band: 1500, flat: true, floor: false,
+             note: "ACPL 51 is typical of ~1400–1700 rapid" },
+      tags: { "hanging-piece": 1, "conversion-drift": 2 }
+    },
+    {
+      stamp: "2026-01-06-12-15-demo-vs-demo",
+      date: "2026-01-06", time: "12:15",
+      label: "Demo vs Demo", result: "1-0", userColor: "white",
+      page: "../games/2026-01-06-12-15-demo-vs-demo.html",
+      accuracy: 88.1, acpl: 33, blunders: 0, mistakes: 3,
+      phases: { opening: 90.0, middlegame: 87.0, endgame: 89.0 },
+      elo: { display: "≈1400", band: 1400, flat: false, floor: false,
+             note: "ACPL 33 is typical of ~1700–2000 rapid" },
+      tags: { "conversion-drift": 1, "endgame-technique": 1, "missed-tactic": 1 }
+    }
+  ]
+};
+// ============================================================================
+// === END PROGRESS DATA ======================================================
+// ============================================================================
+</script>
+
+<script>
+(function () {
+"use strict";
+
+const games = PROGRESS.games;
+const $ = (id) => document.getElementById(id);
+const SVG_NS = "http://www.w3.org/2000/svg";
+function svgEl(tag, attrs) {
+  const el = document.createElementNS(SVG_NS, tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const GOLD = css("--s-gold"), BLUE = css("--s-blue"), RUST = css("--s-rust");
+const MUTED = css("--muted"), GRID = css("--panel-border"), CREAM = css("--cream");
+
+// ---- shared chart frame ---------------------------------------------------
+const CW = 460, CH = 170, PL = 40, PR = 14, PT = 12, PB = 24;
+const N = games.length;
+
+function xPos(i) { return N === 1 ? (PL + CW - PR) / 2 : PL + (CW - PL - PR) * i / (N - 1); }
+
+function frame(yMin, yMax, ticks, fmt) {
+  const svg = svgEl("svg", { viewBox: "0 0 " + CW + " " + CH });
+  const yPos = (v) => PT + (CH - PT - PB) * (1 - (v - yMin) / (yMax - yMin));
+  for (const t of ticks) {
+    svg.appendChild(svgEl("line", { x1: PL, y1: yPos(t), x2: CW - PR, y2: yPos(t),
+      stroke: GRID, "stroke-width": 0.75 }));
+    const lab = svgEl("text", { x: PL - 6, y: yPos(t) + 3, "text-anchor": "end",
+      "font-family": "'IBM Plex Mono', monospace", "font-size": 9, fill: MUTED });
+    lab.textContent = fmt ? fmt(t) : t;
+    svg.appendChild(lab);
+  }
+  // x labels: game dates, thinned when crowded
+  const step = Math.max(1, Math.ceil(N / 9));
+  for (let i = 0; i < N; i++) {
+    if (i % step !== 0 && i !== N - 1) continue;
+    const lab = svgEl("text", { x: xPos(i), y: CH - 8, "text-anchor": "middle",
+      "font-family": "'IBM Plex Mono', monospace", "font-size": 9, fill: MUTED });
+    lab.textContent = games[i].date.slice(5);
+    svg.appendChild(lab);
+  }
+  svg._y = yPos;
+  return svg;
+}
+
+function tip(el, text) {
+  const t = document.createElementNS(SVG_NS, "title");
+  t.textContent = text;
+  el.appendChild(t);
+  return el;
+}
+
+// polyline through non-null values (gaps split the line), markers with
+// tooltips, and one direct label on the last point
+function series(svg, values, color, fmt, opts) {
+  const yPos = svg._y;
+  let run = [];
+  const flush = () => {
+    if (run.length > 1) svg.appendChild(svgEl("polyline", { points: run.join(" "),
+      fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round",
+      "stroke-linecap": "round" }));
+    run = [];
+  };
+  for (let i = 0; i < N; i++) {
+    if (values[i] == null) { flush(); continue; }
+    run.push(xPos(i) + "," + yPos(values[i]));
+  }
+  flush();
+  let last = null;
+  for (let i = 0; i < N; i++) {
+    if (values[i] == null) continue;
+    last = i;
+    const dot = svgEl("circle", { cx: xPos(i), cy: yPos(values[i]), r: 4,
+      fill: color, stroke: "#181e27", "stroke-width": 2 });
+    tip(dot, games[i].date + " · " + games[i].label + " — " + fmt(values[i]));
+    svg.appendChild(dot);
+  }
+  if (last != null && !(opts && opts.noEndLabel)) {
+    const lab = svgEl("text", { x: Math.min(xPos(last) + 7, CW - 2), y: yPos(values[last]) + 3,
+      "font-family": "'IBM Plex Mono', monospace", "font-size": 9.5, "font-weight": 600,
+      "text-anchor": xPos(last) > CW - PR - 30 ? "end" : "start", fill: CREAM });
+    lab.setAttribute("x", xPos(last) > CW - PR - 30 ? xPos(last) - 7 : xPos(last) + 7);
+    lab.textContent = fmt(values[last]);
+    svg.appendChild(lab);
+  }
+}
+
+function niceMax(v, step) { return Math.max(step, Math.ceil(v / step) * step); }
+
+// ---- the five charts ------------------------------------------------------
+
+// accuracy: fixed 0–100 scale
+(function () {
+  const svg = frame(0, 100, [0, 25, 50, 75, 100], (t) => t + "%");
+  series(svg, games.map((g) => g.accuracy), GOLD, (v) => v.toFixed(1) + "%");
+  $("chart-accuracy").appendChild(svg);
+})();
+
+// acpl
+(function () {
+  const vals = games.map((g) => g.acpl);
+  const max = niceMax(Math.max(...vals.filter((v) => v != null), 0), 50);
+  const ticks = [];
+  for (let t = 0; t <= max; t += max / 4) ticks.push(t);
+  const svg = frame(0, max, ticks, (t) => Math.round(t));
+  series(svg, vals, GOLD, (v) => v + " acpl");
+  $("chart-acpl").appendChild(svg);
+})();
+
+// blunders: bars on an integer scale
+(function () {
+  const vals = games.map((g) => g.blunders);
+  const max = niceMax(Math.max(...vals, 0), 1);
+  const ticks = [];
+  for (let t = 0; t <= max; t++) ticks.push(t);
+  const svg = frame(0, max, ticks, (t) => t);
+  const yPos = svg._y;
+  const bw = Math.min(22, (CW - PL - PR) / N * 0.5);
+  for (let i = 0; i < N; i++) {
+    const h = yPos(0) - yPos(vals[i]);
+    const bar = svgEl("rect", { x: xPos(i) - bw / 2, y: yPos(vals[i]), width: bw,
+      height: Math.max(h, 0), rx: Math.min(4, bw / 2), fill: RUST });
+    if (h <= 0) continue;                       // zero blunders: no mark, the gap is the story
+    tip(bar, games[i].date + " · " + games[i].label + " — " +
+      vals[i] + (vals[i] === 1 ? " blunder" : " blunders"));
+    svg.appendChild(bar);
+  }
+  svg.appendChild(svgEl("line", { x1: PL, y1: yPos(0), x2: CW - PR, y2: yPos(0),
+    stroke: MUTED, "stroke-width": 1, opacity: 0.6 }));
+  $("chart-blunders").appendChild(svg);
+})();
+
+// estimated strength: band points, hollow when the fit is flat or floored
+(function () {
+  const svg = frame(1000, 2000, [1100, 1300, 1500, 1700, 1900], (t) => t);
+  const yPos = svg._y;
+  let anyHollow = false;
+  for (let i = 0; i < N; i++) {
+    const e = games[i].elo;
+    if (!e) continue;
+    const confident = !e.flat && !e.floor;
+    if (!confident) anyHollow = true;
+    const dot = svgEl("circle", { cx: xPos(i), cy: yPos(e.band), r: 4.5,
+      fill: confident ? GOLD : "#181e27", stroke: GOLD, "stroke-width": 2 });
+    tip(dot, games[i].date + " · " + games[i].label + " — " + e.display +
+      (e.note ? " (" + e.note + ")" : ""));
+    svg.appendChild(dot);
+  }
+  $("chart-elo").appendChild(svg);
+  $("elo-note").textContent = anyHollow
+    ? "hollow = “unclear” (flat fit) or “≤1100” (fit railed at the bottom Maia band) — hover a point for the honest reading and its ACPL corroboration"
+    : "all fits peaked cleanly — hover a point for its ACPL corroboration";
+})();
+
+// per-phase accuracy: three series + legend
+(function () {
+  const svg = frame(0, 100, [0, 25, 50, 75, 100], (t) => t + "%");
+  const phases = [["opening", GOLD], ["middlegame", BLUE], ["endgame", RUST]];
+  const legend = $("phase-legend");
+  for (const [ph, color] of phases) {
+    const vals = games.map((g) => (g.phases && g.phases[ph] != null) ? g.phases[ph] : null);
+    if (!vals.some((v) => v != null)) continue;
+    series(svg, vals, color, (v) => ph + " " + v.toFixed(1) + "%", { noEndLabel: true });
+    const li = document.createElement("span");
+    li.className = "li";
+    li.innerHTML = "<span class=\"sw\" style=\"background:" + color + "\"></span>" + ph;
+    legend.appendChild(li);
+  }
+  $("chart-phases").appendChild(svg);
+})();
+
+// ---- tag recurrence table -------------------------------------------------
+(function () {
+  const totals = new Map();
+  for (const g of games) {
+    for (const t in g.tags) totals.set(t, (totals.get(t) || 0) + g.tags[t]);
+  }
+  const tags = [...totals.keys()].sort((a, b) => totals.get(b) - totals.get(a) || (a < b ? -1 : 1));
+  const maxCell = Math.max(1, ...games.map((g) => Math.max(0, ...Object.values(g.tags))));
+
+  const table = document.createElement("table");
+  table.className = "tag-table";
+  const thead = document.createElement("thead");
+  const hr = document.createElement("tr");
+  hr.innerHTML = "<th class=\"tag-name\">mistake type</th>" +
+    games.map((g) => "<th><a href=\"" + g.page + "\" title=\"" + g.label + " · " +
+      g.date + " " + g.time + "\">" + g.date.slice(5) + "</a></th>").join("") +
+    "<th>total</th>";
+  thead.appendChild(hr);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  for (const tag of tags) {
+    const tr = document.createElement("tr");
+    let cells = "<td class=\"tag-name\">" + tag + "</td>";
+    for (const g of games) {
+      const c = g.tags[tag] || 0;
+      cells += c
+        ? "<td style=\"background:rgba(201,162,75," + (0.09 + 0.28 * c / maxCell).toFixed(2) + ")\">" + c + "</td>"
+        : "<td class=\"zero\">·</td>";
+    }
+    cells += "<td class=\"total\">" + totals.get(tag) + "</td>";
+    tr.innerHTML = cells;
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+  $("tag-table").appendChild(table);
+})();
+
+$("page-footer").textContent = "Progress dashboard · built from the analysis sidecars by tools/build-progress.py · " +
+  games.length + " games · accuracy and win% per the Lichess formulas · strength = Maia band fit with the honest flat/floor display rule";
+
+// test/debug hook
+window.__progress = {
+  games: () => games.length,
+  tagColumnSum: (i) => Object.values(games[i].tags).reduce((a, b) => a + b, 0),
+  mistakes: (i) => games[i].mistakes,
+  elo: (i) => games[i].elo
+};
+
+})();
+</script>
+</body>
+</html>

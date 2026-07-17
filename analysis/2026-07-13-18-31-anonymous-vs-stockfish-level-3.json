@@ -2857,7 +2857,63 @@
    "playedUci": "e2h5",
    "bestUci": "a1b1",
    "winBefore": 79.0,
-   "winAfter": 22.3
+   "winAfter": 22.3,
+   "retry": {
+    "fen": "5k2/p1r2q2/1p3n2/3p1Q2/b2P1P2/2P5/Pb1NBP1P/R4RK1 w - - 6 33",
+    "solutions": [
+     "a1b1"
+    ],
+    "acceptable": [
+     "a1e1",
+     "d2f3"
+    ],
+    "legal": [
+     "a1b1",
+     "a1c1",
+     "a1d1",
+     "a1e1",
+     "a2a3",
+     "c3c4",
+     "d2b1",
+     "d2b3",
+     "d2c4",
+     "d2e4",
+     "d2f3",
+     "e2a6",
+     "e2b5",
+     "e2c4",
+     "e2d1",
+     "e2d3",
+     "e2f3",
+     "e2g4",
+     "e2h5",
+     "f1b1",
+     "f1c1",
+     "f1d1",
+     "f1e1",
+     "f2f3",
+     "f5b1",
+     "f5c2",
+     "f5c8",
+     "f5d3",
+     "f5d5",
+     "f5d7",
+     "f5e4",
+     "f5e5",
+     "f5e6",
+     "f5f6",
+     "f5g4",
+     "f5g5",
+     "f5g6",
+     "f5h3",
+     "f5h5",
+     "f5h7",
+     "g1g2",
+     "g1h1",
+     "h2h3",
+     "h2h4"
+    ]
+   }
   },
   {
    "ply": 68,
@@ -2895,7 +2951,39 @@
    "playedUci": "b1b2",
    "bestUci": "g1h1",
    "winBefore": 13.0,
-   "winAfter": 2.5
+   "winAfter": 2.5,
+   "retry": {
+    "fen": "5k2/p1r2q2/1p6/3p4/b2P1n2/2P5/Pb1N1P1P/RQ3RK1 w - - 0 35",
+    "solutions": [
+     "g1h1"
+    ],
+    "acceptable": [],
+    "legal": [
+     "a2a3",
+     "b1b2",
+     "b1c1",
+     "b1c2",
+     "b1d1",
+     "b1d3",
+     "b1e1",
+     "b1e4",
+     "b1f5",
+     "b1g6",
+     "b1h7",
+     "c3c4",
+     "d2b3",
+     "d2c4",
+     "d2e4",
+     "d2f3",
+     "f1c1",
+     "f1d1",
+     "f1e1",
+     "f2f3",
+     "g1h1",
+     "h2h3",
+     "h2h4"
+    ]
+   }
   },
   {
    "ply": 14,
@@ -2932,7 +3020,56 @@
    "playedUci": "d2e4",
    "bestUci": "d1e2",
    "winBefore": 65.8,
-   "winAfter": 37.5
+   "winAfter": 37.5,
+   "retry": {
+    "fen": "r2q1knr/pppbbpp1/2npp2p/4P3/2BP4/2P2N2/PP1N1PPP/R1BQK2R w KQ - 5 8",
+    "solutions": [
+     "d1e2"
+    ],
+    "acceptable": [
+     "a2a4",
+     "e1g1",
+     "h2h3",
+     "h2h4"
+    ],
+    "legal": [
+     "a1b1",
+     "a2a3",
+     "a2a4",
+     "b2b3",
+     "b2b4",
+     "c4a6",
+     "c4b3",
+     "c4b5",
+     "c4d3",
+     "c4d5",
+     "c4e2",
+     "c4e6",
+     "c4f1",
+     "d1a4",
+     "d1b3",
+     "d1c2",
+     "d1e2",
+     "d2b1",
+     "d2b3",
+     "d2e4",
+     "d2f1",
+     "d4d5",
+     "e1e2",
+     "e1f1",
+     "e1g1",
+     "e5d6",
+     "f3g1",
+     "f3g5",
+     "f3h4",
+     "g2g3",
+     "g2g4",
+     "h1f1",
+     "h1g1",
+     "h2h3",
+     "h2h4"
+    ]
+   }
   },
   {
    "ply": 18,
@@ -2970,7 +3107,61 @@
    "playedUci": "c5b7",
    "bestUci": "c5d7",
    "winBefore": 70.5,
-   "winAfter": 26.7
+   "winAfter": 26.7,
+   "retry": {
+    "fen": "r2q1knr/p1pbbpp1/1pn1p2p/2NpP3/2BP4/2P2N2/PP3PPP/R1BQK2R w KQ - 0 10",
+    "solutions": [
+     "c5d7"
+    ],
+    "acceptable": [],
+    "legal": [
+     "a1b1",
+     "a2a3",
+     "a2a4",
+     "b2b3",
+     "b2b4",
+     "c1d2",
+     "c1e3",
+     "c1f4",
+     "c1g5",
+     "c1h6",
+     "c4a6",
+     "c4b3",
+     "c4b5",
+     "c4d3",
+     "c4d5",
+     "c4e2",
+     "c4f1",
+     "c5a4",
+     "c5a6",
+     "c5b3",
+     "c5b7",
+     "c5d3",
+     "c5d7",
+     "c5e4",
+     "c5e6",
+     "d1a4",
+     "d1b3",
+     "d1c2",
+     "d1d2",
+     "d1d3",
+     "d1e2",
+     "e1d2",
+     "e1e2",
+     "e1f1",
+     "e1g1",
+     "f3d2",
+     "f3g1",
+     "f3g5",
+     "f3h4",
+     "g2g3",
+     "g2g4",
+     "h1f1",
+     "h1g1",
+     "h2h3",
+     "h2h4"
+    ]
+   }
   },
   {
    "ply": 28,
@@ -3007,7 +3198,63 @@
    "playedUci": "d1d3",
    "bestUci": "a2a4",
    "winBefore": 87.5,
-   "winAfter": 70.9
+   "winAfter": 70.9,
+   "retry": {
+    "fen": "rq3knr/p3bpp1/Bpb1p3/2ppP2p/3P1B2/1NP2N2/PP3PPP/R2QK2R w KQ - 2 15",
+    "solutions": [
+     "a2a4"
+    ],
+    "acceptable": [
+     "a6e2",
+     "b3c1",
+     "b3d2"
+    ],
+    "legal": [
+     "a1b1",
+     "a1c1",
+     "a2a3",
+     "a2a4",
+     "a6b5",
+     "a6b7",
+     "a6c4",
+     "a6c8",
+     "a6d3",
+     "a6e2",
+     "a6f1",
+     "b3a5",
+     "b3c1",
+     "b3c5",
+     "b3d2",
+     "c3c4",
+     "d1b1",
+     "d1c1",
+     "d1c2",
+     "d1d2",
+     "d1d3",
+     "d1e2",
+     "d4c5",
+     "e1d2",
+     "e1e2",
+     "e1f1",
+     "e1g1",
+     "f3d2",
+     "f3g1",
+     "f3g5",
+     "f3h4",
+     "f4c1",
+     "f4d2",
+     "f4e3",
+     "f4g3",
+     "f4g5",
+     "f4h6",
+     "g2g3",
+     "g2g4",
+     "h1f1",
+     "h1g1",
+     "h2h3",
+     "h2h4"
+    ]
+   }
   }
  ]
 }

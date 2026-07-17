@@ -4233,7 +4233,35 @@
    "bestUci": "a1h1",
    "humanBestUci": "a1h1",
    "winBefore": 5.0,
-   "winAfter": 2.5
+   "winAfter": 2.5,
+   "retry": {
+    "fen": "8/5pk1/6p1/8/4P3/3K4/6rp/R7 w - - 2 45",
+    "solutions": [
+     "a1h1"
+    ],
+    "acceptable": [],
+    "legal": [
+     "a1a2",
+     "a1a3",
+     "a1a4",
+     "a1a5",
+     "a1a6",
+     "a1a7",
+     "a1a8",
+     "a1b1",
+     "a1c1",
+     "a1d1",
+     "a1e1",
+     "a1f1",
+     "a1g1",
+     "a1h1",
+     "d3c3",
+     "d3c4",
+     "d3d4",
+     "d3e3",
+     "e4e5"
+    ]
+   }
   },
   {
    "ply": 64,
@@ -4282,7 +4310,18 @@
    "bestUci": "e5f4",
    "humanBestUci": "e5f4",
    "winBefore": 45.1,
-   "winAfter": 26.1
+   "winAfter": 26.1,
+   "retry": {
+    "fen": "6k1/p4pbp/6p1/3RK3/3BP3/r7/6PP/8 w - - 5 33",
+    "solutions": [
+     "e5f4"
+    ],
+    "acceptable": [],
+    "legal": [
+     "e5d6",
+     "e5f4"
+    ]
+   }
   },
   {
    "ply": 48,
@@ -4330,7 +4369,59 @@
    "bestUci": "c5a3",
    "humanBestUci": "c5e7",
    "winBefore": 84.8,
-   "winAfter": 50.2
+   "winAfter": 50.2,
+   "retry": {
+    "fen": "2r3k1/p4pbp/2B3p1/2B5/8/4P3/P5PP/3R2K1 w - - 1 25",
+    "solutions": [
+     "c5a3",
+     "c5e7"
+    ],
+    "acceptable": [
+     "c5b4",
+     "d1d5"
+    ],
+    "legal": [
+     "a2a3",
+     "a2a4",
+     "c5a3",
+     "c5a7",
+     "c5b4",
+     "c5b6",
+     "c5d4",
+     "c5d6",
+     "c5e7",
+     "c5f8",
+     "c6a4",
+     "c6a8",
+     "c6b5",
+     "c6b7",
+     "c6d5",
+     "c6d7",
+     "c6e4",
+     "c6e8",
+     "c6f3",
+     "d1a1",
+     "d1b1",
+     "d1c1",
+     "d1d2",
+     "d1d3",
+     "d1d4",
+     "d1d5",
+     "d1d6",
+     "d1d7",
+     "d1d8",
+     "d1e1",
+     "d1f1",
+     "e3e4",
+     "g1f1",
+     "g1f2",
+     "g1h1",
+     "g2g3",
+     "g2g4",
+     "h2h3",
+     "h2h4"
+    ]
+   }
   },
   {
    "ply": 22,
@@ -4379,7 +4470,50 @@
    "bestUci": "d4e5",
    "humanBestUci": "d4e5",
    "winBefore": 57.0,
-   "winAfter": 50.1
+   "winAfter": 50.1,
+   "retry": {
+    "fen": "r2q1rk1/ppp2pbp/2n3p1/4p3/3P4/2P2B2/PP3PPP/R1BQ1RK1 w - - 0 12",
+    "solutions": [
+     "d4e5"
+    ],
+    "acceptable": [
+     "d1b3"
+    ],
+    "legal": [
+     "a1b1",
+     "a2a3",
+     "a2a4",
+     "b2b3",
+     "b2b4",
+     "c1d2",
+     "c1e3",
+     "c1f4",
+     "c1g5",
+     "c1h6",
+     "c3c4",
+     "d1a4",
+     "d1b3",
+     "d1c2",
+     "d1d2",
+     "d1d3",
+     "d1e1",
+     "d1e2",
+     "d4d5",
+     "d4e5",
+     "f1e1",
+     "f3c6",
+     "f3d5",
+     "f3e2",
+     "f3e4",
+     "f3g4",
+     "f3h5",
+     "g1h1",
+     "g2g3",
+     "g2g4",
+     "h2h3",
+     "h2h4"
+    ]
+   }
   }
  ]
 }

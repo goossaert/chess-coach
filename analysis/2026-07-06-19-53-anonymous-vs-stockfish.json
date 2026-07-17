@@ -5196,7 +5196,30 @@
    "playedUci": "f4e5",
    "bestUci": "f4b8",
    "winBefore": 92.6,
-   "winAfter": 8.6
+   "winAfter": 8.6,
+   "retry": {
+    "fen": "1b6/8/2k5/3p1p1p/3P1B2/5KP1/8/8 w - - 2 66",
+    "solutions": [
+     "f4b8"
+    ],
+    "acceptable": [],
+    "legal": [
+     "f3e2",
+     "f3e3",
+     "f3f2",
+     "f3g2",
+     "f4b8",
+     "f4c1",
+     "f4c7",
+     "f4d2",
+     "f4d6",
+     "f4e3",
+     "f4e5",
+     "f4g5",
+     "f4h6",
+     "g3g4"
+    ]
+   }
   },
   {
    "ply": 124,
@@ -5234,7 +5257,28 @@
    "playedUci": "g2g3",
    "bestUci": "f2f3",
    "winBefore": 88.1,
-   "winAfter": 49.8
+   "winAfter": 49.8,
+   "retry": {
+    "fen": "1b6/1P1k4/8/3p1p1p/3P4/4B3/5KP1/8 w - - 2 63",
+    "solutions": [
+     "f2f3"
+    ],
+    "acceptable": [],
+    "legal": [
+     "e3c1",
+     "e3d2",
+     "e3f4",
+     "e3g5",
+     "e3h6",
+     "f2e1",
+     "f2e2",
+     "f2f1",
+     "f2f3",
+     "f2g1",
+     "g2g3",
+     "g2g4"
+    ]
+   }
   },
   {
    "ply": 102,
@@ -5272,7 +5316,51 @@
    "playedUci": "c3e3",
    "bestUci": "d4e5",
    "winBefore": 97.5,
-   "winAfter": 89.4
+   "winAfter": 89.4,
+   "retry": {
+    "fen": "3b2k1/8/4p3/3pqP1p/3P1B2/1PQ3P1/6P1/4N1K1 w - - 0 52",
+    "solutions": [
+     "d4e5"
+    ],
+    "acceptable": [
+     "f4e5"
+    ],
+    "legal": [
+     "b3b4",
+     "c3a1",
+     "c3a5",
+     "c3b2",
+     "c3b4",
+     "c3c1",
+     "c3c2",
+     "c3c4",
+     "c3c5",
+     "c3c6",
+     "c3c7",
+     "c3c8",
+     "c3d2",
+     "c3d3",
+     "c3e3",
+     "c3f3",
+     "d4e5",
+     "e1c2",
+     "e1d3",
+     "e1f3",
+     "f4c1",
+     "f4d2",
+     "f4e3",
+     "f4e5",
+     "f4g5",
+     "f4h6",
+     "f5e6",
+     "f5f6",
+     "g1f1",
+     "g1f2",
+     "g1h1",
+     "g1h2",
+     "g3g4"
+    ]
+   }
   }
  ]
 }

@@ -1,4 +1,4 @@
-# Learning Loop 4 of 4 — Polish: Highlights, Openings, Trend Regen, Clocks & Backfill
+# Learning Loop 4 of 4 — Polish: Highlights, Openings, Trend Regen & Clocks
 
 **Series**: part 4 (final) of the *faster learning loop* series. Run the
 parts sequentially, one fresh session each:
@@ -13,18 +13,23 @@ parts sequentially, one fresh session each:
 `tools/build-drills.*`, `reports/progress.html` + `tools/build-progress.*`,
 the eval-graph `evals` field and retry mode in `template.html`, and their
 documentation in `CLAUDE.md`. If anything is missing, run the corresponding
-earlier plan first. Item 5 (page regeneration) additionally assumes the
-template changes from parts 1–3 have been exercised on at least one real
-newly-analyzed game; if none exists yet, still proceed — the regeneration
-itself provides that exercise, one page at a time.
+earlier plan first.
+
+Backfilling the pre-existing pages onto the current template used to be
+item 5 of this plan; it now lives in its own plan,
+`docs/0010-plan-single-game-backfill.md`, which regenerates **one game
+per request** (and can run in parallel across games). Run this plan first
+so the template is stable, then invoke plan 0010 per game.
 
 ## Goal
 
 The user's stated goal for the series: *speed up learning from mistakes and
 improve Elo.* Parts 1–3 built measurement, practice, and feedback. This part
 rounds out the coaching content (reinforce what already works, cover the
-opening phase, keep the cross-game report alive, prepare for clock data) and
-brings the pre-existing pages up to the new standard.
+opening phase, keep the cross-game report alive, prepare for clock data).
+Bringing the pre-existing pages up to the new standard is handled
+separately, one game at a time, by
+`docs/0010-plan-single-game-backfill.md`.
 
 ## Context — repo essentials (self-contained)
 
@@ -133,29 +138,6 @@ carries clock comments":
 - Template/time-bar work can ship before any clock data exists (renders only
   when `timeSpent` is present); verify with a synthetic test page.
 
-### 5. Backfill: regenerate the pre-existing game pages
-
-All pages generated before this series lack the new fields (accuracy strip,
-win% rows, tags, drill links, retry, eval graph; the 2026-07-14 page even
-predates the Maia fields and per-move arrows). Regenerate them from their
-`pgn/*.txt` + `analysis/*.json`:
-
-- One game at a time, **one commit per page**, oldest first: rebuild the
-  GAME block on the current `template.html` with all fields the sidecar
-  supports, re-running only what the sidecar lacks (e.g. `retry` probes if
-  part 2's backfill didn't cover a game, per-move `moveNotes` for pre-arrows
-  pages per `docs/0004-plan-per-move-arrows.md`).
-- **Preserve the authored coaching prose verbatim** — titles, subtitles,
-  summaries, explanations, takeaways are editorial content; regeneration
-  adds data fields around them, it does not rewrite them. Where a page's
-  mistake list would change under the new swing×recurrence selection, keep
-  the existing mistakes (the prose is tied to them) and only annotate them.
-- Run the full step-6 verification (Playwright + python-chess checks in
-  `CLAUDE.md`) on every regenerated page before committing it; regenerate
-  the drill deck and dashboard once at the end.
-- This is the only part of the series allowed to overwrite shipped pages —
-  which is why it runs last, after the template has proven stable.
-
 ## Out of scope
 
 Everything already delivered in parts 1–3. No new analysis passes beyond
@@ -171,9 +153,11 @@ beyond the existing marked regions.
 | `tools/build-trend-report.*` (new) | Trend-report generator over sidecars |
 | `reports/…-recurring-mistakes-…{md,html}` | Regenerated, curated sections preserved, checkbox keys stable |
 | `tools/book/` (new, optional) | Offline opening book if obtainable |
-| `games/*.html` | All pre-series pages regenerated on the current template (one commit each) |
 | `analysis/*.json` | Highlights (and any newly computed fields) added |
-| `drills/index.html`, `reports/progress.html` | Regenerated once after the backfill |
+
+Regenerating the pre-existing `games/*.html` pages (and the drill deck /
+dashboard afterward) is delivered by `docs/0010-plan-single-game-backfill.md`,
+one game per request.
 
 ## Verification
 
@@ -185,11 +169,7 @@ beyond the existing marked regions.
   curated sections untouched (diff against the pre-regeneration file);
   every checkbox key unchanged for URLs that persist; per-tag costs
   reconcile with the sidecars.
-- **Backfill**: for every regenerated page, the full `CLAUDE.md` step-6
-  check passes (replay total, final placement vs python-chess,
-  `movesSan[ply] === played`, moveNotes/humanBest rules, retry legality);
-  the authored prose is byte-identical to the old page's (extract and diff
-  the text fields); `games/index.html` entries still resolve.
-- Commit conventions: work on whatever branch the session designates; one
-  commit per regenerated page, separate commits for template/tooling/docs;
-  push when done.
+- Commit conventions: work on whatever branch the session designates;
+  separate commits for template/tooling/docs; push when done. (Page
+  backfill and its verification are covered by
+  `docs/0010-plan-single-game-backfill.md`.)

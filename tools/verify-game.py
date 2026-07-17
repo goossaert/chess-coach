@@ -36,6 +36,7 @@ from pathlib import Path
 
 import chess
 import chess.engine
+import chess.polyglot
 
 ROOT = Path(__file__).resolve().parent.parent
 STOCKFISH = "/usr/games/stockfish"
@@ -250,6 +251,55 @@ def main():
               f"{len(ev)} vs {len(moves_san)}")
         check("evals within [0, 100]", all(0 <= v <= 100 for v in ev))
 
+    # ---- timeSpent series --------------------------------------------------
+    if G.get("timeSpent") is not None:
+        ts = G["timeSpent"]
+        check("timeSpent has one entry per half-move", len(ts) == len(moves_san),
+              f"{len(ts)} vs {len(moves_san)}")
+        check("timeSpent values are non-negative numbers",
+              all(isinstance(v, (int, float)) and v >= 0 for v in ts))
+
+    # ---- highlights ---------------------------------------------------------
+    mistake_plies = {m["ply"] for m in mistakes}
+    for i, hl in enumerate(G.get("highlights") or []):
+        ply = hl["ply"]
+        ok = 0 <= ply < len(moves_san)
+        check(f"highlight {i} ply in range", ok, ply)
+        if not ok:
+            continue
+        check(f"highlight {i} move matches movesSan[{ply}]",
+              moves_san[ply] == hl["move"], f"{moves_san[ply]} vs {hl['move']}")
+        check(f"highlight {i} on a user move", user_ply(ply), ply)
+        check(f"highlight {i} not on a mistake ply", ply not in mistake_plies, ply)
+        if hl.get("arrow"):
+            uci = pos_before[ply].parse_san(hl["move"]).uci()
+            check(f"highlight {i} arrow matches the played move",
+                  hl["arrow"] == [uci[0:2], uci[2:4]], f"{hl['arrow']} vs {uci}")
+
+    # ---- opening report -----------------------------------------------------
+    orep = G.get("openingReport")
+    if orep:
+        bep = orep.get("bookExitPly")
+        if bep is not None:
+            check("openingReport bookExitPly in range", 0 <= bep <= len(moves_san), bep)
+            book_path = ROOT / "tools" / "book" / "gm2001.bin"
+            if book_path.exists() and 0 <= bep <= len(moves_san):
+                with chess.polyglot.open_reader(book_path) as reader:
+                    b = chess.Board()
+                    exit_ply = len(moves_san)
+                    for i, san in enumerate(moves_san):
+                        mv = b.parse_san(san)
+                        if not any(e.move == mv for e in reader.find_all(b)):
+                            exit_ply = i
+                            break
+                        b.push(mv)
+                check("bookExitPly matches tools/book/gm2001.bin", bep == exit_ply,
+                      f"page {bep} vs book {exit_ply}")
+        url = orep.get("explorerUrl")
+        if url:
+            check("openingReport explorerUrl is a lichess.org URL",
+                  url.startswith("https://lichess.org/"), url)
+
     if args.page_only:
         report()
 
@@ -319,6 +369,20 @@ def main():
             if "retry" in pm:
                 check(f"sidecar mistake {i} retry identical to page",
                       sm.get("retry") == pm["retry"])
+
+        shls = d.get("highlights") or []
+        bad = [h.get("ply") for h in shls
+               if not (0 <= h.get("ply", -1) < len(plies))
+               or plies[h["ply"]]["san"] != h.get("move")]
+        check("sidecar highlights align with sidecar plies", not bad, bad[:4])
+        if G.get("highlights"):
+            check("sidecar highlights match page (ply/move)",
+                  [(h.get("ply"), h.get("move")) for h in shls] ==
+                  [(h["ply"], h["move"]) for h in G["highlights"]])
+        if orep and d.get("openingReport"):
+            check("sidecar openingReport bookExitPly matches page",
+                  d["openingReport"].get("bookExitPly") == orep.get("bookExitPly"),
+                  f"{d['openingReport'].get('bookExitPly')} vs {orep.get('bookExitPly')}")
 
         fit = d.get("eloFit")
         est = G.get("estimatedElo")

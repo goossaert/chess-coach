@@ -52,6 +52,7 @@ from pathlib import Path
 import chess
 import chess.engine
 import chess.pgn
+import chess.polyglot
 
 ROOT = Path(__file__).resolve().parent.parent
 STOCKFISH = "/usr/games/stockfish"
@@ -245,6 +246,65 @@ def acpl_ballpark(acpl):
     for limit, label in ACPL_BANDS:
         if limit is None or acpl <= limit:
             return label
+
+
+# --------------------------------------------------------------------------
+# Step 3b inputs — opening report + highlight candidates (no engine work).
+# --------------------------------------------------------------------------
+
+def book_exit_ply(moves):
+    """First ply with no entry in tools/book/gm2001.bin (= len(moves) when the
+    whole game stayed in book); None when the book isn't committed."""
+    book_path = ROOT / "tools" / "book" / "gm2001.bin"
+    if not book_path.exists():
+        return None
+    with chess.polyglot.open_reader(book_path) as reader:
+        b = chess.Board()
+        for i, move in enumerate(moves):
+            if not any(e.move == move for e in reader.find_all(b)):
+                return i
+            b.push(move)
+    return len(moves)
+
+
+def norm_epd(fen):
+    return " ".join(fen.split()[:4])
+
+
+def opening_recurrence(plies, stamp):
+    """How often this game's opening structure has been reached before: for a
+    few early depths, the number of OTHER sidecars whose position before the
+    same ply matches (board/turn/castling/ep)."""
+    out = []
+    others = []
+    for path in sorted((ROOT / "analysis").glob("*.json")):
+        if path.stem == stamp:
+            continue
+        try:
+            others.append(json.loads(path.read_text())["plies"])
+        except Exception:
+            continue
+    for k in (2, 4, 6, 8):
+        if k >= len(plies):
+            break
+        epd = norm_epd(plies[k]["fenBefore"])
+        n = sum(1 for o in others
+                if k < len(o) and norm_epd(o[k]["fenBefore"]) == epd)
+        if n:
+            out.append({"ply": k, "otherGames": n})
+    return out
+
+
+def highlight_candidates(user_plies, maia, band):
+    """Ranked inputs for the step-3b "what you did well" selection: the user
+    played the engine's best in a non-forced, undecided position. With Maia,
+    rarest-found first (low findability = the user outperformed their band)."""
+    cands = [p for p in user_plies
+             if p["uci"] == p["bestUci"] and p["legalCount"] > 3
+             and abs(p["cpBefore"]) <= ELO_EVAL_CUT * 100]
+    if maia:
+        cands.sort(key=lambda p: (p["maia"][band]["best"], p["ply"]))
+    return cands[:8]
 
 
 # --------------------------------------------------------------------------
@@ -602,6 +662,11 @@ def main():
     # ---- Accuracy block (step 2c) ----------------------------------------
     acc = accuracy_block(plies, len(plies))
 
+    # ---- Opening report + highlight inputs (step 3b) ---------------------
+    book_exit = book_exit_ply(moves)
+    recurrence = opening_recurrence(plies, stamp)
+    hl_cands = highlight_candidates(user_plies, maia, band if maia else None)
+
     # ---- Sidecar draft (step 4b, minus the hand-written mistakes) --------
     game_date = headers.get("Date", "").replace(".", "-")
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", game_date):
@@ -644,7 +709,10 @@ def main():
         "accuracy": acc,
         "eloFit": fit,
         "mistakes": [],
+        "highlights": [],
     }
+    if book_exit is not None:
+        sidecar["openingReport"] = {"bookExitPly": book_exit}
     sidecar_path.parent.mkdir(exist_ok=True)
     sidecar_path.write_text(json.dumps(sidecar, indent=1, ensure_ascii=False))
 
@@ -724,6 +792,14 @@ def main():
             out["humanBest"] = p["humanBestSan"]
         return out
 
+    def hl_candidate_out(p):
+        out = {"ply": p["ply"], "san": p["san"], "phase": p["phase"],
+               "evalBefore": disp_eval(p["evalBefore"]),
+               "arrow": arrow(p["uci"])}
+        if maia:
+            out["bestFindability"] = disp_pct(p["maia"][band]["best"])
+        return out
+
     doc = {
         "game": dict(sidecar["game"], stamp=stamp),
         "engine": engine_block,
@@ -732,6 +808,9 @@ def main():
         "accuracy": acc,
         "eloFit": fit,
         "phaseEloFits": phase_fits,
+        "bookExitPly": book_exit,
+        "openingRecurrence": recurrence,
+        "highlightCandidates": [hl_candidate_out(p) for p in hl_cands],
         "display": display,
         "evals": [p["winAfter"] for p in plies],
         "moveNotes": [move_note(p) for p in user_plies],

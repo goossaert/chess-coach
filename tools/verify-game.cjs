@@ -235,6 +235,39 @@ const out = await page.evaluate(() => {
     check('retryStart is a no-op without retry data', R.retryState() === null);
   }
 
+  // --- polish additions: highlights, opening report, time bar --------------
+  const highlights = G.highlights || [];
+  const hcards = [...document.querySelectorAll('.highlight-card')];
+  check('one card per highlight', hcards.length === highlights.length,
+    `${hcards.length} vs ${highlights.length}`);
+  check('highlight section iff highlights',
+    hiddenOrAbsent($('highlight-head')) === !highlights.length);
+  highlights.forEach((hl, i) => {
+    if (!hcards[i]) return;
+    hcards[i].click();
+    check(`highlight ${i} click lands on ply ${hl.ply}`, R.getPly() === hl.ply, R.getPly());
+    check(`highlight ${i} click activates gold panel`,
+      $('fb-panel').classList.contains('highlight-active'));
+  });
+  if (hcards.length) R.goTo(0);
+
+  const orep = G.openingReport;
+  check('opening report iff openingReport',
+    hiddenOrAbsent($('opening-report')) === !(orep && (orep.note || orep.bookExitPly != null)));
+
+  const hasTime = Array.isArray(G.timeSpent) && G.timeSpent.length === total && total > 0;
+  check('time bar iff timeSpent', hiddenOrAbsent($('time-bar')) === !hasTime);
+  if (hasTime) {
+    const bars = [...document.querySelectorAll('#time-bar rect.tb')];
+    check('one time-bar bar per half-move', bars.length === total, `${bars.length} vs ${total}`);
+    if (bars.length) {
+      R.goTo(0);
+      bars[0].dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      check('time-bar click jumps the replay', R.getPly() === 1, R.getPly());
+      R.goTo(0);
+    }
+  }
+
   return { game: G, placement: R.placement ? R.placement(total) : null, total, isMaia, results };
 });
 

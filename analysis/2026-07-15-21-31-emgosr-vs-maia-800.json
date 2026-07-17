@@ -1,0 +1,4385 @@
+{
+ "schema": 1,
+ "game": {
+  "white": "emgosr",
+  "black": "Maia 800",
+  "result": "0-1",
+  "date": "2026-07-15",
+  "event": "Play vs. Maia 800 · maiachess.com",
+  "opening": "Queen’s Pawn Game (D02) · Chigorin setup by Black",
+  "userColor": "white",
+  "pgnFile": "pgn/2026-07-15-21-31-emgosr-vs-maia-800.txt",
+  "pageFile": "games/2026-07-15-21-31-emgosr-vs-maia-800.html"
+ },
+ "engine": {
+  "stockfish": "depth 18",
+  "maia": "Maia-1 rating-band networks 1100-1900 via zerofish WASM lc0, nodes=1",
+  "generated": "2026-07-17 backfill (docs/0005 part 1)"
+ },
+ "plies": [
+  {
+   "ply": 0,
+   "san": "d4",
+   "uci": "d2d4",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+   "evalBefore": 0.39,
+   "evalAfter": 0.26,
+   "winBefore": 53.6,
+   "winAfter": 52.4,
+   "bestUci": "e2e4",
+   "evalBest": 0.3,
+   "swing": -0.13,
+   "maia": {
+    "1100": {
+     "played": 0.2161,
+     "best": 0.5012,
+     "value": 0.523
+    },
+    "1200": {
+     "played": 0.2206,
+     "best": 0.5095,
+     "value": 0.52
+    },
+    "1300": {
+     "played": 0.2205,
+     "best": 0.5125,
+     "value": 0.521
+    },
+    "1400": {
+     "played": 0.2275,
+     "best": 0.5015,
+     "value": 0.519
+    },
+    "1500": {
+     "played": 0.2334,
+     "best": 0.5022,
+     "value": 0.52
+    },
+    "1600": {
+     "played": 0.2397,
+     "best": 0.4895,
+     "value": 0.518
+    },
+    "1700": {
+     "played": 0.2513,
+     "best": 0.4755,
+     "value": 0.52
+    },
+    "1800": {
+     "played": 0.2638,
+     "best": 0.4702,
+     "value": 0.515
+    },
+    "1900": {
+     "played": 0.27,
+     "best": 0.4424,
+     "value": 0.517
+    }
+   },
+   "humanBestUci": "e2e4"
+  },
+  {
+   "ply": 1,
+   "san": "d5",
+   "uci": "d7d5",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1",
+   "evalBefore": 0.26,
+   "evalAfter": 0.3,
+   "winBefore": 52.4,
+   "winAfter": 52.8,
+   "bestUci": "g8f6"
+  },
+  {
+   "ply": 2,
+   "san": "Nf3",
+   "uci": "g1f3",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+   "evalBefore": 0.3,
+   "evalAfter": 0.3,
+   "winBefore": 52.8,
+   "winAfter": 52.8,
+   "bestUci": "c2c4",
+   "evalBest": 0.37,
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.1642,
+     "best": 0.0333,
+     "value": 0.509
+    },
+    "1200": {
+     "played": 0.1849,
+     "best": 0.0238,
+     "value": 0.521
+    },
+    "1300": {
+     "played": 0.195,
+     "best": 0.0393,
+     "value": 0.491
+    },
+    "1400": {
+     "played": 0.2134,
+     "best": 0.0368,
+     "value": 0.508
+    },
+    "1500": {
+     "played": 0.2386,
+     "best": 0.0315,
+     "value": 0.501
+    },
+    "1600": {
+     "played": 0.2385,
+     "best": 0.0497,
+     "value": 0.502
+    },
+    "1700": {
+     "played": 0.212,
+     "best": 0.0588,
+     "value": 0.5
+    },
+    "1800": {
+     "played": 0.2588,
+     "best": 0.0845,
+     "value": 0.513
+    },
+    "1900": {
+     "played": 0.2927,
+     "best": 0.0775,
+     "value": 0.516
+    }
+   },
+   "humanBestUci": "g1f3"
+  },
+  {
+   "ply": 3,
+   "san": "Nc6",
+   "uci": "b8c6",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "rnbqkbnr/ppp1pppp/8/3p4/3P4/5N2/PPP1PPPP/RNBQKB1R b KQkq - 1 2",
+   "evalBefore": 0.3,
+   "evalAfter": 0.61,
+   "winBefore": 52.8,
+   "winAfter": 55.6,
+   "bestUci": "g8f6"
+  },
+  {
+   "ply": 4,
+   "san": "e3",
+   "uci": "e2e3",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "r1bqkbnr/ppp1pppp/2n5/3p4/3P4/5N2/PPP1PPPP/RNBQKB1R w KQkq - 2 3",
+   "evalBefore": 0.61,
+   "evalAfter": 0.49,
+   "winBefore": 55.6,
+   "winAfter": 54.5,
+   "bestUci": "c2c4",
+   "evalBest": 0.64,
+   "swing": -0.12,
+   "maia": {
+    "1100": {
+     "played": 0.2269,
+     "best": 0.032,
+     "value": 0.507
+    },
+    "1200": {
+     "played": 0.1998,
+     "best": 0.0355,
+     "value": 0.522
+    },
+    "1300": {
+     "played": 0.2236,
+     "best": 0.0419,
+     "value": 0.5
+    },
+    "1400": {
+     "played": 0.2132,
+     "best": 0.0675,
+     "value": 0.513
+    },
+    "1500": {
+     "played": 0.219,
+     "best": 0.039,
+     "value": 0.519
+    },
+    "1600": {
+     "played": 0.2143,
+     "best": 0.0846,
+     "value": 0.531
+    },
+    "1700": {
+     "played": 0.1798,
+     "best": 0.1124,
+     "value": 0.526
+    },
+    "1800": {
+     "played": 0.1935,
+     "best": 0.1001,
+     "value": 0.537
+    },
+    "1900": {
+     "played": 0.1595,
+     "best": 0.1081,
+     "value": 0.523
+    }
+   },
+   "humanBestUci": "c1f4"
+  },
+  {
+   "ply": 5,
+   "san": "Nf6",
+   "uci": "g8f6",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "r1bqkbnr/ppp1pppp/2n5/3p4/3P4/4PN2/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+   "evalBefore": 0.49,
+   "evalAfter": 0.57,
+   "winBefore": 54.5,
+   "winAfter": 55.2,
+   "bestUci": "c8f5"
+  },
+  {
+   "ply": 6,
+   "san": "c3",
+   "uci": "c2c3",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "r1bqkb1r/ppp1pppp/2n2n2/3p4/3P4/4PN2/PPP2PPP/RNBQKB1R w KQkq - 1 4",
+   "evalBefore": 0.57,
+   "evalAfter": 0.19,
+   "winBefore": 55.2,
+   "winAfter": 51.7,
+   "bestUci": "c2c4",
+   "evalBest": 0.56,
+   "swing": -0.38,
+   "maia": {
+    "1100": {
+     "played": 0.0541,
+     "best": 0.0868,
+     "value": 0.522
+    },
+    "1200": {
+     "played": 0.0483,
+     "best": 0.0917,
+     "value": 0.504
+    },
+    "1300": {
+     "played": 0.0442,
+     "best": 0.1249,
+     "value": 0.509
+    },
+    "1400": {
+     "played": 0.0542,
+     "best": 0.1561,
+     "value": 0.506
+    },
+    "1500": {
+     "played": 0.0708,
+     "best": 0.1523,
+     "value": 0.517
+    },
+    "1600": {
+     "played": 0.0556,
+     "best": 0.1835,
+     "value": 0.52
+    },
+    "1700": {
+     "played": 0.0669,
+     "best": 0.2071,
+     "value": 0.516
+    },
+    "1800": {
+     "played": 0.0905,
+     "best": 0.1683,
+     "value": 0.515
+    },
+    "1900": {
+     "played": 0.0777,
+     "best": 0.2332,
+     "value": 0.512
+    }
+   },
+   "humanBestUci": "c2c4"
+  },
+  {
+   "ply": 7,
+   "san": "g6",
+   "uci": "g7g6",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "r1bqkb1r/ppp1pppp/2n2n2/3p4/3P4/2P1PN2/PP3PPP/RNBQKB1R b KQkq - 0 4",
+   "evalBefore": 0.19,
+   "evalAfter": 0.38,
+   "winBefore": 51.7,
+   "winAfter": 53.5,
+   "bestUci": "e7e6"
+  },
+  {
+   "ply": 8,
+   "san": "Bd3",
+   "uci": "f1d3",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "r1bqkb1r/ppp1pp1p/2n2np1/3p4/3P4/2P1PN2/PP3PPP/RNBQKB1R w KQkq - 0 5",
+   "evalBefore": 0.38,
+   "evalAfter": 0.0,
+   "winBefore": 53.5,
+   "winAfter": 50.0,
+   "bestUci": "c3c4",
+   "evalBest": 0.37,
+   "swing": -0.38,
+   "maia": {
+    "1100": {
+     "played": 0.1298,
+     "best": 0.0464,
+     "value": 0.527
+    },
+    "1200": {
+     "played": 0.1057,
+     "best": 0.0441,
+     "value": 0.512
+    },
+    "1300": {
+     "played": 0.1365,
+     "best": 0.0611,
+     "value": 0.502
+    },
+    "1400": {
+     "played": 0.1396,
+     "best": 0.0545,
+     "value": 0.487
+    },
+    "1500": {
+     "played": 0.1542,
+     "best": 0.0511,
+     "value": 0.5
+    },
+    "1600": {
+     "played": 0.2241,
+     "best": 0.065,
+     "value": 0.498
+    },
+    "1700": {
+     "played": 0.1858,
+     "best": 0.0594,
+     "value": 0.475
+    },
+    "1800": {
+     "played": 0.2727,
+     "best": 0.0286,
+     "value": 0.502
+    },
+    "1900": {
+     "played": 0.2578,
+     "best": 0.0315,
+     "value": 0.473
+    }
+   },
+   "humanBestUci": "f1d3"
+  },
+  {
+   "ply": 9,
+   "san": "Bg7",
+   "uci": "f8g7",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "r1bqkb1r/ppp1pp1p/2n2np1/3p4/3P4/2PBPN2/PP3PPP/RNBQK2R b KQkq - 1 5",
+   "evalBefore": 0.0,
+   "evalAfter": -0.05,
+   "winBefore": 50.0,
+   "winAfter": 49.5,
+   "bestUci": "f8g7"
+  },
+  {
+   "ply": 10,
+   "san": "O-O",
+   "uci": "e1g1",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "r1bqk2r/ppp1ppbp/2n2np1/3p4/3P4/2PBPN2/PP3PPP/RNBQK2R w KQkq - 2 6",
+   "evalBefore": -0.05,
+   "evalAfter": -0.04,
+   "winBefore": 49.5,
+   "winAfter": 49.6,
+   "bestUci": "e1g1",
+   "evalBest": -0.04,
+   "swing": 0.01,
+   "maia": {
+    "1100": {
+     "played": 0.0,
+     "best": 0.0,
+     "value": 0.489
+    },
+    "1200": {
+     "played": 0.0,
+     "best": 0.0,
+     "value": 0.487
+    },
+    "1300": {
+     "played": 0.0,
+     "best": 0.0,
+     "value": 0.491
+    },
+    "1400": {
+     "played": 0.0,
+     "best": 0.0,
+     "value": 0.47
+    },
+    "1500": {
+     "played": 0.0,
+     "best": 0.0,
+     "value": 0.489
+    },
+    "1600": {
+     "played": 0.0,
+     "best": 0.0,
+     "value": 0.5
+    },
+    "1700": {
+     "played": 0.0,
+     "best": 0.0,
+     "value": 0.486
+    },
+    "1800": {
+     "played": 0.0,
+     "best": 0.0,
+     "value": 0.496
+    },
+    "1900": {
+     "played": 0.0,
+     "best": 0.0,
+     "value": 0.487
+    }
+   },
+   "humanBestUci": "b1d2"
+  },
+  {
+   "ply": 11,
+   "san": "O-O",
+   "uci": "e8g8",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "r1bqk2r/ppp1ppbp/2n2np1/3p4/3P4/2PBPN2/PP3PPP/RNBQ1RK1 b kq - 3 6",
+   "evalBefore": -0.04,
+   "evalAfter": 0.0,
+   "winBefore": 49.6,
+   "winAfter": 50.0,
+   "bestUci": "e8g8"
+  },
+  {
+   "ply": 12,
+   "san": "Nbd2",
+   "uci": "b1d2",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "r1bq1rk1/ppp1ppbp/2n2np1/3p4/3P4/2PBPN2/PP3PPP/RNBQ1RK1 w - - 4 7",
+   "evalBefore": 0.0,
+   "evalAfter": -0.17,
+   "winBefore": 50.0,
+   "winAfter": 48.4,
+   "bestUci": "c3c4",
+   "evalBest": -0.03,
+   "swing": -0.17,
+   "maia": {
+    "1100": {
+     "played": 0.1812,
+     "best": 0.0627,
+     "value": 0.445
+    },
+    "1200": {
+     "played": 0.2383,
+     "best": 0.0461,
+     "value": 0.481
+    },
+    "1300": {
+     "played": 0.2809,
+     "best": 0.0493,
+     "value": 0.481
+    },
+    "1400": {
+     "played": 0.2731,
+     "best": 0.0495,
+     "value": 0.463
+    },
+    "1500": {
+     "played": 0.3273,
+     "best": 0.0306,
+     "value": 0.491
+    },
+    "1600": {
+     "played": 0.3569,
+     "best": 0.029,
+     "value": 0.489
+    },
+    "1700": {
+     "played": 0.4779,
+     "best": 0.0246,
+     "value": 0.479
+    },
+    "1800": {
+     "played": 0.4534,
+     "best": 0.0199,
+     "value": 0.474
+    },
+    "1900": {
+     "played": 0.371,
+     "best": 0.0306,
+     "value": 0.483
+    }
+   },
+   "humanBestUci": "b1d2"
+  },
+  {
+   "ply": 13,
+   "san": "Bg4",
+   "uci": "c8g4",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "r1bq1rk1/ppp1ppbp/2n2np1/3p4/3P4/2PBPN2/PP1N1PPP/R1BQ1RK1 b - - 5 7",
+   "evalBefore": -0.17,
+   "evalAfter": 0.43,
+   "winBefore": 48.4,
+   "winAfter": 53.9,
+   "bestUci": "e7e5"
+  },
+  {
+   "ply": 14,
+   "san": "e4",
+   "uci": "e3e4",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "r2q1rk1/ppp1ppbp/2n2np1/3p4/3P2b1/2PBPN2/PP1N1PPP/R1BQ1RK1 w - - 6 8",
+   "evalBefore": 0.43,
+   "evalAfter": -0.38,
+   "winBefore": 53.9,
+   "winAfter": 46.5,
+   "bestUci": "h2h3",
+   "evalBest": 0.29,
+   "swing": -0.81,
+   "maia": {
+    "1100": {
+     "played": 0.0823,
+     "best": 0.2227,
+     "value": 0.472
+    },
+    "1200": {
+     "played": 0.0794,
+     "best": 0.2214,
+     "value": 0.503
+    },
+    "1300": {
+     "played": 0.072,
+     "best": 0.2309,
+     "value": 0.477
+    },
+    "1400": {
+     "played": 0.0729,
+     "best": 0.1971,
+     "value": 0.498
+    },
+    "1500": {
+     "played": 0.0742,
+     "best": 0.2213,
+     "value": 0.496
+    },
+    "1600": {
+     "played": 0.0988,
+     "best": 0.1686,
+     "value": 0.495
+    },
+    "1700": {
+     "played": 0.0844,
+     "best": 0.236,
+     "value": 0.502
+    },
+    "1800": {
+     "played": 0.1087,
+     "best": 0.2469,
+     "value": 0.483
+    },
+    "1900": {
+     "played": 0.0602,
+     "best": 0.2838,
+     "value": 0.49
+    }
+   },
+   "humanBestUci": "h2h3"
+  },
+  {
+   "ply": 15,
+   "san": "dxe4",
+   "uci": "d5e4",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "r2q1rk1/ppp1ppbp/2n2np1/3p4/3PP1b1/2PB1N2/PP1N1PPP/R1BQ1RK1 b - - 0 8",
+   "evalBefore": -0.38,
+   "evalAfter": -0.04,
+   "winBefore": 46.5,
+   "winAfter": 49.6,
+   "bestUci": "e7e5"
+  },
+  {
+   "ply": 16,
+   "san": "Nxe4",
+   "uci": "d2e4",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "r2q1rk1/ppp1ppbp/2n2np1/8/3Pp1b1/2PB1N2/PP1N1PPP/R1BQ1RK1 w - - 0 9",
+   "evalBefore": -0.04,
+   "evalAfter": 0.0,
+   "winBefore": 49.6,
+   "winAfter": 50.0,
+   "bestUci": "d2e4",
+   "evalBest": 0.0,
+   "swing": 0.04,
+   "maia": {
+    "1100": {
+     "played": 0.29,
+     "best": 0.29,
+     "value": 0.399
+    },
+    "1200": {
+     "played": 0.3015,
+     "best": 0.3015,
+     "value": 0.397
+    },
+    "1300": {
+     "played": 0.2943,
+     "best": 0.2943,
+     "value": 0.356
+    },
+    "1400": {
+     "played": 0.3213,
+     "best": 0.3213,
+     "value": 0.36
+    },
+    "1500": {
+     "played": 0.3672,
+     "best": 0.3672,
+     "value": 0.384
+    },
+    "1600": {
+     "played": 0.5225,
+     "best": 0.5225,
+     "value": 0.387
+    },
+    "1700": {
+     "played": 0.5173,
+     "best": 0.5173,
+     "value": 0.404
+    },
+    "1800": {
+     "played": 0.5229,
+     "best": 0.5229,
+     "value": 0.404
+    },
+    "1900": {
+     "played": 0.4583,
+     "best": 0.4583,
+     "value": 0.416
+    }
+   },
+   "humanBestUci": "d2e4"
+  },
+  {
+   "ply": 17,
+   "san": "Nxe4",
+   "uci": "f6e4",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "r2q1rk1/ppp1ppbp/2n2np1/8/3PN1b1/2PB1N2/PP3PPP/R1BQ1RK1 b - - 0 9",
+   "evalBefore": 0.0,
+   "evalAfter": 0.48,
+   "winBefore": 50.0,
+   "winAfter": 54.4,
+   "bestUci": "e7e5"
+  },
+  {
+   "ply": 18,
+   "san": "Bxe4",
+   "uci": "d3e4",
+   "user": true,
+   "phase": "opening",
+   "fenBefore": "r2q1rk1/ppp1ppbp/2n3p1/8/3Pn1b1/2PB1N2/PP3PPP/R1BQ1RK1 w - - 0 10",
+   "evalBefore": 0.48,
+   "evalAfter": 0.46,
+   "winBefore": 54.4,
+   "winAfter": 54.2,
+   "bestUci": "d3e4",
+   "evalBest": 0.46,
+   "swing": -0.02,
+   "maia": {
+    "1100": {
+     "played": 0.6038,
+     "best": 0.6038,
+     "value": 0.485
+    },
+    "1200": {
+     "played": 0.5842,
+     "best": 0.5842,
+     "value": 0.446
+    },
+    "1300": {
+     "played": 0.5979,
+     "best": 0.5979,
+     "value": 0.463
+    },
+    "1400": {
+     "played": 0.7505,
+     "best": 0.7505,
+     "value": 0.467
+    },
+    "1500": {
+     "played": 0.7288,
+     "best": 0.7288,
+     "value": 0.473
+    },
+    "1600": {
+     "played": 0.5447,
+     "best": 0.5447,
+     "value": 0.43
+    },
+    "1700": {
+     "played": 0.7854,
+     "best": 0.7854,
+     "value": 0.407
+    },
+    "1800": {
+     "played": 0.5327,
+     "best": 0.5327,
+     "value": 0.401
+    },
+    "1900": {
+     "played": 0.7075,
+     "best": 0.7075,
+     "value": 0.437
+    }
+   },
+   "humanBestUci": "d3e4"
+  },
+  {
+   "ply": 19,
+   "san": "Bxf3",
+   "uci": "g4f3",
+   "user": false,
+   "phase": "opening",
+   "fenBefore": "r2q1rk1/ppp1ppbp/2n3p1/8/3PB1b1/2P2N2/PP3PPP/R1BQ1RK1 b - - 0 10",
+   "evalBefore": 0.46,
+   "evalAfter": 1.0,
+   "winBefore": 54.2,
+   "winAfter": 59.1,
+   "bestUci": "e7e5"
+  },
+  {
+   "ply": 20,
+   "san": "Bxf3",
+   "uci": "e4f3",
+   "user": true,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/ppp1ppbp/2n3p1/8/3PB3/2P2b2/PP3PPP/R1BQ1RK1 w - - 0 11",
+   "evalBefore": 1.0,
+   "evalAfter": 0.85,
+   "winBefore": 59.1,
+   "winAfter": 57.8,
+   "bestUci": "d1f3",
+   "evalBest": 0.91,
+   "swing": -0.15,
+   "maia": {
+    "1100": {
+     "played": 0.3746,
+     "best": 0.5151,
+     "value": 0.487
+    },
+    "1200": {
+     "played": 0.4858,
+     "best": 0.4164,
+     "value": 0.53
+    },
+    "1300": {
+     "played": 0.3417,
+     "best": 0.5823,
+     "value": 0.501
+    },
+    "1400": {
+     "played": 0.6655,
+     "best": 0.2733,
+     "value": 0.509
+    },
+    "1500": {
+     "played": 0.4819,
+     "best": 0.4574,
+     "value": 0.55
+    },
+    "1600": {
+     "played": 0.5979,
+     "best": 0.33,
+     "value": 0.55
+    },
+    "1700": {
+     "played": 0.3063,
+     "best": 0.6042,
+     "value": 0.467
+    },
+    "1800": {
+     "played": 0.361,
+     "best": 0.5896,
+     "value": 0.544
+    },
+    "1900": {
+     "played": 0.4749,
+     "best": 0.4902,
+     "value": 0.537
+    }
+   },
+   "humanBestUci": "d1f3"
+  },
+  {
+   "ply": 21,
+   "san": "e5",
+   "uci": "e7e5",
+   "user": false,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/ppp1ppbp/2n3p1/8/3P4/2P2B2/PP3PPP/R1BQ1RK1 b - - 0 11",
+   "evalBefore": 0.85,
+   "evalAfter": 0.77,
+   "winBefore": 57.8,
+   "winAfter": 57.0,
+   "bestUci": "e7e5"
+  },
+  {
+   "ply": 22,
+   "san": "d5",
+   "uci": "d4d5",
+   "user": true,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/ppp2pbp/2n3p1/4p3/3P4/2P2B2/PP3PPP/R1BQ1RK1 w - - 0 12",
+   "evalBefore": 0.77,
+   "evalAfter": 0.01,
+   "winBefore": 57.0,
+   "winAfter": 50.1,
+   "bestUci": "d4e5",
+   "evalBest": 0.92,
+   "swing": -0.76,
+   "maia": {
+    "1100": {
+     "played": 0.1592,
+     "best": 0.1754,
+     "value": 0.464
+    },
+    "1200": {
+     "played": 0.1282,
+     "best": 0.0881,
+     "value": 0.52
+    },
+    "1300": {
+     "played": 0.1481,
+     "best": 0.1862,
+     "value": 0.517
+    },
+    "1400": {
+     "played": 0.149,
+     "best": 0.1283,
+     "value": 0.507
+    },
+    "1500": {
+     "played": 0.2355,
+     "best": 0.1763,
+     "value": 0.507
+    },
+    "1600": {
+     "played": 0.3505,
+     "best": 0.1244,
+     "value": 0.519
+    },
+    "1700": {
+     "played": 0.2337,
+     "best": 0.1804,
+     "value": 0.523
+    },
+    "1800": {
+     "played": 0.2363,
+     "best": 0.1527,
+     "value": 0.528
+    },
+    "1900": {
+     "played": 0.262,
+     "best": 0.164,
+     "value": 0.5
+    }
+   },
+   "humanBestUci": "d4e5"
+  },
+  {
+   "ply": 23,
+   "san": "Ne7",
+   "uci": "c6e7",
+   "user": false,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/ppp2pbp/2n3p1/3Pp3/8/2P2B2/PP3PPP/R1BQ1RK1 b - - 0 12",
+   "evalBefore": 0.01,
+   "evalAfter": 0.11,
+   "winBefore": 50.1,
+   "winAfter": 51.0,
+   "bestUci": "c6e7"
+  },
+  {
+   "ply": 24,
+   "san": "c4",
+   "uci": "c3c4",
+   "user": true,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/ppp1npbp/6p1/3Pp3/8/2P2B2/PP3PPP/R1BQ1RK1 w - - 1 13",
+   "evalBefore": 0.11,
+   "evalAfter": -0.03,
+   "winBefore": 51.0,
+   "winAfter": 49.7,
+   "bestUci": "a2a4",
+   "evalBest": 0.09,
+   "swing": -0.14,
+   "maia": {
+    "1100": {
+     "played": 0.2742,
+     "best": 0.012,
+     "value": 0.505
+    },
+    "1200": {
+     "played": 0.2535,
+     "best": 0.0108,
+     "value": 0.515
+    },
+    "1300": {
+     "played": 0.2115,
+     "best": 0.0099,
+     "value": 0.547
+    },
+    "1400": {
+     "played": 0.251,
+     "best": 0.0105,
+     "value": 0.521
+    },
+    "1500": {
+     "played": 0.2588,
+     "best": 0.0084,
+     "value": 0.506
+    },
+    "1600": {
+     "played": 0.2643,
+     "best": 0.0069,
+     "value": 0.502
+    },
+    "1700": {
+     "played": 0.2245,
+     "best": 0.0061,
+     "value": 0.527
+    },
+    "1800": {
+     "played": 0.2258,
+     "best": 0.0047,
+     "value": 0.515
+    },
+    "1900": {
+     "played": 0.3536,
+     "best": 0.0044,
+     "value": 0.457
+    }
+   },
+   "humanBestUci": "c3c4"
+  },
+  {
+   "ply": 25,
+   "san": "c6",
+   "uci": "c7c6",
+   "user": false,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/ppp1npbp/6p1/3Pp3/2P5/5B2/PP3PPP/R1BQ1RK1 b - - 0 13",
+   "evalBefore": -0.03,
+   "evalAfter": 0.41,
+   "winBefore": 49.7,
+   "winAfter": 53.8,
+   "bestUci": "e7f5"
+  },
+  {
+   "ply": 26,
+   "san": "Be3",
+   "uci": "c1e3",
+   "user": true,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/pp2npbp/2p3p1/3Pp3/2P5/5B2/PP3PPP/R1BQ1RK1 w - - 0 14",
+   "evalBefore": 0.41,
+   "evalAfter": 0.12,
+   "winBefore": 53.8,
+   "winAfter": 51.1,
+   "bestUci": "d5d6",
+   "evalBest": 0.47,
+   "swing": -0.29,
+   "maia": {
+    "1100": {
+     "played": 0.0548,
+     "best": 0.114,
+     "value": 0.507
+    },
+    "1200": {
+     "played": 0.0901,
+     "best": 0.1173,
+     "value": 0.514
+    },
+    "1300": {
+     "played": 0.0737,
+     "best": 0.134,
+     "value": 0.516
+    },
+    "1400": {
+     "played": 0.0769,
+     "best": 0.173,
+     "value": 0.505
+    },
+    "1500": {
+     "played": 0.0935,
+     "best": 0.2273,
+     "value": 0.49
+    },
+    "1600": {
+     "played": 0.0596,
+     "best": 0.2411,
+     "value": 0.478
+    },
+    "1700": {
+     "played": 0.062,
+     "best": 0.3462,
+     "value": 0.56
+    },
+    "1800": {
+     "played": 0.1289,
+     "best": 0.1268,
+     "value": 0.51
+    },
+    "1900": {
+     "played": 0.0868,
+     "best": 0.1291,
+     "value": 0.503
+    }
+   },
+   "humanBestUci": "c1g5"
+  },
+  {
+   "ply": 27,
+   "san": "cxd5",
+   "uci": "c6d5",
+   "user": false,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/pp2npbp/2p3p1/3Pp3/2P5/4BB2/PP3PPP/R2Q1RK1 b - - 1 14",
+   "evalBefore": 0.12,
+   "evalAfter": 0.17,
+   "winBefore": 51.1,
+   "winAfter": 51.6,
+   "bestUci": "c6d5"
+  },
+  {
+   "ply": 28,
+   "san": "cxd5",
+   "uci": "c4d5",
+   "user": true,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/pp2npbp/6p1/3pp3/2P5/4BB2/PP3PPP/R2Q1RK1 w - - 0 15",
+   "evalBefore": 0.17,
+   "evalAfter": -0.02,
+   "winBefore": 51.6,
+   "winAfter": 49.8,
+   "bestUci": "f3d5",
+   "evalBest": 0.21,
+   "swing": -0.19,
+   "maia": {
+    "1100": {
+     "played": 0.4321,
+     "best": 0.1492,
+     "value": 0.479
+    },
+    "1200": {
+     "played": 0.3638,
+     "best": 0.1446,
+     "value": 0.458
+    },
+    "1300": {
+     "played": 0.4093,
+     "best": 0.1454,
+     "value": 0.487
+    },
+    "1400": {
+     "played": 0.437,
+     "best": 0.1345,
+     "value": 0.523
+    },
+    "1500": {
+     "played": 0.4418,
+     "best": 0.1702,
+     "value": 0.492
+    },
+    "1600": {
+     "played": 0.4501,
+     "best": 0.1727,
+     "value": 0.478
+    },
+    "1700": {
+     "played": 0.4219,
+     "best": 0.3014,
+     "value": 0.471
+    },
+    "1800": {
+     "played": 0.5225,
+     "best": 0.1309,
+     "value": 0.501
+    },
+    "1900": {
+     "played": 0.6418,
+     "best": 0.1944,
+     "value": 0.47
+    }
+   },
+   "humanBestUci": "c4d5"
+  },
+  {
+   "ply": 29,
+   "san": "Nxd5",
+   "uci": "e7d5",
+   "user": false,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/pp2npbp/6p1/3Pp3/8/4BB2/PP3PPP/R2Q1RK1 b - - 0 15",
+   "evalBefore": -0.02,
+   "evalAfter": 5.27,
+   "winBefore": 49.8,
+   "winAfter": 87.4,
+   "bestUci": "e7f5"
+  },
+  {
+   "ply": 30,
+   "san": "Bxd5",
+   "uci": "f3d5",
+   "user": true,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/pp3pbp/6p1/3np3/8/4BB2/PP3PPP/R2Q1RK1 w - - 0 16",
+   "evalBefore": 5.27,
+   "evalAfter": 5.09,
+   "winBefore": 87.4,
+   "winAfter": 86.7,
+   "bestUci": "f3d5",
+   "evalBest": 5.09,
+   "swing": -0.18,
+   "maia": {
+    "1100": {
+     "played": 0.5557,
+     "best": 0.5557,
+     "value": 0.587
+    },
+    "1200": {
+     "played": 0.5645,
+     "best": 0.5645,
+     "value": 0.588
+    },
+    "1300": {
+     "played": 0.4883,
+     "best": 0.4883,
+     "value": 0.605
+    },
+    "1400": {
+     "played": 0.4487,
+     "best": 0.4487,
+     "value": 0.693
+    },
+    "1500": {
+     "played": 0.5652,
+     "best": 0.5652,
+     "value": 0.586
+    },
+    "1600": {
+     "played": 0.4772,
+     "best": 0.4772,
+     "value": 0.681
+    },
+    "1700": {
+     "played": 0.4353,
+     "best": 0.4353,
+     "value": 0.616
+    },
+    "1800": {
+     "played": 0.4171,
+     "best": 0.4171,
+     "value": 0.614
+    },
+    "1900": {
+     "played": 0.562,
+     "best": 0.562,
+     "value": 0.64
+    }
+   },
+   "humanBestUci": "f3d5"
+  },
+  {
+   "ply": 31,
+   "san": "e4",
+   "uci": "e5e4",
+   "user": false,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/pp3pbp/6p1/3Bp3/8/4B3/PP3PPP/R2Q1RK1 b - - 0 16",
+   "evalBefore": 5.09,
+   "evalAfter": 5.57,
+   "winBefore": 86.7,
+   "winAfter": 88.6,
+   "bestUci": "d8e7"
+  },
+  {
+   "ply": 32,
+   "san": "Bxe4",
+   "uci": "d5e4",
+   "user": true,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/pp3pbp/6p1/3B4/4p3/4B3/PP3PPP/R2Q1RK1 w - - 0 17",
+   "evalBefore": 5.57,
+   "evalAfter": 5.48,
+   "winBefore": 88.6,
+   "winAfter": 88.3,
+   "bestUci": "d5e4",
+   "evalBest": 5.48,
+   "swing": -0.09,
+   "maia": {
+    "1100": {
+     "played": 0.1836,
+     "best": 0.1836,
+     "value": 0.608
+    },
+    "1200": {
+     "played": 0.1489,
+     "best": 0.1489,
+     "value": 0.654
+    },
+    "1300": {
+     "played": 0.2056,
+     "best": 0.2056,
+     "value": 0.675
+    },
+    "1400": {
+     "played": 0.1981,
+     "best": 0.1981,
+     "value": 0.709
+    },
+    "1500": {
+     "played": 0.204,
+     "best": 0.204,
+     "value": 0.723
+    },
+    "1600": {
+     "played": 0.3262,
+     "best": 0.3262,
+     "value": 0.775
+    },
+    "1700": {
+     "played": 0.1886,
+     "best": 0.1886,
+     "value": 0.771
+    },
+    "1800": {
+     "played": 0.1967,
+     "best": 0.1967,
+     "value": 0.815
+    },
+    "1900": {
+     "played": 0.3075,
+     "best": 0.3075,
+     "value": 0.839
+    }
+   },
+   "humanBestUci": "d5e4"
+  },
+  {
+   "ply": 33,
+   "san": "Qxd1",
+   "uci": "d8d1",
+   "user": false,
+   "phase": "middlegame",
+   "fenBefore": "r2q1rk1/pp3pbp/6p1/8/4B3/4B3/PP3PPP/R2Q1RK1 b - - 0 17",
+   "evalBefore": 5.48,
+   "evalAfter": 5.72,
+   "winBefore": 88.3,
+   "winAfter": 89.1,
+   "bestUci": "a7a5"
+  },
+  {
+   "ply": 34,
+   "san": "Raxd1",
+   "uci": "a1d1",
+   "user": true,
+   "phase": "middlegame",
+   "fenBefore": "r4rk1/pp3pbp/6p1/8/4B3/4B3/PP3PPP/R2q1RK1 w - - 0 18",
+   "evalBefore": 5.72,
+   "evalAfter": 5.63,
+   "winBefore": 89.1,
+   "winAfter": 88.8,
+   "bestUci": "a1d1",
+   "evalBest": 5.63,
+   "swing": -0.09,
+   "maia": {
+    "1100": {
+     "played": 0.574,
+     "best": 0.574,
+     "value": 0.579
+    },
+    "1200": {
+     "played": 0.6501,
+     "best": 0.6501,
+     "value": 0.568
+    },
+    "1300": {
+     "played": 0.6382,
+     "best": 0.6382,
+     "value": 0.645
+    },
+    "1400": {
+     "played": 0.5659,
+     "best": 0.5659,
+     "value": 0.541
+    },
+    "1500": {
+     "played": 0.4792,
+     "best": 0.4792,
+     "value": 0.512
+    },
+    "1600": {
+     "played": 0.6079,
+     "best": 0.6079,
+     "value": 0.517
+    },
+    "1700": {
+     "played": 0.5203,
+     "best": 0.5203,
+     "value": 0.552
+    },
+    "1800": {
+     "played": 0.4808,
+     "best": 0.4808,
+     "value": 0.643
+    },
+    "1900": {
+     "played": 0.6516,
+     "best": 0.6516,
+     "value": 0.644
+    }
+   },
+   "humanBestUci": "a1d1"
+  },
+  {
+   "ply": 35,
+   "san": "Bxb2",
+   "uci": "g7b2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "r4rk1/pp3pbp/6p1/8/4B3/4B3/PP3PPP/3R1RK1 b - - 0 18",
+   "evalBefore": 5.63,
+   "evalAfter": 5.6,
+   "winBefore": 88.8,
+   "winAfter": 88.7,
+   "bestUci": "g7b2"
+  },
+  {
+   "ply": 36,
+   "san": "Bc5",
+   "uci": "e3c5",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "r4rk1/pp3p1p/6p1/8/4B3/4B3/Pb3PPP/3R1RK1 w - - 0 19",
+   "evalBefore": 5.6,
+   "evalAfter": 5.38,
+   "winBefore": 88.7,
+   "winAfter": 87.9,
+   "bestUci": "e4b7",
+   "evalBest": 5.66,
+   "swing": -0.22,
+   "maia": {
+    "1100": {
+     "played": 0.059,
+     "best": 0.3806,
+     "value": 0.702
+    },
+    "1200": {
+     "played": 0.0699,
+     "best": 0.4178,
+     "value": 0.748
+    },
+    "1300": {
+     "played": 0.0323,
+     "best": 0.4639,
+     "value": 0.79
+    },
+    "1400": {
+     "played": 0.0444,
+     "best": 0.4502,
+     "value": 0.797
+    },
+    "1500": {
+     "played": 0.0392,
+     "best": 0.4218,
+     "value": 0.781
+    },
+    "1600": {
+     "played": 0.0346,
+     "best": 0.3883,
+     "value": 0.862
+    },
+    "1700": {
+     "played": 0.0201,
+     "best": 0.3989,
+     "value": 0.871
+    },
+    "1800": {
+     "played": 0.0218,
+     "best": 0.4856,
+     "value": 0.909
+    },
+    "1900": {
+     "played": 0.0175,
+     "best": 0.5479,
+     "value": 0.901
+    }
+   },
+   "humanBestUci": "e4b7"
+  },
+  {
+   "ply": 37,
+   "san": "Rfe8",
+   "uci": "f8e8",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "r4rk1/pp3p1p/6p1/2B5/4B3/8/Pb3PPP/3R1RK1 b - - 1 19",
+   "evalBefore": 5.38,
+   "evalAfter": 5.46,
+   "winBefore": 87.9,
+   "winAfter": 88.2,
+   "bestUci": "f8d8"
+  },
+  {
+   "ply": 38,
+   "san": "Rfe1",
+   "uci": "f1e1",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "r3r1k1/pp3p1p/6p1/2B5/4B3/8/Pb3PPP/3R1RK1 w - - 2 20",
+   "evalBefore": 5.46,
+   "evalAfter": 4.7,
+   "winBefore": 88.2,
+   "winAfter": 84.9,
+   "bestUci": "e4b7",
+   "evalBest": 5.43,
+   "swing": -0.76,
+   "maia": {
+    "1100": {
+     "played": 0.0958,
+     "best": 0.3812,
+     "value": 0.634
+    },
+    "1200": {
+     "played": 0.0709,
+     "best": 0.4749,
+     "value": 0.612
+    },
+    "1300": {
+     "played": 0.0508,
+     "best": 0.5972,
+     "value": 0.661
+    },
+    "1400": {
+     "played": 0.0923,
+     "best": 0.4764,
+     "value": 0.704
+    },
+    "1500": {
+     "played": 0.0822,
+     "best": 0.4678,
+     "value": 0.696
+    },
+    "1600": {
+     "played": 0.0323,
+     "best": 0.424,
+     "value": 0.797
+    },
+    "1700": {
+     "played": 0.0375,
+     "best": 0.6028,
+     "value": 0.779
+    },
+    "1800": {
+     "played": 0.049,
+     "best": 0.6616,
+     "value": 0.826
+    },
+    "1900": {
+     "played": 0.0327,
+     "best": 0.5281,
+     "value": 0.851
+    }
+   },
+   "humanBestUci": "e4b7"
+  },
+  {
+   "ply": 39,
+   "san": "Bc3",
+   "uci": "b2c3",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "r3r1k1/pp3p1p/6p1/2B5/4B3/8/Pb3PPP/3RR1K1 b - - 3 20",
+   "evalBefore": 4.7,
+   "evalAfter": 5.05,
+   "winBefore": 84.9,
+   "winAfter": 86.5,
+   "bestUci": "a8c8"
+  },
+  {
+   "ply": 40,
+   "san": "Re3",
+   "uci": "e1e3",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "r3r1k1/pp3p1p/6p1/2B5/4B3/2b5/P4PPP/3RR1K1 w - - 4 21",
+   "evalBefore": 5.05,
+   "evalAfter": 5.22,
+   "winBefore": 86.5,
+   "winAfter": 87.2,
+   "bestUci": "e1e3",
+   "evalBest": 5.22,
+   "swing": 0.17,
+   "maia": {
+    "1100": {
+     "played": 0.3488,
+     "best": 0.3488,
+     "value": 0.563
+    },
+    "1200": {
+     "played": 0.3949,
+     "best": 0.3949,
+     "value": 0.586
+    },
+    "1300": {
+     "played": 0.3625,
+     "best": 0.3625,
+     "value": 0.583
+    },
+    "1400": {
+     "played": 0.3265,
+     "best": 0.3265,
+     "value": 0.6
+    },
+    "1500": {
+     "played": 0.2885,
+     "best": 0.2885,
+     "value": 0.66
+    },
+    "1600": {
+     "played": 0.355,
+     "best": 0.355,
+     "value": 0.687
+    },
+    "1700": {
+     "played": 0.1869,
+     "best": 0.1869,
+     "value": 0.782
+    },
+    "1800": {
+     "played": 0.2118,
+     "best": 0.2118,
+     "value": 0.744
+    },
+    "1900": {
+     "played": 0.4229,
+     "best": 0.4229,
+     "value": 0.759
+    }
+   },
+   "humanBestUci": "e1e3"
+  },
+  {
+   "ply": 41,
+   "san": "Bg7",
+   "uci": "c3g7",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "r3r1k1/pp3p1p/6p1/2B5/4B3/2b1R3/P4PPP/3R2K1 b - - 5 21",
+   "evalBefore": 5.22,
+   "evalAfter": 5.33,
+   "winBefore": 87.2,
+   "winAfter": 87.7,
+   "bestUci": "c3f6"
+  },
+  {
+   "ply": 42,
+   "san": "Bxb7",
+   "uci": "e4b7",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "r3r1k1/pp3pbp/6p1/2B5/4B3/4R3/P4PPP/3R2K1 w - - 6 22",
+   "evalBefore": 5.33,
+   "evalAfter": 5.35,
+   "winBefore": 87.7,
+   "winAfter": 87.8,
+   "bestUci": "e4b7",
+   "evalBest": 5.35,
+   "swing": 0.02,
+   "maia": {
+    "1100": {
+     "played": 0.4716,
+     "best": 0.4716,
+     "value": 0.57
+    },
+    "1200": {
+     "played": 0.4164,
+     "best": 0.4164,
+     "value": 0.614
+    },
+    "1300": {
+     "played": 0.5444,
+     "best": 0.5444,
+     "value": 0.628
+    },
+    "1400": {
+     "played": 0.3733,
+     "best": 0.3733,
+     "value": 0.609
+    },
+    "1500": {
+     "played": 0.4993,
+     "best": 0.4993,
+     "value": 0.687
+    },
+    "1600": {
+     "played": 0.4521,
+     "best": 0.4521,
+     "value": 0.756
+    },
+    "1700": {
+     "played": 0.5762,
+     "best": 0.5762,
+     "value": 0.776
+    },
+    "1800": {
+     "played": 0.6321,
+     "best": 0.6321,
+     "value": 0.819
+    },
+    "1900": {
+     "played": 0.5342,
+     "best": 0.5342,
+     "value": 0.784
+    }
+   },
+   "humanBestUci": "e4b7"
+  },
+  {
+   "ply": 43,
+   "san": "Rab8",
+   "uci": "a8b8",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "r3r1k1/pB3pbp/6p1/2B5/8/4R3/P4PPP/3R2K1 b - - 0 22",
+   "evalBefore": 5.35,
+   "evalAfter": 5.46,
+   "winBefore": 87.8,
+   "winAfter": 88.2,
+   "bestUci": "e8d8"
+  },
+  {
+   "ply": 44,
+   "san": "Bc6",
+   "uci": "b7c6",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "1r2r1k1/pB3pbp/6p1/2B5/8/4R3/P4PPP/3R2K1 w - - 1 23",
+   "evalBefore": 5.46,
+   "evalAfter": 5.32,
+   "winBefore": 88.2,
+   "winAfter": 87.6,
+   "bestUci": "e3e8",
+   "evalBest": 5.33,
+   "swing": -0.14,
+   "maia": {
+    "1100": {
+     "played": 0.2177,
+     "best": 0.2539,
+     "value": 0.562
+    },
+    "1200": {
+     "played": 0.2157,
+     "best": 0.3335,
+     "value": 0.662
+    },
+    "1300": {
+     "played": 0.1464,
+     "best": 0.2915,
+     "value": 0.649
+    },
+    "1400": {
+     "played": 0.176,
+     "best": 0.296,
+     "value": 0.664
+    },
+    "1500": {
+     "played": 0.2365,
+     "best": 0.3398,
+     "value": 0.693
+    },
+    "1600": {
+     "played": 0.212,
+     "best": 0.3732,
+     "value": 0.778
+    },
+    "1700": {
+     "played": 0.1364,
+     "best": 0.4553,
+     "value": 0.834
+    },
+    "1800": {
+     "played": 0.206,
+     "best": 0.4006,
+     "value": 0.879
+    },
+    "1900": {
+     "played": 0.1879,
+     "best": 0.313,
+     "value": 0.819
+    }
+   },
+   "humanBestUci": "e3e8"
+  },
+  {
+   "ply": 45,
+   "san": "Rxe3",
+   "uci": "e8e3",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "1r2r1k1/p4pbp/2B3p1/2B5/8/4R3/P4PPP/3R2K1 b - - 2 23",
+   "evalBefore": 5.32,
+   "evalAfter": 5.53,
+   "winBefore": 87.6,
+   "winAfter": 88.5,
+   "bestUci": "e8c8"
+  },
+  {
+   "ply": 46,
+   "san": "fxe3",
+   "uci": "f2e3",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "1r4k1/p4pbp/2B3p1/2B5/8/4r3/P4PPP/3R2K1 w - - 0 24",
+   "evalBefore": 5.53,
+   "evalAfter": 4.68,
+   "winBefore": 88.5,
+   "winAfter": 84.9,
+   "bestUci": "c5e3",
+   "evalBest": 5.46,
+   "swing": -0.85,
+   "maia": {
+    "1100": {
+     "played": 0.3046,
+     "best": 0.5945,
+     "value": 0.701
+    },
+    "1200": {
+     "played": 0.2827,
+     "best": 0.603,
+     "value": 0.702
+    },
+    "1300": {
+     "played": 0.2679,
+     "best": 0.5369,
+     "value": 0.663
+    },
+    "1400": {
+     "played": 0.2147,
+     "best": 0.5439,
+     "value": 0.767
+    },
+    "1500": {
+     "played": 0.2059,
+     "best": 0.6841,
+     "value": 0.754
+    },
+    "1600": {
+     "played": 0.3118,
+     "best": 0.5183,
+     "value": 0.679
+    },
+    "1700": {
+     "played": 0.4247,
+     "best": 0.531,
+     "value": 0.746
+    },
+    "1800": {
+     "played": 0.5332,
+     "best": 0.3661,
+     "value": 0.8
+    },
+    "1900": {
+     "played": 0.347,
+     "best": 0.5769,
+     "value": 0.795
+    }
+   },
+   "humanBestUci": "c5e3"
+  },
+  {
+   "ply": 47,
+   "san": "Rc8",
+   "uci": "b8c8",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "1r4k1/p4pbp/2B3p1/2B5/8/4P3/P5PP/3R2K1 b - - 0 24",
+   "evalBefore": 4.68,
+   "evalAfter": 4.66,
+   "winBefore": 84.9,
+   "winAfter": 84.8,
+   "bestUci": "b8c8"
+  },
+  {
+   "ply": 48,
+   "san": "Rd6",
+   "uci": "d1d6",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "2r3k1/p4pbp/2B3p1/2B5/8/4P3/P5PP/3R2K1 w - - 1 25",
+   "evalBefore": 4.66,
+   "evalAfter": 0.02,
+   "winBefore": 84.8,
+   "winAfter": 50.2,
+   "bestUci": "c5e7",
+   "evalBest": 4.66,
+   "swing": -4.64,
+   "maia": {
+    "1100": {
+     "played": 0.1441,
+     "best": 0.0251,
+     "value": 0.633
+    },
+    "1200": {
+     "played": 0.1194,
+     "best": 0.0092,
+     "value": 0.689
+    },
+    "1300": {
+     "played": 0.1005,
+     "best": 0.0264,
+     "value": 0.681
+    },
+    "1400": {
+     "played": 0.1462,
+     "best": 0.0142,
+     "value": 0.678
+    },
+    "1500": {
+     "played": 0.0522,
+     "best": 0.0258,
+     "value": 0.729
+    },
+    "1600": {
+     "played": 0.0332,
+     "best": 0.0265,
+     "value": 0.831
+    },
+    "1700": {
+     "played": 0.0607,
+     "best": 0.017,
+     "value": 0.82
+    },
+    "1800": {
+     "played": 0.0916,
+     "best": 0.0307,
+     "value": 0.867
+    },
+    "1900": {
+     "played": 0.0678,
+     "best": 0.0243,
+     "value": 0.772
+    }
+   },
+   "humanBestUci": "c5e7"
+  },
+  {
+   "ply": 49,
+   "san": "Bf8",
+   "uci": "g7f8",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "2r3k1/p4pbp/2BR2p1/2B5/8/4P3/P5PP/6K1 b - - 2 25",
+   "evalBefore": 0.02,
+   "evalAfter": 0.0,
+   "winBefore": 50.2,
+   "winAfter": 50.0,
+   "bestUci": "g7f8"
+  },
+  {
+   "ply": 50,
+   "san": "Rd5",
+   "uci": "d6d5",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "2r2bk1/p4p1p/2BR2p1/2B5/8/4P3/P5PP/6K1 w - - 3 26",
+   "evalBefore": 0.0,
+   "evalAfter": 0.0,
+   "winBefore": 50.0,
+   "winAfter": 50.0,
+   "bestUci": "d6d5",
+   "evalBest": 0.0,
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.0643,
+     "best": 0.0643,
+     "value": 0.556
+    },
+    "1200": {
+     "played": 0.0893,
+     "best": 0.0893,
+     "value": 0.572
+    },
+    "1300": {
+     "played": 0.1139,
+     "best": 0.1139,
+     "value": 0.592
+    },
+    "1400": {
+     "played": 0.1344,
+     "best": 0.1344,
+     "value": 0.583
+    },
+    "1500": {
+     "played": 0.1084,
+     "best": 0.1084,
+     "value": 0.583
+    },
+    "1600": {
+     "played": 0.1312,
+     "best": 0.1312,
+     "value": 0.685
+    },
+    "1700": {
+     "played": 0.0889,
+     "best": 0.0889,
+     "value": 0.675
+    },
+    "1800": {
+     "played": 0.1019,
+     "best": 0.1019,
+     "value": 0.744
+    },
+    "1900": {
+     "played": 0.2042,
+     "best": 0.2042,
+     "value": 0.668
+    }
+   },
+   "humanBestUci": "d6d5"
+  },
+  {
+   "ply": 51,
+   "san": "Rxc6",
+   "uci": "c8c6",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "2r2bk1/p4p1p/2B3p1/2BR4/8/4P3/P5PP/6K1 b - - 4 26",
+   "evalBefore": 0.0,
+   "evalAfter": 0.0,
+   "winBefore": 50.0,
+   "winAfter": 50.0,
+   "bestUci": "c8c6"
+  },
+  {
+   "ply": 52,
+   "san": "Bd4",
+   "uci": "c5d4",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/2r3p1/2BR4/8/4P3/P5PP/6K1 w - - 0 27",
+   "evalBefore": 0.0,
+   "evalAfter": 0.0,
+   "winBefore": 50.0,
+   "winAfter": 50.0,
+   "bestUci": "c5a7",
+   "evalBest": 0.0,
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.0442,
+     "best": 0.3184,
+     "value": 0.42
+    },
+    "1200": {
+     "played": 0.0443,
+     "best": 0.3655,
+     "value": 0.499
+    },
+    "1300": {
+     "played": 0.0618,
+     "best": 0.2421,
+     "value": 0.486
+    },
+    "1400": {
+     "played": 0.0872,
+     "best": 0.3364,
+     "value": 0.496
+    },
+    "1500": {
+     "played": 0.0982,
+     "best": 0.3007,
+     "value": 0.41
+    },
+    "1600": {
+     "played": 0.0469,
+     "best": 0.1943,
+     "value": 0.434
+    },
+    "1700": {
+     "played": 0.1604,
+     "best": 0.2672,
+     "value": 0.44
+    },
+    "1800": {
+     "played": 0.1205,
+     "best": 0.2029,
+     "value": 0.494
+    },
+    "1900": {
+     "played": 0.1105,
+     "best": 0.4128,
+     "value": 0.507
+    }
+   },
+   "humanBestUci": "c5a7"
+  },
+  {
+   "ply": 53,
+   "san": "Rc1+",
+   "uci": "c6c1",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/2r3p1/3R4/3B4/4P3/P5PP/6K1 b - - 1 27",
+   "evalBefore": 0.0,
+   "evalAfter": 0.35,
+   "winBefore": 50.0,
+   "winAfter": 53.2,
+   "bestUci": "f8d6"
+  },
+  {
+   "ply": 54,
+   "san": "Kf2",
+   "uci": "g1f2",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/6p1/3R4/3B4/4P3/P5PP/2r3K1 w - - 2 28",
+   "evalBefore": 0.35,
+   "evalAfter": 0.33,
+   "winBefore": 53.2,
+   "winAfter": 53.0,
+   "bestUci": "g1f2",
+   "evalBest": 0.33,
+   "swing": -0.02,
+   "maia": {
+    "1100": {
+     "played": 1.0,
+     "best": 1.0,
+     "value": 0.531
+    },
+    "1200": {
+     "played": 1.0,
+     "best": 1.0,
+     "value": 0.522
+    },
+    "1300": {
+     "played": 1.0,
+     "best": 1.0,
+     "value": 0.532
+    },
+    "1400": {
+     "played": 1.0,
+     "best": 1.0,
+     "value": 0.512
+    },
+    "1500": {
+     "played": 1.0,
+     "best": 1.0,
+     "value": 0.464
+    },
+    "1600": {
+     "played": 1.0,
+     "best": 1.0,
+     "value": 0.518
+    },
+    "1700": {
+     "played": 1.0,
+     "best": 1.0,
+     "value": 0.438
+    },
+    "1800": {
+     "played": 1.0,
+     "best": 1.0,
+     "value": 0.502
+    },
+    "1900": {
+     "played": 1.0,
+     "best": 1.0,
+     "value": 0.528
+    }
+   },
+   "humanBestUci": "g1f2"
+  },
+  {
+   "ply": 55,
+   "san": "Rc2+",
+   "uci": "c1c2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/6p1/3R4/3B4/4P3/P4KPP/2r5 b - - 3 28",
+   "evalBefore": 0.33,
+   "evalAfter": 0.26,
+   "winBefore": 53.0,
+   "winAfter": 52.4,
+   "bestUci": "c1c2"
+  },
+  {
+   "ply": 56,
+   "san": "Kf3",
+   "uci": "f2f3",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/6p1/3R4/3B4/4P3/P1r2KPP/8 w - - 4 29",
+   "evalBefore": 0.26,
+   "evalAfter": 0.02,
+   "winBefore": 52.4,
+   "winAfter": 50.2,
+   "bestUci": "f2g3",
+   "evalBest": 0.25,
+   "swing": -0.24,
+   "maia": {
+    "1100": {
+     "played": 0.6223,
+     "best": 0.189,
+     "value": 0.537
+    },
+    "1200": {
+     "played": 0.5781,
+     "best": 0.252,
+     "value": 0.542
+    },
+    "1300": {
+     "played": 0.6233,
+     "best": 0.2077,
+     "value": 0.476
+    },
+    "1400": {
+     "played": 0.6111,
+     "best": 0.2538,
+     "value": 0.476
+    },
+    "1500": {
+     "played": 0.6221,
+     "best": 0.2705,
+     "value": 0.474
+    },
+    "1600": {
+     "played": 0.6296,
+     "best": 0.2462,
+     "value": 0.516
+    },
+    "1700": {
+     "played": 0.6646,
+     "best": 0.2655,
+     "value": 0.508
+    },
+    "1800": {
+     "played": 0.7542,
+     "best": 0.1456,
+     "value": 0.486
+    },
+    "1900": {
+     "played": 0.7234,
+     "best": 0.2098,
+     "value": 0.496
+    }
+   },
+   "humanBestUci": "f2f3"
+  },
+  {
+   "ply": 57,
+   "san": "Rxa2",
+   "uci": "c2a2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/6p1/3R4/3B4/4PK2/P1r3PP/8 b - - 5 29",
+   "evalBefore": 0.02,
+   "evalAfter": 0.01,
+   "winBefore": 50.2,
+   "winAfter": 50.1,
+   "bestUci": "c2a2"
+  },
+  {
+   "ply": 58,
+   "san": "e4",
+   "uci": "e3e4",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/6p1/3R4/3B4/4PK2/r5PP/8 w - - 0 30",
+   "evalBefore": 0.01,
+   "evalAfter": -0.03,
+   "winBefore": 50.1,
+   "winAfter": 49.7,
+   "bestUci": "d5d8",
+   "evalBest": 0.0,
+   "swing": -0.04,
+   "maia": {
+    "1100": {
+     "played": 0.0972,
+     "best": 0.198,
+     "value": 0.452
+    },
+    "1200": {
+     "played": 0.0341,
+     "best": 0.2703,
+     "value": 0.541
+    },
+    "1300": {
+     "played": 0.0843,
+     "best": 0.1591,
+     "value": 0.521
+    },
+    "1400": {
+     "played": 0.0495,
+     "best": 0.1484,
+     "value": 0.487
+    },
+    "1500": {
+     "played": 0.0464,
+     "best": 0.1459,
+     "value": 0.49
+    },
+    "1600": {
+     "played": 0.0305,
+     "best": 0.1954,
+     "value": 0.455
+    },
+    "1700": {
+     "played": 0.0144,
+     "best": 0.3297,
+     "value": 0.455
+    },
+    "1800": {
+     "played": 0.0345,
+     "best": 0.1844,
+     "value": 0.449
+    },
+    "1900": {
+     "played": 0.0167,
+     "best": 0.2915,
+     "value": 0.452
+    }
+   },
+   "humanBestUci": "d5d7"
+  },
+  {
+   "ply": 59,
+   "san": "Ra3+",
+   "uci": "a2a3",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/6p1/3R4/3BP3/5K2/r5PP/8 b - - 0 30",
+   "evalBefore": -0.03,
+   "evalAfter": -0.01,
+   "winBefore": 49.7,
+   "winAfter": 49.9,
+   "bestUci": "f8e7"
+  },
+  {
+   "ply": 60,
+   "san": "Kf4",
+   "uci": "f3f4",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/6p1/3R4/3BP3/r4K2/6PP/8 w - - 1 31",
+   "evalBefore": -0.01,
+   "evalAfter": -0.03,
+   "winBefore": 49.9,
+   "winAfter": 49.7,
+   "bestUci": "f3e2",
+   "evalBest": -0.01,
+   "swing": -0.02,
+   "maia": {
+    "1100": {
+     "played": 0.4437,
+     "best": 0.128,
+     "value": 0.474
+    },
+    "1200": {
+     "played": 0.5134,
+     "best": 0.107,
+     "value": 0.564
+    },
+    "1300": {
+     "played": 0.4529,
+     "best": 0.0899,
+     "value": 0.422
+    },
+    "1400": {
+     "played": 0.3123,
+     "best": 0.1292,
+     "value": 0.455
+    },
+    "1500": {
+     "played": 0.5022,
+     "best": 0.087,
+     "value": 0.459
+    },
+    "1600": {
+     "played": 0.4446,
+     "best": 0.1346,
+     "value": 0.41
+    },
+    "1700": {
+     "played": 0.5374,
+     "best": 0.1197,
+     "value": 0.354
+    },
+    "1800": {
+     "played": 0.3749,
+     "best": 0.1324,
+     "value": 0.413
+    },
+    "1900": {
+     "played": 0.511,
+     "best": 0.1019,
+     "value": 0.478
+    }
+   },
+   "humanBestUci": "f3f4"
+  },
+  {
+   "ply": 61,
+   "san": "Bh6+",
+   "uci": "f8h6",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "5bk1/p4p1p/6p1/3R4/3BPK2/r7/6PP/8 b - - 2 31",
+   "evalBefore": -0.03,
+   "evalAfter": 0.0,
+   "winBefore": 49.7,
+   "winAfter": 50.0,
+   "bestUci": "f8h6"
+  },
+  {
+   "ply": 62,
+   "san": "Ke5",
+   "uci": "f4e5",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "6k1/p4p1p/6pb/3R4/3BPK2/r7/6PP/8 w - - 3 32",
+   "evalBefore": 0.0,
+   "evalAfter": -0.58,
+   "winBefore": 50.0,
+   "winAfter": 44.7,
+   "bestUci": "f4g4",
+   "evalBest": 0.0,
+   "swing": -0.58,
+   "maia": {
+    "1100": {
+     "played": 0.561,
+     "best": 0.4249,
+     "value": 0.495
+    },
+    "1200": {
+     "played": 0.627,
+     "best": 0.3611,
+     "value": 0.508
+    },
+    "1300": {
+     "played": 0.4253,
+     "best": 0.5496,
+     "value": 0.51
+    },
+    "1400": {
+     "played": 0.392,
+     "best": 0.5854,
+     "value": 0.484
+    },
+    "1500": {
+     "played": 0.7578,
+     "best": 0.2324,
+     "value": 0.47
+    },
+    "1600": {
+     "played": 0.5649,
+     "best": 0.4159,
+     "value": 0.435
+    },
+    "1700": {
+     "played": 0.4128,
+     "best": 0.5764,
+     "value": 0.328
+    },
+    "1800": {
+     "played": 0.5708,
+     "best": 0.4216,
+     "value": 0.428
+    },
+    "1900": {
+     "played": 0.7056,
+     "best": 0.2874,
+     "value": 0.483
+    }
+   },
+   "humanBestUci": "f4g4"
+  },
+  {
+   "ply": 63,
+   "san": "Bg7+",
+   "uci": "h6g7",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "6k1/p4p1p/6pb/3RK3/3BP3/r7/6PP/8 b - - 4 32",
+   "evalBefore": -0.58,
+   "evalAfter": -0.53,
+   "winBefore": 44.7,
+   "winAfter": 45.1,
+   "bestUci": "h6g7"
+  },
+  {
+   "ply": 64,
+   "san": "Kd6",
+   "uci": "e5d6",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "6k1/p4pbp/6p1/3RK3/3BP3/r7/6PP/8 w - - 5 33",
+   "evalBefore": -0.53,
+   "evalAfter": -2.83,
+   "winBefore": 45.1,
+   "winAfter": 26.1,
+   "bestUci": "e5f4",
+   "evalBest": -0.57,
+   "swing": -2.3,
+   "maia": {
+    "1100": {
+     "played": 0.6545,
+     "best": 0.3455,
+     "value": 0.359
+    },
+    "1200": {
+     "played": 0.3848,
+     "best": 0.6152,
+     "value": 0.534
+    },
+    "1300": {
+     "played": 0.3597,
+     "best": 0.6401,
+     "value": 0.346
+    },
+    "1400": {
+     "played": 0.4004,
+     "best": 0.5996,
+     "value": 0.483
+    },
+    "1500": {
+     "played": 0.3827,
+     "best": 0.6172,
+     "value": 0.372
+    },
+    "1600": {
+     "played": 0.4863,
+     "best": 0.5137,
+     "value": 0.366
+    },
+    "1700": {
+     "played": 0.4381,
+     "best": 0.5618,
+     "value": 0.325
+    },
+    "1800": {
+     "played": 0.5854,
+     "best": 0.4147,
+     "value": 0.414
+    },
+    "1900": {
+     "played": 0.5051,
+     "best": 0.4949,
+     "value": 0.442
+    }
+   },
+   "humanBestUci": "e5f4"
+  },
+  {
+   "ply": 65,
+   "san": "Bxd4",
+   "uci": "g7d4",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "6k1/p4pbp/3K2p1/3R4/3BP3/r7/6PP/8 b - - 6 33",
+   "evalBefore": -2.83,
+   "evalAfter": -2.9,
+   "winBefore": 26.1,
+   "winAfter": 25.6,
+   "bestUci": "a3a6"
+  },
+  {
+   "ply": 66,
+   "san": "Rxd4",
+   "uci": "d5d4",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "6k1/p4p1p/3K2p1/3R4/3bP3/r7/6PP/8 w - - 0 34",
+   "evalBefore": -2.9,
+   "evalAfter": -3.05,
+   "winBefore": 25.6,
+   "winAfter": 24.5,
+   "bestUci": "d5d4",
+   "evalBest": -3.05,
+   "swing": -0.15,
+   "maia": {
+    "1100": {
+     "played": 0.8484,
+     "best": 0.8484,
+     "value": 0.49
+    },
+    "1200": {
+     "played": 0.6802,
+     "best": 0.6802,
+     "value": 0.34
+    },
+    "1300": {
+     "played": 0.8503,
+     "best": 0.8503,
+     "value": 0.406
+    },
+    "1400": {
+     "played": 0.905,
+     "best": 0.905,
+     "value": 0.383
+    },
+    "1500": {
+     "played": 0.79,
+     "best": 0.79,
+     "value": 0.273
+    },
+    "1600": {
+     "played": 0.7834,
+     "best": 0.7834,
+     "value": 0.241
+    },
+    "1700": {
+     "played": 0.8657,
+     "best": 0.8657,
+     "value": 0.367
+    },
+    "1800": {
+     "played": 0.7529,
+     "best": 0.7529,
+     "value": 0.292
+    },
+    "1900": {
+     "played": 0.9019,
+     "best": 0.9019,
+     "value": 0.258
+    }
+   },
+   "humanBestUci": "d5d4"
+  },
+  {
+   "ply": 67,
+   "san": "Ra6+",
+   "uci": "a3a6",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "6k1/p4p1p/3K2p1/8/3RP3/r7/6PP/8 b - - 0 34",
+   "evalBefore": -3.05,
+   "evalAfter": -2.57,
+   "winBefore": 24.5,
+   "winAfter": 28.0,
+   "bestUci": "a3a2"
+  },
+  {
+   "ply": 68,
+   "san": "Kc7",
+   "uci": "d6c7",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "6k1/p4p1p/r2K2p1/8/3RP3/8/6PP/8 w - - 1 35",
+   "evalBefore": -2.57,
+   "evalAfter": -3.68,
+   "winBefore": 28.0,
+   "winAfter": 20.5,
+   "bestUci": "d6e5",
+   "evalBest": -2.6,
+   "swing": -1.11,
+   "maia": {
+    "1100": {
+     "played": 0.132,
+     "best": 0.2504,
+     "value": 0.444
+    },
+    "1200": {
+     "played": 0.1917,
+     "best": 0.3228,
+     "value": 0.447
+    },
+    "1300": {
+     "played": 0.2064,
+     "best": 0.2758,
+     "value": 0.391
+    },
+    "1400": {
+     "played": 0.1758,
+     "best": 0.1771,
+     "value": 0.417
+    },
+    "1500": {
+     "played": 0.2316,
+     "best": 0.2784,
+     "value": 0.452
+    },
+    "1600": {
+     "played": 0.2117,
+     "best": 0.2349,
+     "value": 0.394
+    },
+    "1700": {
+     "played": 0.2018,
+     "best": 0.2374,
+     "value": 0.45
+    },
+    "1800": {
+     "played": 0.1763,
+     "best": 0.1766,
+     "value": 0.38
+    },
+    "1900": {
+     "played": 0.1927,
+     "best": 0.1584,
+     "value": 0.446
+    }
+   },
+   "humanBestUci": "d6c5"
+  },
+  {
+   "ply": 69,
+   "san": "Ra2",
+   "uci": "a6a2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "6k1/p1K2p1p/r5p1/8/3RP3/8/6PP/8 b - - 2 35",
+   "evalBefore": -3.68,
+   "evalAfter": -3.96,
+   "winBefore": 20.5,
+   "winAfter": 18.9,
+   "bestUci": "a6a2"
+  },
+  {
+   "ply": 70,
+   "san": "Rd8+",
+   "uci": "d4d8",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "6k1/p1K2p1p/6p1/8/3RP3/8/r5PP/8 w - - 3 36",
+   "evalBefore": -3.96,
+   "evalAfter": -4.5,
+   "winBefore": 18.9,
+   "winAfter": 16.0,
+   "bestUci": "g2g3",
+   "evalBest": -4.05,
+   "swing": -0.54,
+   "maia": {
+    "1100": {
+     "played": 0.3143,
+     "best": 0.0558,
+     "value": 0.352
+    },
+    "1200": {
+     "played": 0.2155,
+     "best": 0.082,
+     "value": 0.376
+    },
+    "1300": {
+     "played": 0.3181,
+     "best": 0.0311,
+     "value": 0.369
+    },
+    "1400": {
+     "played": 0.1492,
+     "best": 0.0663,
+     "value": 0.33
+    },
+    "1500": {
+     "played": 0.2069,
+     "best": 0.0379,
+     "value": 0.29
+    },
+    "1600": {
+     "played": 0.2042,
+     "best": 0.0425,
+     "value": 0.337
+    },
+    "1700": {
+     "played": 0.1219,
+     "best": 0.0811,
+     "value": 0.254
+    },
+    "1800": {
+     "played": 0.2053,
+     "best": 0.0445,
+     "value": 0.23
+    },
+    "1900": {
+     "played": 0.1472,
+     "best": 0.215,
+     "value": 0.235
+    }
+   },
+   "humanBestUci": "g2g3"
+  },
+  {
+   "ply": 71,
+   "san": "Kg7",
+   "uci": "g8g7",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "3R2k1/p1K2p1p/6p1/8/4P3/8/r5PP/8 b - - 4 36",
+   "evalBefore": -4.5,
+   "evalAfter": -4.71,
+   "winBefore": 16.0,
+   "winAfter": 15.0,
+   "bestUci": "g8g7"
+  },
+  {
+   "ply": 72,
+   "san": "Ra8",
+   "uci": "d8a8",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "3R4/p1K2pkp/6p1/8/4P3/8/r5PP/8 w - - 5 37",
+   "evalBefore": -4.71,
+   "evalAfter": -5.33,
+   "winBefore": 15.0,
+   "winAfter": 12.3,
+   "bestUci": "g2g4",
+   "evalBest": -4.92,
+   "swing": -0.62,
+   "maia": {
+    "1100": {
+     "played": 0.0543,
+     "best": 0.0703,
+     "value": 0.314
+    },
+    "1200": {
+     "played": 0.1314,
+     "best": 0.1317,
+     "value": 0.323
+    },
+    "1300": {
+     "played": 0.0559,
+     "best": 0.0612,
+     "value": 0.29
+    },
+    "1400": {
+     "played": 0.0784,
+     "best": 0.0867,
+     "value": 0.323
+    },
+    "1500": {
+     "played": 0.0981,
+     "best": 0.0242,
+     "value": 0.24
+    },
+    "1600": {
+     "played": 0.0664,
+     "best": 0.041,
+     "value": 0.237
+    },
+    "1700": {
+     "played": 0.0899,
+     "best": 0.0518,
+     "value": 0.232
+    },
+    "1800": {
+     "played": 0.0928,
+     "best": 0.0539,
+     "value": 0.167
+    },
+    "1900": {
+     "played": 0.0978,
+     "best": 0.106,
+     "value": 0.265
+    }
+   },
+   "humanBestUci": "g2g3"
+  },
+  {
+   "ply": 73,
+   "san": "Rxg2",
+   "uci": "a2g2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "R7/p1K2pkp/6p1/8/4P3/8/r5PP/8 b - - 6 37",
+   "evalBefore": -5.33,
+   "evalAfter": -5.65,
+   "winBefore": 12.3,
+   "winAfter": 11.1,
+   "bestUci": "a2g2"
+  },
+  {
+   "ply": 74,
+   "san": "Rxa7",
+   "uci": "a8a7",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "R7/p1K2pkp/6p1/8/4P3/8/6rP/8 w - - 0 38",
+   "evalBefore": -5.65,
+   "evalAfter": -5.66,
+   "winBefore": 11.1,
+   "winAfter": 11.1,
+   "bestUci": "h2h4",
+   "evalBest": -5.6,
+   "swing": -0.01,
+   "maia": {
+    "1100": {
+     "played": 0.5938,
+     "best": 0.0547,
+     "value": 0.259
+    },
+    "1200": {
+     "played": 0.6162,
+     "best": 0.0695,
+     "value": 0.338
+    },
+    "1300": {
+     "played": 0.6484,
+     "best": 0.0455,
+     "value": 0.301
+    },
+    "1400": {
+     "played": 0.5596,
+     "best": 0.0806,
+     "value": 0.259
+    },
+    "1500": {
+     "played": 0.6108,
+     "best": 0.0658,
+     "value": 0.208
+    },
+    "1600": {
+     "played": 0.6426,
+     "best": 0.029,
+     "value": 0.159
+    },
+    "1700": {
+     "played": 0.6123,
+     "best": 0.0507,
+     "value": 0.187
+    },
+    "1800": {
+     "played": 0.6521,
+     "best": 0.0684,
+     "value": 0.173
+    },
+    "1900": {
+     "played": 0.6426,
+     "best": 0.0682,
+     "value": 0.186
+    }
+   },
+   "humanBestUci": "a8a7"
+  },
+  {
+   "ply": 75,
+   "san": "Rxh2",
+   "uci": "g2h2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/R1K2pkp/6p1/8/4P3/8/6rP/8 b - - 0 38",
+   "evalBefore": -5.66,
+   "evalAfter": -5.97,
+   "winBefore": 11.1,
+   "winAfter": 10.0,
+   "bestUci": "g2h2"
+  },
+  {
+   "ply": 76,
+   "san": "Ra4",
+   "uci": "a7a4",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/R1K2pkp/6p1/8/4P3/8/7r/8 w - - 0 39",
+   "evalBefore": -5.97,
+   "evalAfter": -6.2,
+   "winBefore": 10.0,
+   "winAfter": 9.3,
+   "bestUci": "c7d6",
+   "evalBest": -6.25,
+   "swing": -0.23,
+   "maia": {
+    "1100": {
+     "played": 0.0544,
+     "best": 0.257,
+     "value": 0.235
+    },
+    "1200": {
+     "played": 0.0811,
+     "best": 0.1484,
+     "value": 0.233
+    },
+    "1300": {
+     "played": 0.0956,
+     "best": 0.2789,
+     "value": 0.24
+    },
+    "1400": {
+     "played": 0.0717,
+     "best": 0.1793,
+     "value": 0.219
+    },
+    "1500": {
+     "played": 0.0693,
+     "best": 0.2376,
+     "value": 0.143
+    },
+    "1600": {
+     "played": 0.0912,
+     "best": 0.3507,
+     "value": 0.131
+    },
+    "1700": {
+     "played": 0.1534,
+     "best": 0.2234,
+     "value": 0.163
+    },
+    "1800": {
+     "played": 0.0873,
+     "best": 0.4458,
+     "value": 0.142
+    },
+    "1900": {
+     "played": 0.0579,
+     "best": 0.4049,
+     "value": 0.143
+    }
+   },
+   "humanBestUci": "c7d6"
+  },
+  {
+   "ply": 77,
+   "san": "Re2",
+   "uci": "h2e2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/2K2pkp/6p1/8/R3P3/8/7r/8 b - - 1 39",
+   "evalBefore": -6.2,
+   "evalAfter": -6.23,
+   "winBefore": 9.3,
+   "winAfter": 9.2,
+   "bestUci": "h7h5"
+  },
+  {
+   "ply": 78,
+   "san": "Kc6",
+   "uci": "c7c6",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/2K2pkp/6p1/8/R3P3/8/4r3/8 w - - 2 40",
+   "evalBefore": -6.23,
+   "evalAfter": -6.23,
+   "winBefore": 9.2,
+   "winAfter": 9.2,
+   "bestUci": "c7d6",
+   "evalBest": -6.33,
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.0973,
+     "best": 0.3567,
+     "value": 0.251
+    },
+    "1200": {
+     "played": 0.0746,
+     "best": 0.3712,
+     "value": 0.261
+    },
+    "1300": {
+     "played": 0.0513,
+     "best": 0.4757,
+     "value": 0.223
+    },
+    "1400": {
+     "played": 0.0787,
+     "best": 0.3978,
+     "value": 0.212
+    },
+    "1500": {
+     "played": 0.0415,
+     "best": 0.521,
+     "value": 0.171
+    },
+    "1600": {
+     "played": 0.0994,
+     "best": 0.5359,
+     "value": 0.137
+    },
+    "1700": {
+     "played": 0.0825,
+     "best": 0.4489,
+     "value": 0.143
+    },
+    "1800": {
+     "played": 0.0398,
+     "best": 0.7261,
+     "value": 0.171
+    },
+    "1900": {
+     "played": 0.0905,
+     "best": 0.6035,
+     "value": 0.145
+    }
+   },
+   "humanBestUci": "c7d6"
+  },
+  {
+   "ply": 79,
+   "san": "h5",
+   "uci": "h7h5",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pkp/2K3p1/8/R3P3/8/4r3/8 b - - 3 40",
+   "evalBefore": -6.23,
+   "evalAfter": -6.27,
+   "winBefore": 9.2,
+   "winAfter": 9.0,
+   "bestUci": "h7h5"
+  },
+  {
+   "ply": 80,
+   "san": "Kd5",
+   "uci": "c6d5",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/2K3p1/7p/R3P3/8/4r3/8 w - - 0 41",
+   "evalBefore": -6.27,
+   "evalAfter": -6.2,
+   "winBefore": 9.0,
+   "winAfter": 9.3,
+   "bestUci": "c6d5",
+   "evalBest": -6.2,
+   "swing": 0.07,
+   "maia": {
+    "1100": {
+     "played": 0.486,
+     "best": 0.486,
+     "value": 0.204
+    },
+    "1200": {
+     "played": 0.5386,
+     "best": 0.5386,
+     "value": 0.186
+    },
+    "1300": {
+     "played": 0.5156,
+     "best": 0.5156,
+     "value": 0.164
+    },
+    "1400": {
+     "played": 0.5088,
+     "best": 0.5088,
+     "value": 0.193
+    },
+    "1500": {
+     "played": 0.5178,
+     "best": 0.5178,
+     "value": 0.118
+    },
+    "1600": {
+     "played": 0.6509,
+     "best": 0.6509,
+     "value": 0.121
+    },
+    "1700": {
+     "played": 0.5344,
+     "best": 0.5344,
+     "value": 0.114
+    },
+    "1800": {
+     "played": 0.6814,
+     "best": 0.6814,
+     "value": 0.137
+    },
+    "1900": {
+     "played": 0.7144,
+     "best": 0.7144,
+     "value": 0.107
+    }
+   },
+   "humanBestUci": "c6d5"
+  },
+  {
+   "ply": 81,
+   "san": "h4",
+   "uci": "h5h4",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/3K3p/R3P3/8/4r3/8 b - - 1 41",
+   "evalBefore": -6.2,
+   "evalAfter": -6.25,
+   "winBefore": 9.3,
+   "winAfter": 9.1,
+   "bestUci": "h5h4"
+  },
+  {
+   "ply": 82,
+   "san": "Ra1",
+   "uci": "a4a1",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/3K4/R3P2p/8/4r3/8 w - - 0 42",
+   "evalBefore": -6.25,
+   "evalAfter": -6.16,
+   "winBefore": 9.1,
+   "winAfter": 9.4,
+   "bestUci": "a4a3",
+   "evalBest": -6.34,
+   "swing": 0.09,
+   "maia": {
+    "1100": {
+     "played": 0.0667,
+     "best": 0.0654,
+     "value": 0.188
+    },
+    "1200": {
+     "played": 0.0543,
+     "best": 0.0749,
+     "value": 0.181
+    },
+    "1300": {
+     "played": 0.0653,
+     "best": 0.1224,
+     "value": 0.148
+    },
+    "1400": {
+     "played": 0.0528,
+     "best": 0.1531,
+     "value": 0.16
+    },
+    "1500": {
+     "played": 0.072,
+     "best": 0.0636,
+     "value": 0.115
+    },
+    "1600": {
+     "played": 0.0515,
+     "best": 0.0749,
+     "value": 0.137
+    },
+    "1700": {
+     "played": 0.0444,
+     "best": 0.1072,
+     "value": 0.117
+    },
+    "1800": {
+     "played": 0.0603,
+     "best": 0.0727,
+     "value": 0.096
+    },
+    "1900": {
+     "played": 0.0378,
+     "best": 0.0876,
+     "value": 0.084
+    }
+   },
+   "humanBestUci": "e4e5"
+  },
+  {
+   "ply": 83,
+   "san": "h3",
+   "uci": "h4h3",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/3K4/4P2p/8/4r3/R7 b - - 1 42",
+   "evalBefore": -6.16,
+   "evalAfter": -6.09,
+   "winBefore": 9.4,
+   "winAfter": 9.6,
+   "bestUci": "e2f2"
+  },
+  {
+   "ply": 84,
+   "san": "Kd4",
+   "uci": "d5d4",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/3K4/4P3/7p/4r3/R7 w - - 0 43",
+   "evalBefore": -6.09,
+   "evalAfter": -6.78,
+   "winBefore": 9.6,
+   "winAfter": 7.6,
+   "bestUci": "d5e5",
+   "evalBest": -6.51,
+   "swing": -0.69,
+   "maia": {
+    "1100": {
+     "played": 0.1115,
+     "best": 0.087,
+     "value": 0.167
+    },
+    "1200": {
+     "played": 0.0941,
+     "best": 0.0372,
+     "value": 0.21
+    },
+    "1300": {
+     "played": 0.0428,
+     "best": 0.0516,
+     "value": 0.168
+    },
+    "1400": {
+     "played": 0.1005,
+     "best": 0.0798,
+     "value": 0.176
+    },
+    "1500": {
+     "played": 0.0367,
+     "best": 0.0188,
+     "value": 0.115
+    },
+    "1600": {
+     "played": 0.075,
+     "best": 0.0419,
+     "value": 0.117
+    },
+    "1700": {
+     "played": 0.0664,
+     "best": 0.0489,
+     "value": 0.145
+    },
+    "1800": {
+     "played": 0.0597,
+     "best": 0.0234,
+     "value": 0.069
+    },
+    "1900": {
+     "played": 0.0832,
+     "best": 0.0421,
+     "value": 0.108
+    }
+   },
+   "humanBestUci": "a1h1"
+  },
+  {
+   "ply": 85,
+   "san": "h2",
+   "uci": "h3h2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/8/3KP3/7p/4r3/R7 b - - 1 43",
+   "evalBefore": -6.78,
+   "evalAfter": -6.74,
+   "winBefore": 7.6,
+   "winAfter": 7.7,
+   "bestUci": "h3h2"
+  },
+  {
+   "ply": 86,
+   "san": "Kd3",
+   "uci": "d4d3",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/8/3KP3/8/4r2p/R7 w - - 0 44",
+   "evalBefore": -6.74,
+   "evalAfter": -7.93,
+   "winBefore": 7.7,
+   "winAfter": 5.1,
+   "bestUci": "d4d5",
+   "evalBest": -7.78,
+   "swing": -1.19,
+   "maia": {
+    "1100": {
+     "played": 0.1073,
+     "best": 0.0209,
+     "value": 0.161
+    },
+    "1200": {
+     "played": 0.1608,
+     "best": 0.0349,
+     "value": 0.217
+    },
+    "1300": {
+     "played": 0.0702,
+     "best": 0.0178,
+     "value": 0.127
+    },
+    "1400": {
+     "played": 0.0775,
+     "best": 0.0129,
+     "value": 0.128
+    },
+    "1500": {
+     "played": 0.0678,
+     "best": 0.0127,
+     "value": 0.075
+    },
+    "1600": {
+     "played": 0.1429,
+     "best": 0.0182,
+     "value": 0.081
+    },
+    "1700": {
+     "played": 0.1192,
+     "best": 0.0543,
+     "value": 0.103
+    },
+    "1800": {
+     "played": 0.127,
+     "best": 0.0313,
+     "value": 0.078
+    },
+    "1900": {
+     "played": 0.1935,
+     "best": 0.0361,
+     "value": 0.074
+    }
+   },
+   "humanBestUci": "a1h1"
+  },
+  {
+   "ply": 87,
+   "san": "Rg2",
+   "uci": "e2g2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/8/4P3/3K4/4r2p/R7 b - - 1 44",
+   "evalBefore": -7.93,
+   "evalAfter": -8.01,
+   "winBefore": 5.1,
+   "winAfter": 5.0,
+   "bestUci": "e2g2"
+  },
+  {
+   "ply": 88,
+   "san": "Ke3",
+   "uci": "d3e3",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/8/4P3/3K4/6rp/R7 w - - 2 45",
+   "evalBefore": -8.01,
+   "evalAfter": -43.55,
+   "winBefore": 5.0,
+   "winAfter": 2.5,
+   "bestUci": "a1h1",
+   "evalBest": -8.02,
+   "swing": -1.99,
+   "maia": {
+    "1100": {
+     "played": 0.2206,
+     "best": 0.3798,
+     "value": 0.165
+    },
+    "1200": {
+     "played": 0.1189,
+     "best": 0.2931,
+     "value": 0.195
+    },
+    "1300": {
+     "played": 0.0956,
+     "best": 0.4572,
+     "value": 0.126
+    },
+    "1400": {
+     "played": 0.1286,
+     "best": 0.2366,
+     "value": 0.12
+    },
+    "1500": {
+     "played": 0.1626,
+     "best": 0.4552,
+     "value": 0.075
+    },
+    "1600": {
+     "played": 0.2087,
+     "best": 0.22,
+     "value": 0.078
+    },
+    "1700": {
+     "played": 0.152,
+     "best": 0.3934,
+     "value": 0.093
+    },
+    "1800": {
+     "played": 0.1136,
+     "best": 0.1654,
+     "value": 0.127
+    },
+    "1900": {
+     "played": 0.1665,
+     "best": 0.4612,
+     "value": 0.094
+    }
+   },
+   "humanBestUci": "a1h1"
+  },
+  {
+   "ply": 89,
+   "san": "Rg1",
+   "uci": "g2g1",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/8/4P3/4K3/6rp/R7 b - - 3 45",
+   "evalBefore": -43.55,
+   "evalAfter": -96.05,
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "g2g1"
+  },
+  {
+   "ply": 90,
+   "san": "Rxg1",
+   "uci": "a1g1",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/8/4P3/4K3/7p/R5r1 w - - 4 46",
+   "evalBefore": -96.05,
+   "evalAfter": {
+    "mate": -18
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "a1a4",
+   "evalBest": {
+    "mate": -13
+   },
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.395,
+     "best": 0.0329,
+     "value": 0.108
+    },
+    "1200": {
+     "played": 0.5198,
+     "best": 0.0235,
+     "value": 0.123
+    },
+    "1300": {
+     "played": 0.365,
+     "best": 0.0397,
+     "value": 0.104
+    },
+    "1400": {
+     "played": 0.0999,
+     "best": 0.0185,
+     "value": 0.079
+    },
+    "1500": {
+     "played": 0.3124,
+     "best": 0.0401,
+     "value": 0.065
+    },
+    "1600": {
+     "played": 0.7083,
+     "best": 0.0192,
+     "value": 0.071
+    },
+    "1700": {
+     "played": 0.1638,
+     "best": 0.0367,
+     "value": 0.057
+    },
+    "1800": {
+     "played": 0.2067,
+     "best": 0.0449,
+     "value": 0.048
+    },
+    "1900": {
+     "played": 0.4506,
+     "best": 0.0185,
+     "value": 0.073
+    }
+   },
+   "humanBestUci": "a1g1"
+  },
+  {
+   "ply": 91,
+   "san": "hxg1=Q+",
+   "uci": "h2g1q",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/8/4P3/4K3/7p/6R1 b - - 0 46",
+   "evalBefore": {
+    "mate": -18
+   },
+   "evalAfter": {
+    "mate": -16
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "h2g1q"
+  },
+  {
+   "ply": 92,
+   "san": "Kf3",
+   "uci": "e3f3",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/8/4P3/4K3/8/6q1 w - - 0 47",
+   "evalBefore": {
+    "mate": -16
+   },
+   "evalAfter": {
+    "mate": -13
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "e3f3",
+   "evalBest": {
+    "mate": -13
+   },
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.2137,
+     "best": 0.2137,
+     "value": 0.072
+    },
+    "1200": {
+     "played": 0.1721,
+     "best": 0.1721,
+     "value": 0.052
+    },
+    "1300": {
+     "played": 0.1581,
+     "best": 0.1581,
+     "value": 0.047
+    },
+    "1400": {
+     "played": 0.1672,
+     "best": 0.1672,
+     "value": 0.05
+    },
+    "1500": {
+     "played": 0.1465,
+     "best": 0.1465,
+     "value": 0.026
+    },
+    "1600": {
+     "played": 0.1507,
+     "best": 0.1507,
+     "value": 0.029
+    },
+    "1700": {
+     "played": 0.2288,
+     "best": 0.2288,
+     "value": 0.032
+    },
+    "1800": {
+     "played": 0.2394,
+     "best": 0.2394,
+     "value": 0.026
+    },
+    "1900": {
+     "played": 0.1664,
+     "best": 0.1664,
+     "value": 0.024
+    }
+   },
+   "humanBestUci": "e3f4"
+  },
+  {
+   "ply": 93,
+   "san": "g5",
+   "uci": "g6g5",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/6p1/8/4P3/5K2/8/6q1 b - - 1 47",
+   "evalBefore": {
+    "mate": -13
+   },
+   "evalAfter": {
+    "mate": -14
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "g1d4"
+  },
+  {
+   "ply": 94,
+   "san": "e5",
+   "uci": "e4e5",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/8/6p1/4P3/5K2/8/6q1 w - - 0 48",
+   "evalBefore": {
+    "mate": -14
+   },
+   "evalAfter": {
+    "mate": -11
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "f3e2",
+   "evalBest": {
+    "mate": -11
+   },
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.762,
+     "best": 0.2382,
+     "value": 0.067
+    },
+    "1200": {
+     "played": 0.6665,
+     "best": 0.3335,
+     "value": 0.058
+    },
+    "1300": {
+     "played": 0.696,
+     "best": 0.304,
+     "value": 0.04
+    },
+    "1400": {
+     "played": 0.6709,
+     "best": 0.3292,
+     "value": 0.049
+    },
+    "1500": {
+     "played": 0.7354,
+     "best": 0.2645,
+     "value": 0.028
+    },
+    "1600": {
+     "played": 0.7363,
+     "best": 0.2637,
+     "value": 0.036
+    },
+    "1700": {
+     "played": 0.8406,
+     "best": 0.1594,
+     "value": 0.031
+    },
+    "1800": {
+     "played": 0.729,
+     "best": 0.2709,
+     "value": 0.025
+    },
+    "1900": {
+     "played": 0.6702,
+     "best": 0.33,
+     "value": 0.017
+    }
+   },
+   "humanBestUci": "e4e5"
+  },
+  {
+   "ply": 95,
+   "san": "g4+",
+   "uci": "g5g4",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/8/4P1p1/8/5K2/8/6q1 b - - 0 48",
+   "evalBefore": {
+    "mate": -11
+   },
+   "evalAfter": {
+    "mate": -9
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "g1e1"
+  },
+  {
+   "ply": 96,
+   "san": "Ke4",
+   "uci": "f3e4",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/8/4P3/6p1/5K2/8/6q1 w - - 0 49",
+   "evalBefore": {
+    "mate": -9
+   },
+   "evalAfter": {
+    "mate": -9
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "f3e4",
+   "evalBest": {
+    "mate": -9
+   },
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.2426,
+     "best": 0.2426,
+     "value": 0.056
+    },
+    "1200": {
+     "played": 0.2167,
+     "best": 0.2167,
+     "value": 0.068
+    },
+    "1300": {
+     "played": 0.2858,
+     "best": 0.2858,
+     "value": 0.048
+    },
+    "1400": {
+     "played": 0.2513,
+     "best": 0.2513,
+     "value": 0.04
+    },
+    "1500": {
+     "played": 0.2115,
+     "best": 0.2115,
+     "value": 0.027
+    },
+    "1600": {
+     "played": 0.2513,
+     "best": 0.2513,
+     "value": 0.031
+    },
+    "1700": {
+     "played": 0.2202,
+     "best": 0.2202,
+     "value": 0.03
+    },
+    "1800": {
+     "played": 0.3042,
+     "best": 0.3042,
+     "value": 0.025
+    },
+    "1900": {
+     "played": 0.2496,
+     "best": 0.2496,
+     "value": 0.019
+    }
+   },
+   "humanBestUci": "f3f4"
+  },
+  {
+   "ply": 97,
+   "san": "g3",
+   "uci": "g4g3",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/8/4P3/4K1p1/8/8/6q1 b - - 1 49",
+   "evalBefore": {
+    "mate": -9
+   },
+   "evalAfter": {
+    "mate": -7
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "g4g3"
+  },
+  {
+   "ply": 98,
+   "san": "e6",
+   "uci": "e5e6",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/8/4P3/4K3/6p1/8/6q1 w - - 0 50",
+   "evalBefore": {
+    "mate": -7
+   },
+   "evalAfter": {
+    "mate": -6
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "e4d3",
+   "evalBest": {
+    "mate": -7
+   },
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.1141,
+     "best": 0.0237,
+     "value": 0.044
+    },
+    "1200": {
+     "played": 0.2043,
+     "best": 0.0218,
+     "value": 0.055
+    },
+    "1300": {
+     "played": 0.1254,
+     "best": 0.019,
+     "value": 0.044
+    },
+    "1400": {
+     "played": 0.1216,
+     "best": 0.0267,
+     "value": 0.035
+    },
+    "1500": {
+     "played": 0.1402,
+     "best": 0.0413,
+     "value": 0.024
+    },
+    "1600": {
+     "played": 0.1706,
+     "best": 0.0215,
+     "value": 0.032
+    },
+    "1700": {
+     "played": 0.1288,
+     "best": 0.0428,
+     "value": 0.025
+    },
+    "1800": {
+     "played": 0.131,
+     "best": 0.0391,
+     "value": 0.024
+    },
+    "1900": {
+     "played": 0.0908,
+     "best": 0.0359,
+     "value": 0.026
+    }
+   },
+   "humanBestUci": "e4f3"
+  },
+  {
+   "ply": 99,
+   "san": "g2",
+   "uci": "g3g2",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/4P3/8/4K3/6p1/8/6q1 b - - 0 50",
+   "evalBefore": {
+    "mate": -6
+   },
+   "evalAfter": {
+    "mate": -6
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "f7e6"
+  },
+  {
+   "ply": 100,
+   "san": "exf7",
+   "uci": "e6f7",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5pk1/4P3/8/4K3/8/6p1/6q1 w - - 0 51",
+   "evalBefore": {
+    "mate": -6
+   },
+   "evalAfter": {
+    "mate": -5
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "e4d5",
+   "evalBest": {
+    "mate": -5
+   },
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.2491,
+     "best": 0.0854,
+     "value": 0.046
+    },
+    "1200": {
+     "played": 0.2449,
+     "best": 0.0978,
+     "value": 0.065
+    },
+    "1300": {
+     "played": 0.2162,
+     "best": 0.0739,
+     "value": 0.045
+    },
+    "1400": {
+     "played": 0.1874,
+     "best": 0.0562,
+     "value": 0.049
+    },
+    "1500": {
+     "played": 0.2319,
+     "best": 0.1009,
+     "value": 0.025
+    },
+    "1600": {
+     "played": 0.2094,
+     "best": 0.0447,
+     "value": 0.037
+    },
+    "1700": {
+     "played": 0.22,
+     "best": 0.0771,
+     "value": 0.027
+    },
+    "1800": {
+     "played": 0.2588,
+     "best": 0.0677,
+     "value": 0.024
+    },
+    "1900": {
+     "played": 0.2745,
+     "best": 0.0594,
+     "value": 0.037
+    }
+   },
+   "humanBestUci": "e6e7"
+  },
+  {
+   "ply": 101,
+   "san": "Kxf7",
+   "uci": "g7f7",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5Pk1/8/8/4K3/8/6p1/6q1 b - - 0 51",
+   "evalBefore": {
+    "mate": -5
+   },
+   "evalAfter": {
+    "mate": -5
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "g1d1"
+  },
+  {
+   "ply": 102,
+   "san": "Ke5",
+   "uci": "e4e5",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5k2/8/8/4K3/8/6p1/6q1 w - - 0 52",
+   "evalBefore": {
+    "mate": -5
+   },
+   "evalAfter": {
+    "mate": -4
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "e4f3",
+   "evalBest": {
+    "mate": -5
+   },
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.1073,
+     "best": 0.4896,
+     "value": 0.056
+    },
+    "1200": {
+     "played": 0.0754,
+     "best": 0.5215,
+     "value": 0.067
+    },
+    "1300": {
+     "played": 0.1198,
+     "best": 0.4368,
+     "value": 0.064
+    },
+    "1400": {
+     "played": 0.0567,
+     "best": 0.5327,
+     "value": 0.063
+    },
+    "1500": {
+     "played": 0.1392,
+     "best": 0.3135,
+     "value": 0.027
+    },
+    "1600": {
+     "played": 0.0706,
+     "best": 0.4629,
+     "value": 0.026
+    },
+    "1700": {
+     "played": 0.1009,
+     "best": 0.3568,
+     "value": 0.026
+    },
+    "1800": {
+     "played": 0.1245,
+     "best": 0.4093,
+     "value": 0.027
+    },
+    "1900": {
+     "played": 0.1412,
+     "best": 0.3007,
+     "value": 0.033
+    }
+   },
+   "humanBestUci": "e4f3"
+  },
+  {
+   "ply": 103,
+   "san": "Qf1",
+   "uci": "g1f1",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5k2/8/4K3/8/8/6p1/6q1 b - - 1 52",
+   "evalBefore": {
+    "mate": -4
+   },
+   "evalAfter": {
+    "mate": -4
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "g1c5"
+  },
+  {
+   "ply": 104,
+   "san": "Kd6",
+   "uci": "e5d6",
+   "user": true,
+   "phase": "endgame",
+   "fenBefore": "8/5k2/8/4K3/8/8/6p1/5q2 w - - 2 53",
+   "evalBefore": {
+    "mate": -4
+   },
+   "evalAfter": {
+    "mate": -3
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "e5d4",
+   "evalBest": {
+    "mate": -4
+   },
+   "swing": 0.0,
+   "maia": {
+    "1100": {
+     "played": 0.2625,
+     "best": 0.1606,
+     "value": 0.042
+    },
+    "1200": {
+     "played": 0.3105,
+     "best": 0.0832,
+     "value": 0.052
+    },
+    "1300": {
+     "played": 0.2208,
+     "best": 0.1429,
+     "value": 0.036
+    },
+    "1400": {
+     "played": 0.2246,
+     "best": 0.1512,
+     "value": 0.037
+    },
+    "1500": {
+     "played": 0.3469,
+     "best": 0.1177,
+     "value": 0.021
+    },
+    "1600": {
+     "played": 0.2762,
+     "best": 0.1276,
+     "value": 0.023
+    },
+    "1700": {
+     "played": 0.3632,
+     "best": 0.1251,
+     "value": 0.029
+    },
+    "1800": {
+     "played": 0.2701,
+     "best": 0.1465,
+     "value": 0.027
+    },
+    "1900": {
+     "played": 0.328,
+     "best": 0.2001,
+     "value": 0.029
+    }
+   },
+   "humanBestUci": "e5e4"
+  },
+  {
+   "ply": 105,
+   "san": "g1=Q",
+   "uci": "g2g1q",
+   "user": false,
+   "phase": "endgame",
+   "fenBefore": "8/5k2/3K4/8/8/8/6p1/5q2 b - - 3 53",
+   "evalBefore": {
+    "mate": -3
+   },
+   "evalAfter": {
+    "mate": -3
+   },
+   "winBefore": 2.5,
+   "winAfter": 2.5,
+   "bestUci": "f1c4"
+  }
+ ],
+ "accuracy": {
+  "game": 86.7,
+  "acpl": 38,
+  "quality": {
+   "inaccuracies": 1,
+   "mistakes": 0,
+   "blunders": 1
+  },
+  "method": "mean of volatility-weighted mean and harmonic mean of per-move accuracies (Lichess formulas)",
+  "phases": {
+   "opening": {
+    "accuracy": 91.7,
+    "acpl": 20,
+    "quality": {
+     "inaccuracies": 0,
+     "mistakes": 0,
+     "blunders": 0
+    },
+    "plies": 20,
+    "userMoves": 10
+   },
+   "middlegame": {
+    "accuracy": 93.0,
+    "acpl": 24,
+    "quality": {
+     "inaccuracies": 0,
+     "mistakes": 0,
+     "blunders": 0
+    },
+    "plies": 15,
+    "userMoves": 8
+   },
+   "endgame": {
+    "accuracy": 83.8,
+    "acpl": 47,
+    "quality": {
+     "inaccuracies": 1,
+     "mistakes": 0,
+     "blunders": 1
+    },
+    "plies": 71,
+    "userMoves": 35
+   }
+  }
+ },
+ "eloFit": {
+  "best": 1900,
+  "flat": true,
+  "positions": 52,
+  "logProbByBand": {
+   "1100": -1.695,
+   "1200": -1.71,
+   "1300": -1.769,
+   "1400": -1.772,
+   "1500": -1.704,
+   "1600": -1.673,
+   "1700": -1.744,
+   "1800": -1.659,
+   "1900": -1.634
+  }
+ },
+ "mistakes": [
+  {
+   "ply": 88,
+   "played": "Ke3",
+   "best": "Rh1",
+   "evalBefore": "−10.48",
+   "evalAfter": "#−24",
+   "evalBest": "−35.57",
+   "swing": "mate",
+   "title": "The king stepped onto the promotion diagonal — and made the deflection work",
+   "explanation": "The position was already gone — Black’s h-pawn on h2, shepherded by the rook, wins against any defense — but 45.Ke3 turned a long grind into mate on the spot. The king now stands on the g1–a7 diagonal, the exact line a new queen on g1 would check along. Black’s 45…Rg1! is a pure deflection: the rook offers itself on the queening square, and 46.Rxg1 hxg1=Q+ promotes <em>with check</em>, so you never get a move to fight the new queen. 46% of players at your level find the right setup here — 45.Rh1, planting the rook on the queening square where nothing can budge it. You saw that idea a move too late; the deeper habit is the pre-move scan: before touching the king in a promotion race, ask which squares the new queen will check from, and stay off those lines.",
+   "playedArrow": [
+    "d3",
+    "e3"
+   ],
+   "bestArrow": [
+    "a1",
+    "h1"
+   ],
+   "playedPopularity": "17%",
+   "bestFindability": "46%",
+   "humanBest": "Rh1",
+   "humanBestArrow": [
+    "a1",
+    "h1"
+   ],
+   "humanBestFindability": "46%",
+   "expectedPointsLost": "±0.00",
+   "recurrenceRisk": "medium",
+   "takeaways": [
+    {
+     "lesson": "When an enemy pawn reaches the 7th (or 2nd) rank, park your rook on the queening square.",
+     "detail": "A rook sitting on the promotion square can’t be deflected by checks and never has to guess. Here 45.Rh1 holds longest; every other rook placement loses to …Rg1-style tricks. Make “rook to the queening square” your default in every pawn-down rook endgame."
+    },
+    {
+     "lesson": "Before a king move in a promotion race, ask where the new queen will check from.",
+     "detail": "Promotion-with-check is worth a full tempo — usually the whole game. Trace the diagonals and files through the queening square (here g1–a7) and keep your king off them. It’s a three-second scan and it would have flagged 45.Ke3 instantly."
+    }
+   ],
+   "tags": [
+    "unsafe-king-move",
+    "promotion-race"
+   ],
+   "fenBefore": "8/5pk1/6p1/8/4P3/3K4/6rp/R7 w - - 2 45",
+   "playedUci": "d3e3",
+   "bestUci": "a1h1",
+   "humanBestUci": "a1h1",
+   "winBefore": 5.0,
+   "winAfter": 2.5
+  },
+  {
+   "ply": 64,
+   "played": "Kd6",
+   "best": "Kf4",
+   "evalBefore": "−0.36",
+   "evalAfter": "−3.13",
+   "evalBest": "−0.36",
+   "swing": "−2.77",
+   "title": "The king marched forward when its job was to walk home",
+   "explanation": "After the checks 31…Bh6+ and 32…Bg7+, your king on e5 had a genuine coin-flip — and Maia’s numbers say your level treats it as one: 51% go forward with 33.Kd6, 50% turn back with 33.Kf4. The board says it isn’t close. On f4 the king shields e4 and stays within reach of g2 and h2, and after 33…Bxd4 34.Rxd4 the endgame holds (−0.4). On d6 the king has walked off the edge of its own position: 33…Ra6+! drives it further (34.Ke7 Re6+ 35.Kd7 Rxe4 simply wins the pawn), and in the game 33…Bxd4 34.Rxd4 Ra6+ 35.Kc7 Ra2 left Black’s rook to eat g2 and h2 for free while your king watched from the queenside. An advanced king is only strong when it attacks something; this one had nothing to bite and everything behind it undefended.",
+   "playedArrow": [
+    "e5",
+    "d6"
+   ],
+   "bestArrow": [
+    "e5",
+    "f4"
+   ],
+   "playedPopularity": "51%",
+   "bestFindability": "50%",
+   "humanBest": "Kf4",
+   "humanBestArrow": [
+    "e5",
+    "f4"
+   ],
+   "humanBestFindability": "49%",
+   "expectedPointsLost": "±0.00",
+   "recurrenceRisk": "high",
+   "takeaways": [
+    {
+     "lesson": "Advance the king only toward something it can attack or escort; otherwise keep it in touch with its own pawns.",
+     "detail": "Before a forward king move in the endgame, name the target: a weak pawn, a passed pawn to escort, a square to invade. If you can’t name one, the move is drift. On d6 the king attacked nothing; on f4 it defended e4 and covered the kingside."
+    },
+    {
+     "lesson": "Count the checks before stepping into open ranks and files.",
+     "detail": "Rook endgames are decided by tempo-gaining checks. Here …Ra6+ and …Re6+ were sitting on the open sixth rank, each one dragging your king further from its pawns. Run the opponent’s checks in your head first — if a check sequence wins material, the square is off-limits."
+    }
+   ],
+   "tags": [
+    "unsafe-king-move",
+    "endgame-technique"
+   ],
+   "fenBefore": "6k1/p4pbp/6p1/3RK3/3BP3/r7/6PP/8 w - - 5 33",
+   "playedUci": "e5d6",
+   "bestUci": "e5f4",
+   "humanBestUci": "e5f4",
+   "winBefore": 45.1,
+   "winAfter": 26.1
+  },
+  {
+   "ply": 48,
+   "played": "Rd6",
+   "best": "Ba3",
+   "evalBefore": "+4.81",
+   "evalAfter": "+0.01",
+   "evalBest": "+4.81",
+   "swing": "−4.80",
+   "title": "One rook move gave the whole piece back",
+   "explanation": "After 24…Rc8 both of your bishops stood on the c-file in the rook’s crosshairs, and this was the move the game turned on. 25.Rd6 looks natural — it defends the c6-bishop sideways — but it commits two crimes at once: the rook occupies d6, the c5-bishop’s only retreat along the a3–f8 diagonal, and it stands on a square a bishop can hit. 25…Bf8! attacked the rook, and there was no good square: 26.Rd5 abandoned c6, and after 26…Rxc6 27.Bd4 the extra piece — and the game — was gone (+0.0). The engine’s save, 25.Ba3!, is a back-rank magic trick fewer than 1% of your peers would find (25…Rxc6 26.Rd8+ Bf8 27.Bxf8 keeps the piece). The move to remember is the one your peers actually play: 25.Bxa7 was Maia’s top choice at 14%, calmly trading the doomed c6-bishop for the a-pawn — after 25…Rxc6 you’re a clean pawn up with a passed a-pawn (+2.3) instead of a piece up, but the win is still yours to keep.",
+   "playedArrow": [
+    "d1",
+    "d6"
+   ],
+   "bestArrow": [
+    "c5",
+    "a3"
+   ],
+   "playedPopularity": "7%",
+   "bestFindability": "0.8%",
+   "humanBest": "Be7",
+   "humanBestArrow": [
+    "c5",
+    "e7"
+   ],
+   "humanBestFindability": "2%",
+   "recurrenceRisk": "low",
+   "takeaways": [
+    {
+     "lesson": "Before defending a piece, check what square your defender takes away.",
+     "detail": "25.Rd6 defended c6 but sat on the c5-bishop’s only escape square — one move created two trapped pieces. Whenever a defensive move lands on a diagonal or file your own piece needs, look for the opponent’s attack on the defender first. Only 7% of your level plays Rd6 here: this was a lapse, not a gap — a ten-second “what does this square cost me?” check catches it."
+    },
+    {
+     "lesson": "When you’re a piece up and a tactic threatens to win it back, give back the smallest unit and simplify.",
+     "detail": "You didn’t need to save both bishops — you needed to stay winning. 25.Bxa7 banks a pawn, concedes the skewered bishop, and leaves a trivially better endgame. Up material, always price the “pay the tax and simplify” option before hunting for the move that keeps everything."
+    }
+   ],
+   "tags": [
+    "conversion-drift",
+    "hanging-piece"
+   ],
+   "fenBefore": "2r3k1/p4pbp/2B3p1/2B5/8/4P3/P5PP/3R2K1 w - - 1 25",
+   "playedUci": "d1d6",
+   "bestUci": "c5a3",
+   "humanBestUci": "c5e7",
+   "winBefore": 84.8,
+   "winAfter": 50.2
+  },
+  {
+   "ply": 22,
+   "played": "d5",
+   "best": "dxe5",
+   "evalBefore": "+0.83",
+   "evalAfter": "−0.03",
+   "evalBest": "+0.92",
+   "swing": "−0.86",
+   "title": "The center push released the pressure — the capture won a pawn",
+   "explanation": "When Black struck with 11…e5, your last move 11.Bxf3 had quietly loaded the answer: 12.dxe5! wins a pawn outright, because after 12…Nxe5 the f3-bishop’s long diagonal opens onto b7 — 13.Bxb7 picks it off, and 13…Qxd1 14.Rxd1 changes nothing (+0.9 and a clean extra pawn). Instead 12.d5 gained a tempo on the knight but closed the very diagonal that was your best asset, and after 12…Ne7 13.c4 c6! Black dissolved the pawn spearhead and full equality set in. This one is a pattern worth drilling, because your level splits three ways here — 27% trade on c6, 26% push d5, and only 16% find the capture: when your opponent challenges a center pawn, calculate the capture first, especially when taking opens a line for a piece you just developed.",
+   "playedArrow": [
+    "d4",
+    "d5"
+   ],
+   "bestArrow": [
+    "d4",
+    "e5"
+   ],
+   "playedPopularity": "26%",
+   "bestFindability": "16%",
+   "humanBest": "dxe5",
+   "humanBestArrow": [
+    "d4",
+    "e5"
+   ],
+   "humanBestFindability": "16%",
+   "expectedPointsLost": "±0.00",
+   "recurrenceRisk": "high",
+   "takeaways": [
+    {
+     "lesson": "When a center pawn is challenged, calculate the capture before the push.",
+     "detail": "Pushing feels safe because it keeps the pawn; but the capture is the move that opens lines, and here it won material because b7 hung at the end of the f3-bishop’s diagonal. Make “what do I get if I just take?” the first branch you look at, every time the tension breaks."
+    },
+    {
+     "lesson": "Track which diagonals and files your last few moves opened — then use them.",
+     "detail": "11.Bxf3 put a bishop on the h1–a8 diagonal one move before this decision, and the win of the b7 pawn lived on exactly that line. After every capture or pawn move, update your mental list of newly open lines; tactics almost always arrive on the line that opened last."
+    }
+   ],
+   "tags": [
+    "missed-tactic",
+    "pawn-break-timing"
+   ],
+   "fenBefore": "r2q1rk1/ppp2pbp/2n3p1/4p3/3P4/2P2B2/PP3PPP/R1BQ1RK1 w - - 0 12",
+   "playedUci": "d4d5",
+   "bestUci": "d4e5",
+   "humanBestUci": "d4e5",
+   "winBefore": 57.0,
+   "winAfter": 50.1
+  }
+ ]
+}

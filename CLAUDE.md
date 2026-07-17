@@ -1,6 +1,6 @@
 # chess-coach
 
-**Version 4**
+**Version 5**
 
 This repository turns chess games into interactive coaching pages. When the user
 uploads a game and asks for feedback, analyze it and generate one HTML review page
@@ -36,6 +36,18 @@ principles throughout: retrieval before re-reading (retry mode and the
 boxes), and interleaving (due drills are mixed across games). Every new
 field remains optional — pages generated under versions 1–3 stay valid and
 show no retry UI.
+
+Version 5 (per `docs/0007-plan-learning-loop-3-insight.md`, part 3 of the
+series) adds **insight**: a clickable win% eval graph under the board on
+every new page (the optional `evals` GAME field, step 2c), a standing
+progress dashboard at `reports/progress.html` charting accuracy / ACPL /
+blunders / strength / tag recurrence across all games (step 4d,
+`tools/build-progress.py`), and **honest Elo estimation** — the strength
+fit now excludes low-information positions and mechanically renders flat
+or floor-railed fits as "unclear" / "≤1100" instead of a confident middle
+number (step 2b; `flat`/`floor`/`spread` recorded in the sidecar
+`eloFit`). Pages generated under versions 1–4 remain valid and show no
+graph.
 
 ## Trigger
 
@@ -442,6 +454,27 @@ interleaved round-robin across source games, each drill ends with a
 "recall the lesson" stage (the takeaway stays hidden until the user has
 tried to state it), and a tag filter scopes a session to one weakness.
 
+### 4d. Regenerate the progress dashboard
+
+After the page, sidecar, and drill deck, re-run the progress builder and
+commit the refreshed dashboard **with** the game's files:
+
+```bash
+python3 tools/build-progress.py            # no venv or engines needed
+```
+
+It reads every `analysis/*.json` and rewrites `reports/progress.html` from
+`progress-template.html` by replacing only the marked
+`const PROGRESS = {…};` block — the same replace-only-the-data-block
+discipline as the other templates, and byte-identical when run twice. The
+dashboard charts accuracy, ACPL, blunders, and the honest Elo reading per
+game over time (flat/floor fits draw as hollow points, per step 2b), plus
+per-phase accuracy and a tag-recurrence table (each mistake counted once,
+under its **first** tag — order tags accordingly in step 3) — the "is the
+gap shrinking after drilling it?" view. Fix dashboard UI issues in
+`progress-template.html`, never in `reports/progress.html`. The dashboard
+is linked from the `TOOLS` region of `games/index.html`.
+
 ### GAME data reference
 
 ```js
@@ -551,9 +584,10 @@ the list. Verify every `href` in the index resolves to a file in `games/`.
 
 Above the game list sits a separate `TOOLS` / `END TOOLS` marked region
 holding the standing links (currently the drill-deck card pointing at
-`../drills/index.html`). Like the game list, edit only inside the markers;
-game entries never go in the TOOLS region and tool links never go in the
-game list.
+`../drills/index.html` and the progress-dashboard card pointing at
+`../reports/progress.html`). Like the game list, edit only inside the
+markers; game entries never go in the TOOLS region and tool links never go
+in the game list.
 
 ### 6. Verify before delivering
 
@@ -660,9 +694,19 @@ For retry mode and the drill deck (version 4):
   lesson stays hidden until the recall button is clicked, and the headless
   console shows no script errors.
 
+For the progress dashboard (after step 4d):
+
+- running `tools/build-progress.py` twice is byte-identical; every series
+  has one entry per sidecar; every game link in the page resolves to a file
+  in `games/`; each game's tag-table column sums to that sidecar's mistake
+  count; each game's Elo reading obeys the step-2b honest display rule
+  (hollow point iff `flat` or `floor`); the page loads headless with no
+  script errors (`window.__progress.games()` equals the sidecar count).
+
 Then commit the new page together with its `pgn/*.txt` source, its
-`analysis/*.json` sidecar, the regenerated `drills/index.html`, and the
-updated `games/index.html`, and push.
+`analysis/*.json` sidecar, the regenerated `drills/index.html`, the
+regenerated `reports/progress.html`, and the updated `games/index.html`,
+and push.
 
 ## Repo layout
 
@@ -689,6 +733,16 @@ updated `games/index.html`, and push.
   (workflow step 4c).
 - `tools/build-drills.py` — the deck generator; also backfills step-2d
   `retry` objects into sidecars that predate them.
+- `progress-template.html` — the progress-dashboard template (self-contained;
+  inline-SVG charts, tag-recurrence table). Only its `const PROGRESS = {…};`
+  block is replaced in the generated dashboard.
+- `reports/progress.html` — the generated progress dashboard: accuracy /
+  ACPL / blunders / honest-Elo / phase-accuracy series over every analyzed
+  game plus the tag-recurrence table. Never edited by hand: regenerate with
+  `tools/build-progress.py` (workflow step 4d). Other cross-game reports
+  live in `reports/` too.
+- `tools/build-progress.py` — the dashboard generator (plain python3, reads
+  the sidecars only).
 - `tools/maia/` — the Maia harness for workflow step 2b: `setup.sh` (fetches and
   patches the zerofish WASM engine, downloads the Maia-1 weights), `serve.mjs`
   (COOP/COEP static server), `host.html` + `query.cjs` (batch UCI queries through

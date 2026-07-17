@@ -545,6 +545,74 @@
   .find-row .hb { color: #e7d7ab; font-weight: 600; }
   .dot.cream { background: #e7d7ab; }
 
+  /* ---------- Learning-loop additions ----------
+     Accuracy stat strip, phase-chip accuracy, mistake tag chips, win% row,
+     drill links. Every element renders only when the GAME data carries the
+     matching field, so older pages stay valid. */
+  .stat-strip { margin-top: 14px; }
+  .stat-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .stat-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 9px;
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .stat-chip b { color: var(--cream); font-weight: 600; }
+  .stat-chip.accuracy b { color: var(--gold); }
+  .stat-chip .q-inacc { color: var(--gold); }
+  .stat-chip .q-mist { color: #d98d70; }
+  .stat-chip .q-blun { color: var(--rust); font-weight: 600; }
+
+  .tag-row { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .tag-chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    padding: 3px 7px;
+    border-radius: 5px;
+    color: var(--muted);
+    border: 1px solid var(--panel-border);
+    background: rgba(139,147,161,0.06);
+    white-space: nowrap;
+  }
+
+  .win-row {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: -8px 0 20px;
+    text-align: center;
+  }
+  .win-row b { color: var(--cream); font-weight: 600; }
+  .win-row b.after { color: var(--rust); }
+
+  .drill-links {
+    border-top: 1px dashed rgba(201,162,75,0.25);
+    padding: 12px 0 10px;
+    margin-top: 2px;
+  }
+  .drill-head {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .drill-links ul { margin: 0; padding: 0; list-style: none; }
+  .drill-links li { padding: 0 0 6px; font-size: 12.5px; }
+  .drill-links a {
+    color: #e7d7ab;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(231,215,171,0.4);
+  }
+  .drill-links a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
   footer {
     max-width: 980px;
     margin: 40px auto 0;
@@ -576,6 +644,7 @@
   <h1 class="title" id="head-title"></h1>
   <p class="subtitle" id="head-subtitle"></p>
   <div class="strength-line" id="head-strength" hidden></div>
+  <div class="stat-strip" id="head-stats" hidden></div>
 </header>
 
 <main>
@@ -649,6 +718,13 @@ const GAME = {
   phaseElo: { opening: "≈1100" },    // per-phase fits; any of the three keys may be omitted
   weakestPhase: "opening",           // highlights that chip in the header
 
+  // Accuracy stats (optional; Stockfish-only, so they belong on every new page).
+  // Lichess-style: win% from centipawns, per-move accuracy from the win% drop.
+  accuracy: "44%",                   // game accuracy, 0–100%
+  acpl: 333,                         // average centipawn loss (number, not string)
+  moveQuality: { inaccuracies: 0, mistakes: 0, blunders: 1 },  // ?! / ? / ?? tally
+  phaseAccuracy: { opening: "44%" }, // merged into the phase chips (or shown alone)
+
   // Per-move annotations for EVERY move the user played (optional). Each entry
   // carries the engine's pick for that ply — the played arrow is derived from
   // the replay itself — plus the human-findable move. On a page with Maia data
@@ -681,6 +757,13 @@ const GAME = {
       explanation: "After 3.Bc4 the queen on h5 and bishop on c4 both hit f7, defended only by the king. 3…Nf6 develops a piece and even attacks the queen — but it does nothing for f7, and White simply takes: 4.Qxf7#. 3…g6 hits the queen while closing the h5–f7 diagonal, and Black is fine — it is also the move a third of players at this level find.",
       playedArrow: ["g8","f6"],
       bestArrow: ["g7","g6"],
+      winBefore: "53%",               // win probability before/after the played move
+      winAfter: "0%",                 //   (Stockfish eval through the Lichess win% model)
+      tags: ["king-safety", "opening-principle"],   // 1–3 from the CLAUDE.md taxonomy
+      drillLinks: [                   // 1–3 curated links from tools/drill-links.json
+        { label: "Exposed king — Lichess puzzle theme", url: "https://lichess.org/training/exposedKing" },
+        { label: "Opening principles: king-safety-driven development — Lichess blog", url: "https://lichess.org/@/Kingscrusher-YouTube/blog/the-complete-guide-to-chess-opening-principles-king-safety-driven-development/5zEb9Utr" }
+      ],
       // Maia fields (all optional; real Maia-1100 numbers for this position):
       playedPopularity: "15%",        // share of the user's level that plays the played move
       bestFindability: "36%",         // share of the user's level that finds the best move
@@ -691,7 +774,8 @@ const GAME = {
       humanBest: "g6",
       humanBestArrow: ["g7","g6"],
       humanBestFindability: "36%",
-      expectedPointsLost: "−0.30",    // WDL-based cost in expected score at the user's level
+      expectedPointsLost: "−0.30",    // WDL-based cost in expected score at the user's level;
+                                      //   OMIT when it rounds to ±0.00 (the win% row tells the story)
       recurrenceRisk: "medium",       // "high" | "medium" | "low" → card tag & badge tone
       takeaways: [
         {
@@ -1040,21 +1124,46 @@ function renderHeader() {
   if (GAME.estimatedElo) {
     const s = $("head-strength");
     s.hidden = false;
-    let html = "Maia strength estimate — you played this game like a <b>" +
+    s.innerHTML = "Maia strength estimate — you played this game like a <b>" +
       GAME.estimatedElo + "</b>" +
-      (GAME.estimatedEloNote ? " <span class=\"note\">(" + GAME.estimatedEloNote + ")</span>" : "");
-    if (GAME.phaseElo) {
-      html += "<div class=\"phase-row\">";
-      for (const ph of ["opening", "middlegame", "endgame"]) {
-        if (!GAME.phaseElo[ph]) continue;
-        const wk = GAME.weakestPhase === ph;
-        html += "<span class=\"phase-chip" + (wk ? " weakest" : "") + "\">" + ph +
-          " <b>" + GAME.phaseElo[ph] + "</b>" + (wk ? " · weakest" : "") + "</span>";
-      }
-      html += "</div>";
-    }
-    s.innerHTML = html;
+      (GAME.estimatedEloNote ? " <span class=\"note\">(" + GAME.estimatedEloNote + ")</span>" : "") +
+      buildPhaseRow();
   }
+
+  // Accuracy stat strip (renders only when the fields are present). When there
+  // is no strength line to host them, the phase chips move down here.
+  const q = GAME.moveQuality;
+  if (GAME.accuracy || GAME.acpl != null || q || (!GAME.estimatedElo && (GAME.phaseElo || GAME.phaseAccuracy))) {
+    const s = $("head-stats");
+    s.hidden = false;
+    let chips = "";
+    if (GAME.accuracy) chips += "<span class=\"stat-chip accuracy\">accuracy <b>" + GAME.accuracy + "</b></span>";
+    if (GAME.acpl != null) chips += "<span class=\"stat-chip\" title=\"Average centipawn loss vs the engine's best move\">acpl <b>" + GAME.acpl + "</b></span>";
+    if (q) {
+      chips += "<span class=\"stat-chip quality\" title=\"?! inaccuracies · ? mistakes · ?? blunders — moves dropping your win probability by 10 / 20 / 30+ points\">" +
+        "<span class=\"q-inacc\">?!&nbsp;" + (q.inaccuracies || 0) + "</span> · " +
+        "<span class=\"q-mist\">?&nbsp;" + (q.mistakes || 0) + "</span> · " +
+        "<span class=\"q-blun\">??&nbsp;" + (q.blunders || 0) + "</span></span>";
+    }
+    s.innerHTML = (chips ? "<div class=\"stat-row\">" + chips + "</div>" : "") +
+      (GAME.estimatedElo ? "" : buildPhaseRow());
+  }
+}
+
+// One chip per phase, combining the Maia phase Elo and the phase accuracy —
+// either may be absent; a phase with neither gets no chip.
+function buildPhaseRow() {
+  let html = "";
+  for (const ph of ["opening", "middlegame", "endgame"]) {
+    const elo = GAME.phaseElo && GAME.phaseElo[ph];
+    const acc = GAME.phaseAccuracy && GAME.phaseAccuracy[ph];
+    if (!elo && !acc) continue;
+    const wk = GAME.weakestPhase === ph;
+    const val = (elo || "") + (elo && acc ? " · " : "") + (acc ? acc + " acc." : "");
+    html += "<span class=\"phase-chip" + (wk ? " weakest" : "") + "\">" + ph +
+      " <b>" + val + "</b>" + (wk ? " · weakest" : "") + "</span>";
+  }
+  return html ? "<div class=\"phase-row\">" + html + "</div>" : "";
 }
 
 // ---- Maia badge helpers (all return null when the GAME fields are absent) ----
@@ -1098,6 +1207,29 @@ function makeRecurTag(mk) {
                  : mk.recurrenceRisk === "medium" ? "may recur" : "one-off";
   el.title = "Recurrence risk, from how often players at your level choose this move (Maia)";
   return el;
+}
+
+function makeTagRow(mk) {
+  if (!mk.tags || !mk.tags.length) return null;
+  const row = document.createElement("div");
+  row.className = "tag-row";
+  for (const t of mk.tags) {
+    const el = document.createElement("span");
+    el.className = "tag-chip";
+    el.textContent = t;
+    row.appendChild(el);
+  }
+  return row;
+}
+
+function makeWinRow(mk) {
+  if (!mk.winBefore || !mk.winAfter) return null;
+  const div = document.createElement("div");
+  div.className = "win-row";
+  div.innerHTML = "your winning chances: <b>" + mk.winBefore +
+    "</b> → <b class=\"after\">" + mk.winAfter + "</b>";
+  div.title = "Win probability from the Stockfish evaluation (Lichess win% model), before and after the move you played";
+  return div;
 }
 
 function makeFindRow(mk) {
@@ -1200,32 +1332,60 @@ function renderFeedbackMistake(mk) {
   }
   panel.appendChild(cmp);
 
+  const wr = makeWinRow(mk);
+  if (wr) panel.appendChild(wr);
+
   const fr = makeFindRow(mk);
   if (fr) panel.appendChild(fr);
 
-  if (mk.takeaways && mk.takeaways.length) {
+  const hasTakeaways = mk.takeaways && mk.takeaways.length;
+  const hasDrills = mk.drillLinks && mk.drillLinks.length;
+  if (hasTakeaways || hasDrills) {
     const box = document.createElement("div");
     box.className = "retain";
-    const rh = document.createElement("span");
-    rh.className = "retain-head";
-    rh.textContent = "What to retain";
-    box.appendChild(rh);
-    const ol = document.createElement("ol");
-    for (const t of mk.takeaways) {
-      const li = document.createElement("li");
-      const body = document.createElement("div");
-      const les = document.createElement("span");
-      les.className = "lesson";
-      les.textContent = t.lesson;
-      const det = document.createElement("span");
-      det.className = "detail";
-      det.textContent = t.detail || "";
-      body.appendChild(les);
-      if (t.detail) body.appendChild(det);
-      li.appendChild(body);
-      ol.appendChild(li);
+    if (hasTakeaways) {
+      const rh = document.createElement("span");
+      rh.className = "retain-head";
+      rh.textContent = "What to retain";
+      box.appendChild(rh);
+      const ol = document.createElement("ol");
+      for (const t of mk.takeaways) {
+        const li = document.createElement("li");
+        const body = document.createElement("div");
+        const les = document.createElement("span");
+        les.className = "lesson";
+        les.textContent = t.lesson;
+        const det = document.createElement("span");
+        det.className = "detail";
+        det.textContent = t.detail || "";
+        body.appendChild(les);
+        if (t.detail) body.appendChild(det);
+        li.appendChild(body);
+        ol.appendChild(li);
+      }
+      box.appendChild(ol);
     }
-    box.appendChild(ol);
+    if (hasDrills) {
+      const dl = document.createElement("div");
+      dl.className = "drill-links";
+      const dh = document.createElement("span");
+      dh.className = "drill-head";
+      dh.textContent = "Where to practice";
+      dl.appendChild(dh);
+      const ul = document.createElement("ul");
+      for (const d of mk.drillLinks) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = d.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = d.label;
+        li.appendChild(a);
+        ul.appendChild(li);
+      }
+      dl.appendChild(ul);
+      box.appendChild(dl);
+    }
     panel.appendChild(box);
   }
 }
@@ -1421,6 +1581,8 @@ if (positions) {
     badges.appendChild(makeSwingBadge(mk));
     const tag = makeRecurTag(mk);
     if (tag) badges.appendChild(tag);
+    const tags = makeTagRow(mk);
+    if (tags) badges.appendChild(tags);
     card.appendChild(num);
     card.appendChild(text);
     card.appendChild(badges);

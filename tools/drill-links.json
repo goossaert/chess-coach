@@ -1,0 +1,66 @@
+{
+  "_comment": "Taxonomy tag → curated Lichess practice links. Every URL here comes from the verified list in reports/2026-07-13-recurring-mistakes-and-lichess-study-plan.md — lichess.org cannot be fetched from this sandbox, so only add URLs that are verified elsewhere. Pick 1–3 links per mistake for the GAME drillLinks field.",
+  "hanging-piece": [
+    { "label": "Hanging pieces — Lichess puzzle theme", "url": "https://lichess.org/training/hangingPiece" },
+    { "label": "Loose pieces drop off — blunder-proofing discussion", "url": "https://lichess.org/forum/general-chess-discussion/loose-pieces-drop-off-how-to-stop-blundering?page=3" }
+  ],
+  "unsafe-capture": [
+    { "label": "Counting multiple captures — quick method", "url": "https://lichess.org/forum/general-chess-discussion/quick-and-accurate-method-of-counting-multiple-captures" },
+    { "label": "Capture the defender — Lichess puzzle theme", "url": "https://lichess.org/training/capturingDefender" },
+    { "label": "Forks — Lichess puzzle theme", "url": "https://lichess.org/training/fork" }
+  ],
+  "wrong-recapture": [
+    { "label": "Capture the defender — Lichess puzzle theme", "url": "https://lichess.org/training/capturingDefender" },
+    { "label": "Zwischenzug / intermezzo — Lichess puzzle theme", "url": "https://lichess.org/training/intermezzo" }
+  ],
+  "missed-tactic": [
+    { "label": "Mixed puzzles — Lichess daily training", "url": "https://lichess.org/training/mix" },
+    { "label": "Forks — Lichess puzzle theme", "url": "https://lichess.org/training/fork" },
+    { "label": "Crushing advantage — Lichess puzzle theme", "url": "https://lichess.org/training/crushing" }
+  ],
+  "missed-mate": [
+    { "label": "Mate in 1 — Lichess puzzle theme", "url": "https://lichess.org/training/mateIn1" },
+    { "label": "Mate in 2 — Lichess puzzle theme", "url": "https://lichess.org/training/mateIn2" },
+    { "label": "Checkmate patterns I — Lichess practice", "url": "https://lichess.org/practice/checkmates/checkmate-patterns-i/fE4k21MW/9rd7XwOw" }
+  ],
+  "slow-mate": [
+    { "label": "Mate in 2 — Lichess puzzle theme", "url": "https://lichess.org/training/mateIn2" },
+    { "label": "Mate in 3 — Lichess puzzle theme", "url": "https://lichess.org/training/mateIn3" },
+    { "label": "Checkmate patterns II — Lichess practice", "url": "https://lichess.org/practice/checkmates/checkmate-patterns-ii/8yadFPpU/UZ1np9Is" }
+  ],
+  "king-safety": [
+    { "label": "Kingside attack — Lichess puzzle theme", "url": "https://lichess.org/training/kingsideAttack" },
+    { "label": "Exposed king — Lichess puzzle theme", "url": "https://lichess.org/training/exposedKing" },
+    { "label": "Defending against an attack — Lichess blog", "url": "https://lichess.org/@/datajunkie/blog/9-10-things-you-should-know-about-defending-against-an-attack-in-chess/pU3i3FkK" }
+  ],
+  "unsafe-king-move": [
+    { "label": "Exposed king — Lichess puzzle theme", "url": "https://lichess.org/training/exposedKing" },
+    { "label": "Defensive moves — Lichess puzzle theme", "url": "https://lichess.org/training/defensiveMove" }
+  ],
+  "pawn-break-timing": [
+    { "label": "When to push the pawns in front of the king — discussion", "url": "https://lichess.org/forum/general-chess-discussion/when-to-push-the-pawns-infront-the-king?page=1" },
+    { "label": "Kingside attack — Lichess puzzle theme", "url": "https://lichess.org/training/kingsideAttack" }
+  ],
+  "conversion-drift": [
+    { "label": "Winning advantage — Lichess puzzle theme", "url": "https://lichess.org/training/advantage" },
+    { "label": "Crushing advantage — Lichess puzzle theme", "url": "https://lichess.org/training/crushing" },
+    { "label": "Converting winning positions — discussion", "url": "https://lichess.org/forum/general-chess-discussion/unable-to-convert-clearly-winning-positions-how-do-i-improve" }
+  ],
+  "promotion-race": [
+    { "label": "Advanced pawn — Lichess puzzle theme", "url": "https://lichess.org/training/advancedPawn" },
+    { "label": "Promotion — Lichess puzzle theme", "url": "https://lichess.org/training/promotion" }
+  ],
+  "endgame-technique": [
+    { "label": "Rook endgames — Lichess puzzle theme", "url": "https://lichess.org/training/rookEndgame" },
+    { "label": "Pawn endgames: key squares — Lichess practice", "url": "https://lichess.org/practice/pawn-endgames/key-squares/xebrDvFe/o3Hq4RZ0" },
+    { "label": "Piece checkmates I — Lichess practice", "url": "https://lichess.org/practice/checkmates/piece-checkmates-i/BJy6fEDf/8K8FdT6P" }
+  ],
+  "opening-principle": [
+    { "label": "Opening puzzles — Lichess puzzle theme", "url": "https://lichess.org/training/opening" },
+    { "label": "Opening principles: king-safety-driven development — Lichess blog", "url": "https://lichess.org/@/Kingscrusher-YouTube/blog/the-complete-guide-to-chess-opening-principles-king-safety-driven-development/5zEb9Utr" }
+  ],
+  "time-trouble": [
+    { "label": "Puzzle Storm — speed pattern training", "url": "https://lichess.org/storm" },
+    { "label": "Puzzle Streak — accuracy under pressure", "url": "https://lichess.org/streak" }
+  ]
+}

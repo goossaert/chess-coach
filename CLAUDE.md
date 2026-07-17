@@ -129,15 +129,44 @@ PGN. Bands run 1100–1900 in steps of 100 — there is nothing below 1100.
 
 Compute four things:
 
-1. **Estimated strength** — for every position where the user is to move (skip
-   forced/only-move positions), get the probability each band assigns to the move
-   actually played. The best-fit band maximizes the mean log-probability (floor
-   tiny probabilities at 0.1% so one weird move can't dominate). Report it as
-   `estimatedElo` ("≈1300"); if the fit is flat, say so in `estimatedEloNote`.
-   Repeat per phase for `phaseElo` (opening ≈ first 10 full moves, endgame from
-   when queens are off or few pieces remain, middlegame between; include the
-   sample size, e.g. "≈1300 · 43 moves", and set `weakestPhase`). Small per-phase
-   samples are normal — the ≈ carries the uncertainty.
+1. **Estimated strength** — for every position where the user is to move, get
+   the probability each band assigns to the move actually played. **Exclude
+   low-information positions from the fit**: forced/only-move positions, and
+   positions where |eval| > 6 pawns (dead-won/dead-lost conversion phases say
+   nothing about strength) — unless that exclusion would leave a fit (the game
+   fit, or a phase fit) with no sample at all, in which case relax the eval
+   cut for that fit. The best-fit band maximizes the mean log-probability
+   (floor tiny probabilities at 0.1% so one weird move can't dominate).
+
+   **Honest display rule (mechanical — the pipeline decides, not editorial
+   judgment).** Compute `spread` = best band's mean log-prob − worst band's,
+   in nats per move, and set two flags: `flat` = spread < 0.15, `floor` =
+   best band is 1100 (the bottom of the Maia-1 range — there is nothing
+   below it). Then:
+
+   - `flat` → `estimatedElo: "unclear"` — the data doesn't distinguish the
+     bands, so never print a confident-looking middle number;
+   - else `floor` → `estimatedElo: "≤1100"` — the fit railed at the bottom
+     of the measurable range, so the true strength may be anywhere at or
+     below it;
+   - else → `estimatedElo: "≈<band>"` as before.
+
+   Record `flat`, `floor`, and `spread` in the sidecar's `eloFit` block.
+   In `estimatedEloNote`, add an approximate corroborating signal from the
+   game's ACPL (rough rapid-pool ballparks from published Lichess-data
+   regressions — corroboration only, never the headline number):
+   ACPL ≤ 20 → ~2000+, 20–35 → ~1700–2000, 35–55 → ~1400–1700,
+   55–85 → ~1100–1400, 85–120 → ~900–1100, > 120 → below ~900.
+   Example note: "band fit ≤1100 (floor); ACPL 78 is typical of ~900–1100
+   rapid — two weak signals agreeing beat one flat fit."
+
+   Repeat per phase for `phaseElo` (opening ≈ first 10 full moves, endgame
+   from when queens are off or few pieces remain, middlegame between; include
+   the sample size, e.g. "≈1300 · 43 moves", and set `weakestPhase`), applying
+   the same exclusions and the same flat/floor display rule per phase
+   ("unclear · 12 moves" beats a confident number a dead-won 35-move endgame
+   produced). Small per-phase samples are normal — the ≈ carries the
+   uncertainty.
 2. **Per-mistake numbers**, at the best-fit band, for the 10–20 positions where
    Stockfish flagged a meaningful swing: `playedPopularity` = probability of the
    played move; `bestFindability` = probability of the engine's best move;
@@ -176,7 +205,12 @@ Select 3–6 mistakes; prefer instructive moments over near-duplicates. Derive
 **Caveats**: most games in `pgn/` are against engines, whose off-beat play can
 push positions outside Maia's human-vs-human training data — take probabilities
 in weird positions with a grain of salt, and keep forced positions out of the Elo
-fit. Percentages in the first ~5 moves are approximate too. Name the model and
+fit. Percentages in the first ~5 moves are approximate too. The Elo fit can
+never say less than "≤1100" because 1100 is the lowest Maia-1 band; a
+long-term option (documented here, deliberately not built) is sub-1100
+inference by measuring how much *less* probable the user's moves are than
+the 1100 band's own median predictability, and Maia-2/3 (with sub-1100
+coverage) is worth revisiting if the sandbox network policy ever changes. Name the model and
 conditioning band in `analysisNote` (e.g. "human model: Maia rating-band networks
 (lc0 via zerofish WASM), conditioned at ≈1300; Maia-3 unreachable from this
 sandbox, Maia-1 bands stand in").
@@ -352,7 +386,10 @@ and commit it together with the page and the PGN. Schema (`schema: 1`):
     "phases": { "opening": { "accuracy": 94.0, "acpl": 12,
                              "quality": { "…": 0 }, "plies": 20, "userMoves": 10 },
                 "middlegame": {}, "endgame": {} } },
-  "eloFit": { "best": 1100, "flat": true, "positions": 43,
+  "eloFit": { "best": 1100, "flat": true, "floor": true, "spread": 0.12,
+              "positions": 43,                  // flat/floor/spread per the step-2b
+                                                //   honest display rule; positions =
+                                                //   count after the fit exclusions
               "logProbByBand": { "1100": -1.9, "…": 0 } },   // null on Stockfish-only runs
   "mistakes": [ {           // one per GAME mistake, same order; every GAME mistake
                             //   field (title, explanation, takeaways, …), plus:
@@ -562,7 +599,11 @@ When the page carries Maia data, also check:
   and the cream arrow + "human-findable" legend appear only on positions whose
   mistake or move note has `humanBestArrow`;
 - sanity: the Maia probability of the user's actual moves should average well
-  above random at the fit band — if it doesn't, the FENs and moves are misaligned.
+  above random at the fit band — if it doesn't, the FENs and moves are misaligned;
+- `estimatedElo` obeys the step-2b honest display rule: `"unclear"` iff the
+  sidecar's `eloFit.flat` is true, else `"≤1100"` iff `eloFit.floor`, else
+  `"≈<band>"` with the band equal to `eloFit.best` — a flat or floor fit must
+  never render as a confident middle number.
 
 For the version-3 fields (any page that carries them):
 

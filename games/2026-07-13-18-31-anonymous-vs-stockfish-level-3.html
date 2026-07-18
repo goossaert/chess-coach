@@ -459,6 +459,344 @@
   .mistake-card .mc-moves .played-san { color: var(--rust); }
   .mistake-card .mc-moves .best-san { color: var(--gold); }
 
+  /* ---------- Maia human-model additions ----------
+     Every element below renders only when the GAME data carries the matching
+     field, so the page stays valid for plain Stockfish-only data. */
+  .strength-line {
+    margin-top: 16px;
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .strength-line b {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .strength-line .note { font-size: 12px; opacity: 0.85; }
+  .phase-row { display: flex; gap: 8px; margin-top: 9px; flex-wrap: wrap; }
+  .phase-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 9px;
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .phase-chip b { color: var(--cream); font-weight: 600; }
+  .phase-chip.weakest { border-color: rgba(193,80,47,0.5); }
+  .phase-chip.weakest b { color: #e8a18c; }
+
+  .swing-badge .pts { color: #d98d70; font-weight: 500; }
+
+  .typ-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .typ-badge.common {
+    color: #e8a18c;
+    background: rgba(193,80,47,0.10);
+    border: 1px solid rgba(193,80,47,0.30);
+  }
+  .typ-badge.mid {
+    color: var(--gold);
+    background: rgba(201,162,75,0.08);
+    border: 1px solid rgba(201,162,75,0.35);
+  }
+  .typ-badge.slip {
+    color: var(--muted);
+    background: rgba(139,147,161,0.08);
+    border: 1px solid var(--panel-border);
+  }
+  .fb-badges, .mc-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+  }
+  .recur-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 7px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+  .recur-tag.high { color: #e8a18c; border: 1px solid rgba(193,80,47,0.45); }
+  .recur-tag.medium { color: var(--gold); border: 1px solid rgba(201,162,75,0.4); }
+  .recur-tag.low { color: var(--muted); border: 1px solid var(--panel-border); }
+
+  .find-row {
+    border: 1px dashed rgba(201,162,75,0.35);
+    background: rgba(201,162,75,0.05);
+    border-radius: 10px;
+    padding: 11px 14px;
+    margin: -6px 0 20px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .find-row b { color: var(--gold); font-weight: 600; }
+  .find-row .hb { color: #e7d7ab; font-weight: 600; }
+  .dot.cream { background: #e7d7ab; }
+
+  /* ---------- Learning-loop additions ----------
+     Accuracy stat strip, phase-chip accuracy, mistake tag chips, win% row,
+     drill links. Every element renders only when the GAME data carries the
+     matching field, so older pages stay valid. */
+  .stat-strip { margin-top: 14px; }
+  .stat-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .stat-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 9px;
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .stat-chip b { color: var(--cream); font-weight: 600; }
+  .stat-chip.accuracy b { color: var(--gold); }
+  .stat-chip .q-inacc { color: var(--gold); }
+  .stat-chip .q-mist { color: #d98d70; }
+  .stat-chip .q-blun { color: var(--rust); font-weight: 600; }
+
+  .tag-row { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .tag-chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    padding: 3px 7px;
+    border-radius: 5px;
+    color: var(--muted);
+    border: 1px solid var(--panel-border);
+    background: rgba(139,147,161,0.06);
+    white-space: nowrap;
+  }
+
+  .win-row {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: -8px 0 20px;
+    text-align: center;
+  }
+  .win-row b { color: var(--cream); font-weight: 600; }
+  .win-row b.after { color: var(--rust); }
+
+  .drill-links {
+    border-top: 1px dashed rgba(201,162,75,0.25);
+    padding: 12px 0 10px;
+    margin-top: 2px;
+  }
+  .drill-head {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .drill-links ul { margin: 0; padding: 0; list-style: none; }
+  .drill-links li { padding: 0 0 6px; font-size: 12.5px; }
+  .drill-links a {
+    color: #e7d7ab;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(231,215,171,0.4);
+  }
+  .drill-links a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ---------- Retry mode (learning loop part 2) ----------
+     Renders only when a mistake carries a `retry` field — older pages
+     without it never show any of this. */
+  .retry-chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 7px;
+    border-radius: 5px;
+    white-space: nowrap;
+    color: var(--gold);
+    border: 1px solid rgba(201,162,75,0.4);
+    cursor: pointer;
+  }
+  .retry-chip:hover { background: rgba(201,162,75,0.12); }
+  .practice-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    margin: 0 0 14px;
+    cursor: pointer;
+  }
+  .practice-toggle input { accent-color: var(--gold); margin: 0; }
+  .retry-status {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: #e8a18c;
+    min-height: 18px;
+    margin: 0 0 12px;
+  }
+  .retry-result {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin: 0 0 14px;
+  }
+  .retry-result.solved { color: var(--gold); background: rgba(201,162,75,0.12); border: 1px solid rgba(201,162,75,0.4); }
+  .retry-result.acceptable { color: #e7d7ab; background: rgba(231,215,171,0.08); border: 1px solid rgba(231,215,171,0.35); }
+  .retry-result.revealed { color: #e8a18c; background: rgba(193,80,47,0.12); border: 1px solid rgba(193,80,47,0.4); }
+  button.retry-act {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--cream);
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+  }
+  button.retry-act:hover { border-color: var(--gold); color: var(--gold); }
+  @keyframes flashfade { from { opacity: 0.85; } to { opacity: 0; } }
+  .grade-flash { animation: flashfade 900ms ease-out forwards; }
+
+  /* ---------- Eval graph (learning loop part 3) ----------
+     Renders only when GAME.evals is present — older pages never show it. */
+  .eval-graph {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 8px 8px 4px;
+  }
+  .eval-graph[hidden] { display: none; }
+  .eval-graph svg { display: block; width: 100%; height: auto; cursor: crosshair; }
+  .eval-graph .graph-dot { cursor: pointer; }
+  .eval-graph .graph-dot:hover { stroke: var(--cream); }
+  .graph-caption {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding: 3px 0 1px;
+  }
+
+  /* ---------- Polish additions (learning loop part 4) ----------
+     Opening report, "what you did well" highlights, per-move time bar.
+     Every element renders only when the GAME data carries the matching
+     field, so older pages stay valid. */
+  .opening-report {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-top: 28px;
+    position: relative;
+    overflow: hidden;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #cfc9ba;
+  }
+  .opening-report::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  .or-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .opening-report .or-exit {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    display: block;
+    margin-top: 9px;
+  }
+  .opening-report .or-exit b { color: var(--cream); font-weight: 600; }
+  .opening-report a {
+    color: #e7d7ab;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(231,215,171,0.4);
+  }
+  .opening-report a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .highlight-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    text-align: left;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    color: var(--cream);
+    font-family: var(--sans);
+    transition: border-color 120ms;
+  }
+  .highlight-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  .highlight-card:hover { border-color: var(--gold); }
+  .highlight-card.active { border-color: var(--gold); background: #1c222d; }
+  .highlight-card .move-no { font-size: 26px; min-width: 42px; }
+  .highlight-card .hc-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .highlight-card .hc-move {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--gold);
+  }
+  .highlight-card .hc-note { font-size: 13.5px; line-height: 1.5; color: #cfc9ba; }
+  .fb-panel.highlight-active::before { background: var(--gold); opacity: 0.7; }
+
+  .time-bar {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 8px 8px 4px;
+  }
+  .time-bar[hidden] { display: none; }
+  .time-bar svg { display: block; width: 100%; height: auto; }
+  .time-bar rect.tb { cursor: pointer; }
+  .time-bar rect.tb:hover { stroke: var(--cream); stroke-width: 0.6; }
+
   footer {
     max-width: 980px;
     margin: 40px auto 0;
@@ -482,13 +820,15 @@
 
 <nav style="max-width:1000px;margin:0 auto;padding:16px 24px 0;display:flex;justify-content:space-between;align-items:baseline;font-family:var(--sans);font-size:13px;letter-spacing:.02em;">
   <a href="index.html" style="color:var(--gold);text-decoration:none;">&larr;&nbsp;Back to index</a>
-  <span style="color:var(--muted);">Version&nbsp;1</span>
+  <span style="color:var(--muted);">Version&nbsp;6</span>
 </nav>
 
 <header class="page-head">
   <span class="eyebrow-top" id="head-eyebrow"></span>
   <h1 class="title" id="head-title"></h1>
   <p class="subtitle" id="head-subtitle"></p>
+  <div class="strength-line" id="head-strength" hidden></div>
+  <div class="stat-strip" id="head-stats" hidden></div>
 </header>
 
 <main>
@@ -498,8 +838,9 @@
     <div class="board-col">
       <div id="board-mount"></div>
       <div class="legend" id="board-legend" hidden>
-        <span class="legend-item"><i class="dot rust"></i>played</span>
-        <span class="legend-item"><i class="dot gold"></i>engine's pick</span>
+        <span class="legend-item"><i class="dot rust"></i><span id="legend-played">played</span></span>
+        <span class="legend-item"><i class="dot gold"></i><span id="legend-best">engine's pick</span></span>
+        <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i><span id="legend-human-text">human-findable</span></span>
       </div>
       <div class="controls">
         <button id="btn-start" title="Start position (Home)">|&laquo;</button>
@@ -511,18 +852,30 @@
       </div>
       <div class="move-counter" id="move-counter"></div>
       <div class="kbd-hint">&larr; &rarr; move &middot; shift+&larr;&rarr; jump 10 &middot; home/end</div>
+      <div class="eval-graph" id="eval-graph" hidden></div>
+      <div class="time-bar" id="time-bar" hidden></div>
     </div>
 
     <aside class="fb-panel" id="fb-panel"></aside>
   </section>
+
+  <section class="opening-report" id="opening-report" hidden></section>
 
   <h2 class="section-head">The moves</h2>
   <p class="section-sub">Click any move to jump there. Moves marked in rust are the key mistakes.</p>
   <div class="move-list" id="move-list"></div>
 
   <h2 class="section-head">The biggest mistakes</h2>
-  <p class="section-sub">Ranked by how hard the evaluation swung. Click one to jump the board to that moment and read the feedback.</p>
+  <p class="section-sub" id="mistake-sub">Ranked by how hard the evaluation swung. Click one to jump the board to that moment and read the feedback.</p>
+  <label class="practice-toggle" id="practice-toggle" hidden>
+    <input type="checkbox" id="practice-first">
+    practice first — clicking a mistake makes you retry the position before the coaching is revealed
+  </label>
   <div id="mistake-list"></div>
+
+  <h2 class="section-head" id="highlight-head" hidden>What you did well</h2>
+  <p class="section-sub" id="highlight-sub" hidden>Moments worth repeating. Click one to jump the board to that moment.</p>
+  <div id="highlight-list"></div>
 </main>
 
 <footer id="page-footer"></footer>
@@ -543,25 +896,312 @@ const GAME = {
   event: "Classical game · lichess.org",
   opening: "Queen's Pawn Game (A41) · French-style setup with 2…e6",
 
-  movesSan: ["d4","d6","e4","e6","Nf3","Bd7","e5","h6","c3","Be7","Nbd2","Kf8","Bc4","Nc6","Ne4","d5","Nc5","b6","Nb7","Qb8","Ba6","h5","Bf4","Na5","Nxa5","c5","Nb3","Bc6","Qd3","Qe8","O-O","c4","Qc2","Qd8","Nbd2","g5","Bxg5","Qe8","b3","f6","Bf4","Rd8","bxc4","h4","cxd5","exd5","Nxh4","Rxh4","g3","Rxf4","gxf4","Ba3","Qf5","Rd7","exf6","Qf7","Bd3","Nxf6","Nb3","Rc7","Be2","Ba4","Nd2","Bb2","Bh5","Nxh5","Qb1","Nxf4","Qxb2","Qg6+","Kh1","Qg2#"],
+  movesSan: ["d4", "d6", "e4", "e6", "Nf3", "Bd7", "e5", "h6", "c3", "Be7", "Nbd2", "Kf8", "Bc4", "Nc6", "Ne4", "d5", "Nc5", "b6", "Nb7", "Qb8", "Ba6", "h5", "Bf4", "Na5", "Nxa5", "c5", "Nb3", "Bc6", "Qd3", "Qe8", "O-O", "c4", "Qc2", "Qd8", "Nbd2", "g5", "Bxg5", "Qe8", "b3", "f6", "Bf4", "Rd8", "bxc4", "h4", "cxd5", "exd5", "Nxh4", "Rxh4", "g3", "Rxf4", "gxf4", "Ba3", "Qf5", "Rd7", "exf6", "Qf7", "Bd3", "Nxf6", "Nb3", "Rc7", "Be2", "Ba4", "Nd2", "Bb2", "Bh5", "Nxh5", "Qb1", "Nxf4", "Qxb2", "Qg6+", "Kh1", "Qg2#"],
 
   summary: "The knight tour 8.Ne4–c5–b7 should have cost a piece — 8…d5 forked knight and bishop on the spot — but Stockfish level 3 gave everything back with interest, and from move 13 you were a clean knight up, nearly +8 by move 24. You converted calmly for twenty more moves. Then 33.Bh5?? dropped the bishop to 33…Nxh5, and the freed knight joined the attack on f4. The final act: 35.Qxb2?? snapped up a bishop your opponent had left hanging, but the queen on b1 was the only piece holding the b1–g6 diagonal — 35…Qg6+ 36.Kh1 Qg2#, with the f4-knight guarding the mating square.",
+  analysisNote: "Stockfish 16 · depth 20 · human model: Maia rating-band networks (lc0 via zerofish WASM), conditioned at ≈1100 · evaluations from White’s perspective (positive = good for White)",
 
-  analysisNote: "Analyzed with Stockfish 16 · depth 20 · evaluations from White's perspective",
+  estimatedElo: "≤1100",
+  estimatedEloNote: "band fit ≤1100 (floor); ACPL 121 is typical of below ~900 rapid",
+  phaseElo: {
+    opening: "≤1100 · 10 moves",
+    middlegame: "≤1100 · 20 moves"
+  },
+  weakestPhase: "opening",
+  accuracy: "61%",
+  acpl: 121,
+  moveQuality: {
+    inaccuracies: 7,
+    mistakes: 1,
+    blunders: 2
+  },
+  phaseAccuracy: {
+    opening: "48%",
+    middlegame: "64%"
+  },
+
+  evals: [52.6, 55.9, 54.7, 57.1, 57.0, 59.3, 52.3, 56.1, 53.4, 59.1, 56.1, 64.1, 62.5, 65.1, 36.7, 37.6, 24.5, 70.0, 26.6, 29.2, 30.8, 41.9, 27.8, 65.9, 65.1, 78.0, 73.3, 88.1, 71.4, 85.8, 72.8, 73.6, 70.5, 77.4, 75.5, 76.7, 70.4, 90.1, 90.4, 93.4, 92.5, 92.8, 92.8, 93.0, 93.2, 94.8, 88.6, 89.1, 86.0, 85.5, 86.3, 89.2, 83.6, 88.8, 85.4, 86.0, 85.5, 87.0, 76.7, 81.3, 67.7, 75.0, 75.8, 78.1, 22.1, 20.9, 15.8, 15.0, 2.5, 2.5, 2.5, 2.5],
+
+  openingReport: {
+    bookExitPly: 3,
+    note: "Book ended on Black's 2…e6. The first improvable decision was 3.e5 again (59.8% → 53.3%) — the third White game where an early unprovoked e5 push gave back part of the edge; the break wants preparation (3.c4 or a developing move first).",
+    explorerUrl: "https://lichess.org/analysis"
+  },
+
+  highlights: [
+    {
+      ply: 50,
+      move: "gxf4",
+      note: "The recapture question, answered correctly: when the rook took on f4 you recaptured with the g-pawn — winning the exchange and keeping your king's cover intact. This one was checked, not automatic.",
+      arrow: ["g3", "f4"]
+    },
+    {
+      ply: 62,
+      move: "Nd2",
+      note: "At +3 you didn't grab or lash out — 32.Nd2 quietly rerouted the knight to cover the light squares first. Only 5% of your level plays this kind of consolidating move in a winning position.",
+      arrow: ["b3", "d2"]
+    }
+  ],
+
+  moveNotes: [
+    {
+      ply: 0,
+      best: "e4",
+      bestArrow: ["e2", "e4"],
+      humanBest: "e4",
+      humanBestArrow: ["e2", "e4"]
+    },
+    {
+      ply: 2,
+      best: "e4",
+      bestArrow: ["e2", "e4"],
+      humanBest: "e4",
+      humanBestArrow: ["e2", "e4"]
+    },
+    {
+      ply: 4,
+      best: "Nf3",
+      bestArrow: ["g1", "f3"],
+      humanBest: "Nf3",
+      humanBestArrow: ["g1", "f3"]
+    },
+    {
+      ply: 6,
+      best: "Nc3",
+      bestArrow: ["b1", "c3"],
+      humanBest: "Nc3",
+      humanBestArrow: ["b1", "c3"]
+    },
+    {
+      ply: 8,
+      best: "Bd3",
+      bestArrow: ["f1", "d3"],
+      humanBest: "Nc3",
+      humanBestArrow: ["b1", "c3"]
+    },
+    {
+      ply: 10,
+      best: "Nbd2",
+      bestArrow: ["b1", "d2"],
+      humanBest: "Bd3",
+      humanBestArrow: ["f1", "d3"]
+    },
+    {
+      ply: 12,
+      best: "Bd3",
+      bestArrow: ["f1", "d3"],
+      humanBest: "Bd3",
+      humanBestArrow: ["f1", "d3"]
+    },
+    {
+      ply: 16,
+      best: "Bd3",
+      bestArrow: ["c4", "d3"],
+      humanBest: "Bd3",
+      humanBestArrow: ["c4", "d3"]
+    },
+    {
+      ply: 20,
+      best: "Ba6",
+      bestArrow: ["c4", "a6"],
+      humanBest: "Ba6",
+      humanBestArrow: ["c4", "a6"]
+    },
+    {
+      ply: 22,
+      best: "b4",
+      bestArrow: ["b2", "b4"],
+      humanBest: "b4",
+      humanBestArrow: ["b2", "b4"]
+    },
+    {
+      ply: 24,
+      best: "Nxa5",
+      bestArrow: ["b7", "a5"],
+      humanBest: "Nxa5",
+      humanBestArrow: ["b7", "a5"]
+    },
+    {
+      ply: 26,
+      best: "Bb7",
+      bestArrow: ["a6", "b7"],
+      humanBest: "Bb7",
+      humanBestArrow: ["a6", "b7"]
+    },
+    {
+      ply: 30,
+      best: "dxc5",
+      bestArrow: ["d4", "c5"],
+      humanBest: "dxc5",
+      humanBestArrow: ["d4", "c5"]
+    },
+    {
+      ply: 32,
+      best: "Qe2",
+      bestArrow: ["d3", "e2"],
+      humanBest: "Qe3",
+      humanBestArrow: ["d3", "e3"]
+    },
+    {
+      ply: 34,
+      best: "Nbd2",
+      bestArrow: ["b3", "d2"],
+      humanBest: "Nbd2",
+      humanBestArrow: ["b3", "d2"]
+    },
+    {
+      ply: 36,
+      best: "Be3",
+      bestArrow: ["f4", "e3"],
+      humanBest: "Be3",
+      humanBestArrow: ["f4", "e3"]
+    },
+    {
+      ply: 38,
+      best: "a4",
+      bestArrow: ["a2", "a4"],
+      humanBest: "Bxe7+",
+      humanBestArrow: ["g5", "e7"]
+    },
+    {
+      ply: 40,
+      best: "exf6",
+      bestArrow: ["e5", "f6"],
+      humanBest: "exf6",
+      humanBestArrow: ["e5", "f6"]
+    },
+    {
+      ply: 42,
+      best: "bxc4",
+      bestArrow: ["b3", "c4"],
+      humanBest: "bxc4",
+      humanBestArrow: ["b3", "c4"]
+    },
+    {
+      ply: 44,
+      best: "h3",
+      bestArrow: ["h2", "h3"],
+      humanBest: "exf6",
+      humanBestArrow: ["e5", "f6"]
+    },
+    {
+      ply: 46,
+      best: "Bd3",
+      bestArrow: ["a6", "d3"],
+      humanBest: "exf6",
+      humanBestArrow: ["e5", "f6"]
+    },
+    {
+      ply: 48,
+      best: "Bg3",
+      bestArrow: ["f4", "g3"],
+      humanBest: "Bg3",
+      humanBestArrow: ["f4", "g3"]
+    },
+    {
+      ply: 50,
+      best: "gxf4",
+      bestArrow: ["g3", "f4"],
+      humanBest: "gxf4",
+      humanBestArrow: ["g3", "f4"]
+    },
+    {
+      ply: 52,
+      best: "Kh1",
+      bestArrow: ["g1", "h1"],
+      humanBest: "Kh1",
+      humanBestArrow: ["g1", "h1"]
+    },
+    {
+      ply: 54,
+      best: "Kh1",
+      bestArrow: ["g1", "h1"],
+      humanBest: "Kh1",
+      humanBestArrow: ["g1", "h1"]
+    },
+    {
+      ply: 56,
+      best: "Rae1",
+      bestArrow: ["a1", "e1"],
+      humanBest: "Rae1",
+      humanBestArrow: ["a1", "e1"]
+    },
+    {
+      ply: 58,
+      best: "Nf3",
+      bestArrow: ["d2", "f3"],
+      humanBest: "Nf3",
+      humanBestArrow: ["d2", "f3"]
+    },
+    {
+      ply: 60,
+      best: "Rae1",
+      bestArrow: ["a1", "e1"],
+      humanBest: "Rae1",
+      humanBestArrow: ["a1", "e1"]
+    },
+    {
+      ply: 62,
+      best: "Nd2",
+      bestArrow: ["b3", "d2"],
+      humanBest: "Kh1",
+      humanBestArrow: ["g1", "h1"]
+    },
+    {
+      ply: 66,
+      best: "Qxf7+",
+      bestArrow: ["f5", "f7"],
+      humanBest: "Qxf7+",
+      humanBestArrow: ["f5", "f7"]
+    },
+    {
+      ply: 70,
+      best: "Kh1",
+      bestArrow: ["g1", "h1"],
+      humanBest: "Kh1",
+      humanBestArrow: ["g1", "h1"]
+    }
+  ],
 
   mistakes: [
     {
       ply: 64,
       played: "Bh5",
       best: "Rab1",
-      evalBefore: "+3.60",
-      evalAfter: "−3.67",
+      evalBefore: "3.46",
+      evalAfter: "−3.42",
       evalBest: "+3.77",
-      swing: "−7.27",
+      swing: "−6.88",
       title: "The bishop landed on the knight's square",
       explanation: "You were still winning comfortably; the only real problem in the position was Black's bishop on b2 attacking your a1-rook. 33.Rab1 solves it by hitting the bishop right back — after 33…Bxc3 34.Rbc1 it doesn't get out. Instead 33.Bh5 attacked the f7-queen, but h5 is exactly the square the f6-knight covers: 33…Nxh5 took the bishop for free and dissolved the \"threat\" in the same move. Worse, the capture activated the knight — two moves later it sat on f4 guarding g2, and it became the mating piece.",
-      playedArrow: ["e2","h5"],
-      bestArrow: ["a1","b1"],
+      playedArrow: ["e2", "h5"],
+      bestArrow: ["a1", "b1"],
+      winBefore: "78%",
+      winAfter: "22%",
+      tags: ["hanging-piece"],
+      drillLinks: [
+        {
+          label: "Hanging pieces — Lichess puzzle theme",
+          url: "https://lichess.org/training/hangingPiece"
+        },
+        {
+          label: "Loose pieces drop off — blunder-proofing discussion",
+          url: "https://lichess.org/forum/general-chess-discussion/loose-pieces-drop-off-how-to-stop-blundering?page=3"
+        }
+      ],
+      playedPopularity: "9%",
+      bestFindability: "43%",
+      humanBest: "Rab1",
+      humanBestArrow: ["a1", "b1"],
+      humanBestFindability: "43%",
+      expectedPointsLost: "−0.08",
+      recurrenceRisk: "low",
+      retry: {
+        fen: "5k2/p1r2q2/1p3n2/3p1Q2/b2P1P2/2P5/Pb1NBP1P/R4RK1 w - - 6 33",
+        solutions: ["a1b1"],
+        acceptable: [],
+        legal: ["a1b1", "a1c1", "a1d1", "a1e1", "a2a3", "c3c4", "d2b1", "d2b3", "d2c4", "d2e4", "d2f3", "e2a6", "e2b5", "e2c4", "e2d1", "e2d3", "e2f3", "e2g4", "e2h5", "f1b1", "f1c1", "f1d1", "f1e1", "f2f3", "f5b1", "f5c2", "f5c8", "f5d3", "f5d5", "f5d7", "f5e4", "f5e5", "f5e6", "f5f6", "f5g4", "f5g5", "f5g6", "f5h3", "f5h5", "f5h7", "g1g2", "g1h1", "h2h3", "h2h4"]
+      },
       takeaways: [
         {
           lesson: "Before releasing a piece, name every enemy piece that touches its new square.",
@@ -577,14 +1217,40 @@ const GAME = {
       ply: 68,
       played: "Qxb2",
       best: "Kh1",
-      evalBefore: "−5.35",
+      evalBefore: "−4.72",
       evalAfter: "#−2",
       evalBest: "−5.13",
       swing: "mate",
       title: "Took the bishop, dropped the diagonal, walked into mate",
       explanation: "You were lost by now, but 35.Kh1! still fights: it steps off the open g-file, and your queen on b1 keeps guarding g6 along the b1–g6 diagonal, so 35…Qg6 just loses the queen to 36.Qxg6 — the engine's line runs 35…Bxa1 36.Qb4+! with real counterplay against Black's own exposed king on f8. 35.Qxb2 pocketed the b2-bishop instead, and the diagonal went with it: 35…Qg6+ — unanswerable now — 36.Kh1 Qg2#, with the knight you had allowed onto f4 guarding the mating square.",
-      playedArrow: ["b1","b2"],
-      bestArrow: ["g1","h1"],
+      playedArrow: ["b1", "b2"],
+      bestArrow: ["g1", "h1"],
+      winBefore: "15%",
+      winAfter: "2%",
+      tags: ["unsafe-capture", "king-safety"],
+      drillLinks: [
+        {
+          label: "Counting multiple captures — quick method",
+          url: "https://lichess.org/forum/general-chess-discussion/quick-and-accurate-method-of-counting-multiple-captures"
+        },
+        {
+          label: "Exposed king — Lichess puzzle theme",
+          url: "https://lichess.org/training/exposedKing"
+        }
+      ],
+      playedPopularity: "85%",
+      bestFindability: "3%",
+      humanBest: "Kh1",
+      humanBestArrow: ["g1", "h1"],
+      humanBestFindability: "3%",
+      expectedPointsLost: "−0.05",
+      recurrenceRisk: "high",
+      retry: {
+        fen: "5k2/p1r2q2/1p6/3p4/b2P1n2/2P5/Pb1N1P1P/RQ3RK1 w - - 0 35",
+        solutions: ["g1h1"],
+        acceptable: [],
+        legal: ["a2a3", "b1b2", "b1c1", "b1c2", "b1d1", "b1d3", "b1e1", "b1e4", "b1f5", "b1g6", "b1h7", "c3c4", "d2b3", "d2c4", "d2e4", "d2f3", "f1c1", "f1d1", "f1e1", "f2f3", "g1h1", "h2h3", "h2h4"]
+      },
       takeaways: [
         {
           lesson: "Before grabbing material, run through every check your opponent gets in reply.",
@@ -600,14 +1266,39 @@ const GAME = {
       ply: 14,
       played: "Ne4",
       best: "Qe2",
-      evalBefore: "+1.74",
-      evalAfter: "−1.50",
+      evalBefore: "1.69",
+      evalAfter: "−1.48",
       evalBest: "+1.67",
-      swing: "−3.24",
+      swing: "−3.17",
       title: "Two pieces on one pawn's path",
       explanation: "Out of the opening you had everything: pawns on d4 and e5, extra space, and Black's king already stuck on f8. 8.Ne4 jumped into the centre — onto a square the d6-pawn attacks with a single step. 8…d5! forked the e4-knight and the c4-bishop, and there is no save: 9.Bd3 dxe4 10.Bxe4 leaves you a knight for a pawn down. A quiet move like 8.Qe2 (or 8.h4) keeps the bind and the advantage. The c4-bishop had been standing in the d-pawn's path since move 7 — placing a second piece on that same path turned a nuisance into a fork.",
-      playedArrow: ["d2","e4"],
-      bestArrow: ["d1","e2"],
+      playedArrow: ["d2", "e4"],
+      bestArrow: ["d1", "e2"],
+      winBefore: "65%",
+      winAfter: "37%",
+      tags: ["hanging-piece"],
+      drillLinks: [
+        {
+          label: "Hanging pieces — Lichess puzzle theme",
+          url: "https://lichess.org/training/hangingPiece"
+        },
+        {
+          label: "Loose pieces drop off — blunder-proofing discussion",
+          url: "https://lichess.org/forum/general-chess-discussion/loose-pieces-drop-off-how-to-stop-blundering?page=3"
+        }
+      ],
+      playedPopularity: "16%",
+      humanBest: "O-O",
+      humanBestArrow: ["e1", "g1"],
+      humanBestFindability: "31%",
+      expectedPointsLost: "−0.02",
+      recurrenceRisk: "medium",
+      retry: {
+        fen: "r2q1knr/pppbbpp1/2npp2p/4P3/2BP4/2P2N2/PP1N1PPP/R1BQK2R w KQ - 5 8",
+        solutions: ["d1e2", "e1g1"],
+        acceptable: ["a2a4", "h2h3", "h2h4"],
+        legal: ["a1b1", "a2a3", "a2a4", "b2b3", "b2b4", "c4a6", "c4b3", "c4b5", "c4d3", "c4d5", "c4e2", "c4e6", "c4f1", "d1a4", "d1b3", "d1c2", "d1e2", "d2b1", "d2b3", "d2e4", "d2f1", "d4d5", "e1e2", "e1f1", "e1g1", "e5d6", "f3g1", "f3g5", "f3h4", "g2g3", "g2g4", "h1f1", "h1g1", "h2h3", "h2h4"]
+      },
       takeaways: [
         {
           lesson: "Before centralizing a piece, check which enemy pawn advances hit the new square.",
@@ -623,14 +1314,40 @@ const GAME = {
       ply: 18,
       played: "Nb7",
       best: "Nxd7+",
-      evalBefore: "+2.36",
-      evalAfter: "−2.73",
+      evalBefore: "2.30",
+      evalAfter: "−2.75",
       evalBest: "+2.33",
-      swing: "−5.09",
+      swing: "−5.05",
       title: "b7: one square in, no squares out",
       explanation: "9…b6? attacked your c5-knight but handed you a clean exit: 10.Nxd7+! — a capture with check, thanks to the king Black had parked on f8 — trades the doomed knight for the d7-bishop, and after 10…Qxd7 11.Bb5! the c4-bishop escapes the d5-pawn with tempo on the queen. You would have stood clearly better. Instead 10.Nb7 hit the d8-queen, but b7 is a dead end: b6 covers both a5 and c5, the e7-bishop covers d6 and d8, and after the engine's 10…Qc8! followed by …Qxb7 the knight is simply lost. Black let you off with 10…Qb8 11.Ba6, and 12…Na5?? later turned the stranded knight into a free capture — that rescue was Black's gift, not the move's merit.",
-      playedArrow: ["c5","b7"],
-      bestArrow: ["c5","d7"],
+      playedArrow: ["c5", "b7"],
+      bestArrow: ["c5", "d7"],
+      winBefore: "70%",
+      winAfter: "27%",
+      tags: ["missed-tactic", "hanging-piece"],
+      drillLinks: [
+        {
+          label: "Forks — Lichess puzzle theme",
+          url: "https://lichess.org/training/fork"
+        },
+        {
+          label: "Hanging pieces — Lichess puzzle theme",
+          url: "https://lichess.org/training/hangingPiece"
+        }
+      ],
+      playedPopularity: "16%",
+      bestFindability: "28%",
+      humanBest: "Nxd7+",
+      humanBestArrow: ["c5", "d7"],
+      humanBestFindability: "28%",
+      expectedPointsLost: "0.02",
+      recurrenceRisk: "medium",
+      retry: {
+        fen: "r2q1knr/p1pbbpp1/1pn1p2p/2NpP3/2BP4/2P2N2/PP3PPP/R1BQK2R w KQ - 0 10",
+        solutions: ["c5d7"],
+        acceptable: [],
+        legal: ["a1b1", "a2a3", "a2a4", "b2b3", "b2b4", "c1d2", "c1e3", "c1f4", "c1g5", "c1h6", "c4a6", "c4b3", "c4b5", "c4d3", "c4d5", "c4e2", "c4f1", "c5a4", "c5a6", "c5b3", "c5b7", "c5d3", "c5d7", "c5e4", "c5e6", "d1a4", "d1b3", "d1c2", "d1d2", "d1d3", "d1e2", "e1d2", "e1e2", "e1f1", "e1g1", "f3d2", "f3g1", "f3g5", "f3h4", "g2g3", "g2g4", "h1f1", "h1g1", "h2h3", "h2h4"]
+      },
       takeaways: [
         {
           lesson: "Count a knight's retreat squares before it jumps in — zero means it's lost.",
@@ -646,14 +1363,40 @@ const GAME = {
       ply: 28,
       played: "Qd3",
       best: "a4",
-      evalBefore: "+5.52",
-      evalAfter: "+2.33",
+      evalBefore: "5.44",
+      evalAfter: "2.48",
       evalBest: "+5.37",
-      swing: "−3.19",
+      swing: "−2.96",
       title: "The queen stepped into the c-pawn's headlights",
       explanation: "A full knight up after the b7 adventure ended in your favour, you only needed to consolidate — the engine's 15.a4 grabs queenside space without giving Black a target. 15.Qd3 put the queen one step from Black's c-pawn: 15…c4! comes with tempo, drives her straight back, and permanently shuts your b3-knight behind the pawn. Half the advantage evaporated on a single pawn move. Black delayed it once, but …c4 arrived anyway (16…c4 17.Qc2), and that knight spent the entire rest of the game shuffling between b3 and d2 — it was still standing on d2, watching, when the mate landed on g2.",
-      playedArrow: ["d1","d3"],
-      bestArrow: ["a2","a4"],
+      playedArrow: ["d1", "d3"],
+      bestArrow: ["a2", "a4"],
+      winBefore: "88%",
+      winAfter: "71%",
+      tags: ["conversion-drift"],
+      drillLinks: [
+        {
+          label: "Winning advantage — Lichess puzzle theme",
+          url: "https://lichess.org/training/advantage"
+        },
+        {
+          label: "Converting winning positions — discussion",
+          url: "https://lichess.org/forum/general-chess-discussion/unable-to-convert-clearly-winning-positions-how-do-i-improve"
+        }
+      ],
+      playedPopularity: "6%",
+      bestFindability: "2%",
+      humanBest: "Nbd2",
+      humanBestArrow: ["b3", "d2"],
+      humanBestFindability: "4%",
+      expectedPointsLost: "−0.02",
+      recurrenceRisk: "low",
+      retry: {
+        fen: "rq3knr/p3bpp1/Bpb1p3/2ppP2p/3P1B2/1NP2N2/PP3PPP/R2QK2R w KQ - 2 15",
+        solutions: ["a2a4", "b3d2"],
+        acceptable: ["a6e2", "b3c1"],
+        legal: ["a1b1", "a1c1", "a2a3", "a2a4", "a6b5", "a6b7", "a6c4", "a6c8", "a6d3", "a6e2", "a6f1", "b3a5", "b3c1", "b3c5", "b3d2", "c3c4", "d1b1", "d1c1", "d1c2", "d1d2", "d1d3", "d1e2", "d4c5", "e1d2", "e1e2", "e1f1", "e1g1", "f3d2", "f3g1", "f3g5", "f3h4", "f4c1", "f4d2", "f4e3", "f4g3", "f4g5", "f4h6", "g2g3", "g2g4", "h1f1", "h1g1", "h2h3", "h2h4"]
+      },
       takeaways: [
         {
           lesson: "Never post the queen where a pawn can hit her in one move.",
@@ -698,6 +1441,7 @@ function initialBoard() {
 }
 
 function sqIndex(name) { return (name.charCodeAt(1) - 49) * 8 + (name.charCodeAt(0) - 97); }
+function sqName(i) { return FILES[i % 8] + (((i / 8) | 0) + 1); }
 function isWhitePiece(p) { return p === p.toUpperCase(); }
 
 // Does the piece on `from` attack `to` (geometry + clear path; pawn = capture moves only)?
@@ -932,26 +1676,48 @@ function buildBoardSvg() {
   return svg;
 }
 
-function drawArrow(layer, fromName, toName, color) {
+// scale shrinks the shaft and head; offset shifts the whole arrow sideways
+// (perpendicular to its direction) so identical arrows can sit side by side.
+function drawArrow(layer, fromName, toName, color, scale, offset) {
+  scale = scale || 1;
+  offset = offset || 0;
   const [fx, fy] = sqXY(sqIndex(fromName));
   const [tx, ty] = sqXY(sqIndex(toName));
-  const x1 = fx + SQ / 2, y1 = fy + SQ / 2;
-  const x2 = tx + SQ / 2, y2 = ty + SQ / 2;
-  const dx = x2 - x1, dy = y2 - y1;
-  const len = Math.hypot(dx, dy);
+  const dx0 = (tx - fx), dy0 = (ty - fy);
+  const len = Math.hypot(dx0, dy0);
   if (!len) return;
-  const ux = dx / len, uy = dy / len;
-  const headLen = 0.62 * SQ, headHalf = 0.34 * SQ;
+  const ux = dx0 / len, uy = dy0 / len;
+  const px = -uy, py = ux;   // perpendicular
+  const x1 = fx + SQ / 2 + px * offset, y1 = fy + SQ / 2 + py * offset;
+  const x2 = tx + SQ / 2 + px * offset, y2 = ty + SQ / 2 + py * offset;
+  const headLen = 0.62 * SQ * scale, headHalf = 0.34 * SQ * scale;
   const bx = x2 - ux * headLen, by = y2 - uy * headLen;   // base of arrowhead
   layer.appendChild(svgEl("line", {
     x1: x1 + ux * SQ * 0.18, y1: y1 + uy * SQ * 0.18, x2: bx, y2: by,
-    stroke: color, "stroke-width": 9, "stroke-linecap": "butt", class: "arrow"
+    stroke: color, "stroke-width": 9 * scale, "stroke-linecap": "butt", class: "arrow"
   }));
-  const px = -uy, py = ux;   // perpendicular
   layer.appendChild(svgEl("polygon", {
     points: x2 + "," + y2 + " " + (bx + px * headHalf) + "," + (by + py * headHalf) + " " + (bx - px * headHalf) + "," + (by - py * headHalf),
     fill: color, class: "arrow"
   }));
+}
+
+// Draws a set of arrows [{from, to, color}]. Arrows sharing the exact same
+// from→to squares are thinned and offset so they show side by side instead of
+// stacking; arrows on distinct squares keep the full width.
+function drawArrowSet(layer, arrows) {
+  const groups = new Map();
+  for (const a of arrows) {
+    const key = a.from + a.to;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(a);
+  }
+  for (const group of groups.values()) {
+    const n = group.length;
+    const scale = n === 1 ? 1 : n === 2 ? 0.55 : 0.4;
+    const spacing = 2 * 0.34 * SQ * scale;   // scaled head width → heads sit edge to edge
+    group.forEach((a, k) => drawArrow(layer, a.from, a.to, a.color, scale, (k - (n - 1) / 2) * spacing));
+  }
 }
 
 // --------------------------------------------------------------------------
@@ -973,6 +1739,131 @@ function renderHeader() {
     (GAME.event ? GAME.event + " · " : "") +
     (GAME.opening ? GAME.opening + " · " : "") +
     (GAME.analysisNote || "");
+
+  // Maia strength estimate (renders only when the fields are present)
+  if (GAME.estimatedElo) {
+    const s = $("head-strength");
+    s.hidden = false;
+    s.innerHTML = "Maia strength estimate — you played this game like a <b>" +
+      GAME.estimatedElo + "</b>" +
+      (GAME.estimatedEloNote ? " <span class=\"note\">(" + GAME.estimatedEloNote + ")</span>" : "") +
+      buildPhaseRow();
+  }
+
+  // Accuracy stat strip (renders only when the fields are present). When there
+  // is no strength line to host them, the phase chips move down here.
+  const q = GAME.moveQuality;
+  if (GAME.accuracy || GAME.acpl != null || q || (!GAME.estimatedElo && (GAME.phaseElo || GAME.phaseAccuracy))) {
+    const s = $("head-stats");
+    s.hidden = false;
+    let chips = "";
+    if (GAME.accuracy) chips += "<span class=\"stat-chip accuracy\">accuracy <b>" + GAME.accuracy + "</b></span>";
+    if (GAME.acpl != null) chips += "<span class=\"stat-chip\" title=\"Average centipawn loss vs the engine's best move\">acpl <b>" + GAME.acpl + "</b></span>";
+    if (q) {
+      chips += "<span class=\"stat-chip quality\" title=\"?! inaccuracies · ? mistakes · ?? blunders — moves dropping your win probability by 10 / 20 / 30+ points\">" +
+        "<span class=\"q-inacc\">?!&nbsp;" + (q.inaccuracies || 0) + "</span> · " +
+        "<span class=\"q-mist\">?&nbsp;" + (q.mistakes || 0) + "</span> · " +
+        "<span class=\"q-blun\">??&nbsp;" + (q.blunders || 0) + "</span></span>";
+    }
+    s.innerHTML = (chips ? "<div class=\"stat-row\">" + chips + "</div>" : "") +
+      (GAME.estimatedElo ? "" : buildPhaseRow());
+  }
+}
+
+// One chip per phase, combining the Maia phase Elo and the phase accuracy —
+// either may be absent; a phase with neither gets no chip.
+function buildPhaseRow() {
+  let html = "";
+  for (const ph of ["opening", "middlegame", "endgame"]) {
+    const elo = GAME.phaseElo && GAME.phaseElo[ph];
+    const acc = GAME.phaseAccuracy && GAME.phaseAccuracy[ph];
+    if (!elo && !acc) continue;
+    const wk = GAME.weakestPhase === ph;
+    const val = (elo || "") + (elo && acc ? " · " : "") + (acc ? acc + " acc." : "");
+    html += "<span class=\"phase-chip" + (wk ? " weakest" : "") + "\">" + ph +
+      " <b>" + val + "</b>" + (wk ? " · weakest" : "") + "</span>";
+  }
+  return html ? "<div class=\"phase-row\">" + html + "</div>" : "";
+}
+
+// ---- Maia badge helpers (all return null when the GAME fields are absent) ----
+
+const PTS_TITLE = "pts = expected score lost against human opposition at your level (Maia), comparing the position after your move with the position after the best move";
+
+function makeSwingBadge(mk) {
+  const badge = document.createElement("span");
+  badge.className = "swing-badge";
+  if (mk.expectedPointsLost) {
+    badge.innerHTML = mk.swing + " <span class=\"pts\">· " + mk.expectedPointsLost + " pts</span>";
+    badge.title = PTS_TITLE;
+  } else {
+    badge.textContent = mk.swing;
+  }
+  return badge;
+}
+
+function makeTypBadge(mk) {
+  if (!mk.playedPopularity) return null;
+  const el = document.createElement("span");
+  const risk = mk.recurrenceRisk || "low";
+  if (risk === "high") {
+    el.className = "typ-badge common";
+    el.textContent = "common at your level — " + mk.playedPopularity + " play this";
+  } else if (risk === "medium") {
+    el.className = "typ-badge mid";
+    el.textContent = "seen at your level — " + mk.playedPopularity + " play this";
+  } else {
+    el.className = "typ-badge slip";
+    el.textContent = "uncharacteristic slip — " + mk.playedPopularity;
+  }
+  return el;
+}
+
+function makeRecurTag(mk) {
+  if (!mk.recurrenceRisk) return null;
+  const el = document.createElement("span");
+  el.className = "recur-tag " + mk.recurrenceRisk;
+  el.textContent = mk.recurrenceRisk === "high" ? "likely to recur"
+                 : mk.recurrenceRisk === "medium" ? "may recur" : "one-off";
+  el.title = "Recurrence risk, from how often players at your level choose this move (Maia)";
+  return el;
+}
+
+function makeTagRow(mk) {
+  if (!mk.tags || !mk.tags.length) return null;
+  const row = document.createElement("div");
+  row.className = "tag-row";
+  for (const t of mk.tags) {
+    const el = document.createElement("span");
+    el.className = "tag-chip";
+    el.textContent = t;
+    row.appendChild(el);
+  }
+  return row;
+}
+
+function makeWinRow(mk) {
+  if (!mk.winBefore || !mk.winAfter) return null;
+  const div = document.createElement("div");
+  div.className = "win-row";
+  div.innerHTML = "your winning chances: <b>" + mk.winBefore +
+    "</b> → <b class=\"after\">" + mk.winAfter + "</b>";
+  div.title = "Win probability from the Stockfish evaluation (Lichess win% model), before and after the move you played";
+  return div;
+}
+
+function makeFindRow(mk) {
+  if (!mk.bestFindability) return null;
+  const div = document.createElement("div");
+  div.className = "find-row";
+  let html = "Engine pick <b>" + mk.best + "</b> — found by <b>" + mk.bestFindability +
+    "</b> of players at your level.";
+  if (mk.humanBest && mk.humanBest !== mk.best) {
+    html += " The human-findable <span class=\"hb\">" + mk.humanBest +
+      "</span> (cream arrow) keeps the eval, and <b>" + mk.humanBestFindability + "</b> play it.";
+  }
+  div.innerHTML = html;
+  return div;
 }
 
 function sideOfPly(ply) { return ply % 2 === 0 ? "White" : "Black"; }
@@ -981,7 +1872,7 @@ function sanLabel(ply, san) { return moveNumOfPly(ply) + (ply % 2 ? "…" : ".")
 
 function renderFeedbackDefault() {
   const panel = $("fb-panel");
-  panel.classList.remove("mistake-active");
+  panel.classList.remove("mistake-active", "highlight-active");
   panel.innerHTML = "";
   const eyebrow = document.createElement("span");
   eyebrow.className = "fb-eyebrow";
@@ -997,10 +1888,27 @@ function renderFeedbackDefault() {
   panel.appendChild(hint);
 }
 
-function renderFeedbackMistake(mk) {
+function renderFeedbackMistake(mk, retryOutcome) {
   const panel = $("fb-panel");
+  panel.classList.remove("highlight-active");
   panel.classList.add("mistake-active");
   panel.innerHTML = "";
+
+  if (retryOutcome) {
+    const rb = document.createElement("div");
+    rb.className = "retry-result " + retryOutcome;
+    if (retryOutcome === "solved") {
+      rb.textContent = "Retry solved — you found " + retrySan(mk, retry.playedUci) +
+        (retry.attempts > 1 ? " on the second try." : ".");
+    } else if (retryOutcome === "acceptable") {
+      rb.textContent = "Retry: " + retrySan(mk, retry.playedUci) +
+        " also holds — the cleanest was " + mk.best + ".";
+    } else {
+      rb.textContent = "Retry revealed — the answer was " + mk.best +
+        (mk.humanBest && mk.humanBest !== mk.best ? " (or the human-findable " + mk.humanBest + ")" : "") + ".";
+    }
+    panel.appendChild(rb);
+  }
 
   const head = document.createElement("div");
   head.className = "fb-head";
@@ -1017,12 +1925,14 @@ function renderFeedbackMistake(mk) {
   h2.textContent = moveNumOfPly(mk.ply) + (mk.ply % 2 ? "… " : ". ") + mk.played;
   text.appendChild(eb);
   text.appendChild(h2);
-  const badge = document.createElement("span");
-  badge.className = "swing-badge";
-  badge.textContent = mk.swing;
+  const badges = document.createElement("div");
+  badges.className = "fb-badges";
+  badges.appendChild(makeSwingBadge(mk));
+  const typ = makeTypBadge(mk);
+  if (typ) badges.appendChild(typ);
   head.appendChild(num);
   head.appendChild(text);
-  head.appendChild(badge);
+  head.appendChild(badges);
   panel.appendChild(head);
 
   if (mk.title) {
@@ -1059,31 +1969,93 @@ function renderFeedbackMistake(mk) {
   }
   panel.appendChild(cmp);
 
-  if (mk.takeaways && mk.takeaways.length) {
+  const wr = makeWinRow(mk);
+  if (wr) panel.appendChild(wr);
+
+  const fr = makeFindRow(mk);
+  if (fr) panel.appendChild(fr);
+
+  const hasTakeaways = mk.takeaways && mk.takeaways.length;
+  const hasDrills = mk.drillLinks && mk.drillLinks.length;
+  if (hasTakeaways || hasDrills) {
     const box = document.createElement("div");
     box.className = "retain";
-    const rh = document.createElement("span");
-    rh.className = "retain-head";
-    rh.textContent = "What to retain";
-    box.appendChild(rh);
-    const ol = document.createElement("ol");
-    for (const t of mk.takeaways) {
-      const li = document.createElement("li");
-      const body = document.createElement("div");
-      const les = document.createElement("span");
-      les.className = "lesson";
-      les.textContent = t.lesson;
-      const det = document.createElement("span");
-      det.className = "detail";
-      det.textContent = t.detail || "";
-      body.appendChild(les);
-      if (t.detail) body.appendChild(det);
-      li.appendChild(body);
-      ol.appendChild(li);
+    if (hasTakeaways) {
+      const rh = document.createElement("span");
+      rh.className = "retain-head";
+      rh.textContent = "What to retain";
+      box.appendChild(rh);
+      const ol = document.createElement("ol");
+      for (const t of mk.takeaways) {
+        const li = document.createElement("li");
+        const body = document.createElement("div");
+        const les = document.createElement("span");
+        les.className = "lesson";
+        les.textContent = t.lesson;
+        const det = document.createElement("span");
+        det.className = "detail";
+        det.textContent = t.detail || "";
+        body.appendChild(les);
+        if (t.detail) body.appendChild(det);
+        li.appendChild(body);
+        ol.appendChild(li);
+      }
+      box.appendChild(ol);
     }
-    box.appendChild(ol);
+    if (hasDrills) {
+      const dl = document.createElement("div");
+      dl.className = "drill-links";
+      const dh = document.createElement("span");
+      dh.className = "drill-head";
+      dh.textContent = "Where to practice";
+      dl.appendChild(dh);
+      const ul = document.createElement("ul");
+      for (const d of mk.drillLinks) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = d.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = d.label;
+        li.appendChild(a);
+        ul.appendChild(li);
+      }
+      dl.appendChild(ul);
+      box.appendChild(dl);
+    }
     panel.appendChild(box);
   }
+}
+
+function renderFeedbackHighlight(hl) {
+  const panel = $("fb-panel");
+  panel.classList.remove("mistake-active");
+  panel.classList.add("highlight-active");
+  panel.innerHTML = "";
+
+  const head = document.createElement("div");
+  head.className = "fb-head";
+  const num = document.createElement("span");
+  num.className = "move-no";
+  num.textContent = moveNumOfPly(hl.ply);
+  const text = document.createElement("div");
+  text.className = "fb-head-text";
+  const eb = document.createElement("span");
+  eb.className = "eyebrow";
+  eb.textContent = "What you did well · move " + moveNumOfPly(hl.ply);
+  const h2 = document.createElement("h2");
+  h2.className = "played-move";
+  h2.textContent = moveNumOfPly(hl.ply) + (hl.ply % 2 ? "… " : ". ") + hl.move;
+  text.appendChild(eb);
+  text.appendChild(h2);
+  head.appendChild(num);
+  head.appendChild(text);
+  panel.appendChild(head);
+
+  const p = document.createElement("p");
+  p.className = "explain";
+  p.innerHTML = hl.note || "";
+  panel.appendChild(p);
 }
 
 // --------------------------------------------------------------------------
@@ -1112,14 +2084,25 @@ const mistakes = (GAME.mistakes || []).slice();
 const mistakeByPly = new Map();
 for (const mk of mistakes) mistakeByPly.set(mk.ply, mk);
 
+// "What you did well" highlights (optional) — mistakes win on a shared ply.
+const highlights = (GAME.highlights || []).slice();
+const highlightByPly = new Map();
+for (const hl of highlights) if (!mistakeByPly.has(hl.ply)) highlightByPly.set(hl.ply, hl);
+
+// Per-ply board annotations (played / engine's pick / human-findable arrows):
+// every moveNotes entry, with mistakes overriding their plies.
+const annoByPly = new Map();
+for (const n of GAME.moveNotes || []) annoByPly.set(n.ply, n);
+for (const mk of mistakes) annoByPly.set(mk.ply, mk);
+
 let current = 0;
 let piecesLayer = null, hlLayer = null, arrowsLayer = null;
 const moveButtons = [];
 
-function activeMistakeAt(ply) {
-  // feedback stays visible on the position before the mistake and just after it
-  return mistakeByPly.get(ply) || mistakeByPly.get(ply - 1) || null;
-}
+// Retry mode: null when inactive, else { mk, attempts, status, outcome,
+// from, playedUci }. status: "await" (taking input) | "done" (resolved,
+// feedback revealed with a result banner).
+let retry = null;
 
 // Keep the current move visible in the move list by scrolling ONLY that
 // container — never Element.scrollIntoView(), which also scrolls the window
@@ -1161,12 +2144,22 @@ function renderPosition() {
   }
 
   arrowsLayer.innerHTML = "";
-  const atMistakeBefore = mistakeByPly.get(current);
-  if (atMistakeBefore) {
-    if (atMistakeBefore.playedArrow) drawArrow(arrowsLayer, atMistakeBefore.playedArrow[0], atMistakeBefore.playedArrow[1], "#c1502fcc");
-    if (atMistakeBefore.bestArrow) drawArrow(arrowsLayer, atMistakeBefore.bestArrow[0], atMistakeBefore.bestArrow[1], "#c9a24bcc");
+  // while a retry is taking input, arrows, legend, and feedback stay hidden
+  const awaitingRetry = retry && retry.status === "await";
+  const note = (!awaitingRetry && current < totalPlies) ? annoByPly.get(current) : null;
+  if (note) {
+    const specs = [];
+    const last = positions[current + 1].last;   // the move actually played at this ply
+    if (last) specs.push({ from: sqName(last.from), to: sqName(last.to), color: "#c1502fcc" });
+    if (note.bestArrow) specs.push({ from: note.bestArrow[0], to: note.bestArrow[1], color: "#c9a24bcc" });
+    if (note.humanBestArrow) specs.push({ from: note.humanBestArrow[0], to: note.humanBestArrow[1], color: "#e7d7abcc" });
+    drawArrowSet(arrowsLayer, specs);
+    $("legend-played").textContent = "played " + GAME.movesSan[current];
+    $("legend-best").textContent = note.best ? "engine's pick " + note.best : "engine's pick";
+    if (note.humanBest) $("legend-human-text").textContent = "human-findable " + note.humanBest;
   }
-  $("board-legend").hidden = !atMistakeBefore;
+  $("board-legend").hidden = !note;
+  $("legend-human").hidden = !(note && note.humanBestArrow);
 
   // counter
   const counter = $("move-counter");
@@ -1194,18 +2187,305 @@ function renderPosition() {
     scrollMoveListToCurrent();
   }
 
-  // feedback panel + mistake cards
-  const mk = activeMistakeAt(current);
-  if (mk) renderFeedbackMistake(mk); else renderFeedbackDefault();
+  // feedback panel + mistake/highlight cards — an exact position match wins
+  // over a lingering "just after" match, mistakes win over highlights
+  let mk = mistakeByPly.get(current) || null;
+  let hl = mk ? null : highlightByPly.get(current) || null;
+  if (!mk && !hl) mk = mistakeByPly.get(current - 1) || null;
+  if (!mk && !hl) hl = highlightByPly.get(current - 1) || null;
+  if (awaitingRetry) renderRetryPrompt();
+  else if (mk) renderFeedbackMistake(mk, retry && retry.mk === mk ? retry.outcome : null);
+  else if (hl) renderFeedbackHighlight(hl);
+  else renderFeedbackDefault();
   document.querySelectorAll(".mistake-card").forEach((card) => {
     card.classList.toggle("active", !!mk && Number(card.dataset.ply) === mk.ply);
   });
+  document.querySelectorAll(".highlight-card").forEach((card) => {
+    card.classList.toggle("active", !!hl && Number(card.dataset.ply) === hl.ply);
+  });
+
+  updateGraphCursor();
+}
+
+// What clicking a mistake card does: retry when the practice-first toggle is
+// on and the mistake supports it, otherwise jump to the position + feedback.
+// The graph's mistake dots share this exact behavior.
+function openMistake(mk) {
+  if (practiceFirstOn() && mk.retry) startRetry(mk); else goTo(mk.ply);
 }
 
 function goTo(ply) {
   if (!positions) return;
-  current = Math.max(0, Math.min(totalPlies, ply));
+  const target = Math.max(0, Math.min(totalPlies, ply));
+  // navigating away abandons an active retry (and drops a stale result banner)
+  if (retry && (retry.status === "await" ? target !== retry.mk.ply
+                                         : target !== retry.mk.ply && target !== retry.mk.ply + 1)) {
+    retry = null;
+  }
+  current = target;
   renderPosition();
+}
+
+// --------------------------------------------------------------------------
+// Retry mode: the board becomes an answer box. Grading was precomputed by
+// the pipeline (mistake.retry), so the page needs no engine. Active only for
+// mistakes that carry `retry` — older pages never enter this code.
+// --------------------------------------------------------------------------
+
+function startRetry(mk) {
+  if (!mk.retry) return;
+  retry = { mk: mk, attempts: 0, status: "await", outcome: null, from: null, playedUci: null };
+  current = mk.ply;
+  renderPosition();
+}
+
+function retrySan(mk, uci) {
+  if (!uci) return "";
+  const r = mk.retry;
+  if (uci === r.solutions[0]) return mk.best;
+  if (mk.humanBest && uci === r.solutions[1]) return mk.humanBest;
+  return uci;
+}
+
+function renderRetryPrompt() {
+  const mk = retry.mk;
+  const panel = $("fb-panel");
+  panel.classList.remove("mistake-active", "highlight-active");
+  panel.innerHTML = "";
+
+  const eyebrow = document.createElement("span");
+  eyebrow.className = "fb-eyebrow";
+  eyebrow.textContent = "Retry · move " + moveNumOfPly(mk.ply) + " · " + sideOfPly(mk.ply).toLowerCase() + " to move";
+  panel.appendChild(eyebrow);
+
+  const h2 = document.createElement("h2");
+  h2.className = "played-move";
+  h2.textContent = "Your move — find a better one than you played.";
+  panel.appendChild(h2);
+
+  const p = document.createElement("p");
+  p.className = "explain";
+  p.textContent = "Click a piece, then its destination square (promotions become queens). " +
+    "The engine's best and the human-findable move both count as solved; a wrong move gets one more try.";
+  panel.appendChild(p);
+
+  const status = document.createElement("p");
+  status.className = "retry-status";
+  status.id = "retry-status";
+  panel.appendChild(status);
+
+  const reveal = document.createElement("button");
+  reveal.className = "retry-act";
+  reveal.id = "retry-reveal";
+  reveal.textContent = "Show the answer";
+  reveal.addEventListener("click", () => retryFinish("revealed", null));
+  panel.appendChild(reveal);
+}
+
+function clearRetrySelection() {
+  retry.from = null;
+  hlLayer.querySelectorAll(".sel, .target-dot").forEach((el) => el.remove());
+}
+
+function retrySelectFrom(name) {
+  clearRetrySelection();
+  retry.from = name;
+  const [x, y] = sqXY(sqIndex(name));
+  hlLayer.appendChild(svgEl("rect", { x: x, y: y, width: SQ, height: SQ, fill: "rgba(201,162,75,0.45)", class: "sel" }));
+  for (const uci of retry.mk.retry.legal) {
+    if (uci.slice(0, 2) !== name) continue;
+    const [tx, ty] = sqXY(sqIndex(uci.slice(2, 4)));
+    hlLayer.appendChild(svgEl("circle", { cx: tx + SQ / 2, cy: ty + SQ / 2, r: 6, fill: "rgba(201,162,75,0.5)", class: "target-dot" }));
+  }
+}
+
+function flashSquare(name, color) {
+  const [x, y] = sqXY(sqIndex(name));
+  hlLayer.appendChild(svgEl("rect", { x: x, y: y, width: SQ, height: SQ, fill: color, class: "grade-flash" }));
+}
+
+function retryHasLegalFrom(name) {
+  return retry.mk.retry.legal.some((u) => u.slice(0, 2) === name);
+}
+
+function boardClickSquare(evt, svg) {
+  const rect = svg.getBoundingClientRect();
+  const x = (evt.clientX - rect.left) * (BOARD_PX / rect.width);
+  const y = (evt.clientY - rect.top) * (BOARD_PX / rect.height);
+  const vc = Math.floor((x - ORIGIN) / SQ), vr = Math.floor((y - ORIGIN) / SQ);
+  if (vc < 0 || vc > 7 || vr < 0 || vr > 7) return null;
+  const f = flipped ? 7 - vc : vc;      // invert sqXY's orientation mapping
+  const r = flipped ? vr : 7 - vr;
+  return sqName(r * 8 + f);
+}
+
+function onRetryBoardClick(evt, svg) {
+  if (!retry || retry.status !== "await") return;
+  const name = boardClickSquare(evt, svg);
+  if (!name) return;
+  if (retry.from === null) {
+    if (retryHasLegalFrom(name)) retrySelectFrom(name);
+    return;
+  }
+  if (name === retry.from) { clearRetrySelection(); return; }
+  let uci = retry.from + name;
+  const piece = positions[current].board[sqIndex(retry.from)];
+  if (piece && piece.toUpperCase() === "P" && (name[1] === "8" || name[1] === "1") &&
+      retry.mk.retry.legal.includes(uci + "q")) {
+    uci += "q";                          // promotions default to queen
+  }
+  if (retry.mk.retry.legal.includes(uci)) { clearRetrySelection(); retryGrade(uci); return; }
+  if (retryHasLegalFrom(name)) { retrySelectFrom(name); return; }
+  // not a legal move and not a reselect — an illegal move is not an answer
+}
+
+function retryGrade(uci) {
+  const r = retry.mk.retry;
+  retry.attempts += 1;
+  if (r.solutions.includes(uci)) {
+    retryFinish("solved", uci);
+  } else if (r.acceptable.includes(uci)) {
+    retryFinish("acceptable", uci);
+  } else if (retry.attempts >= 2) {
+    retryFinish("revealed", uci);
+  } else {
+    flashSquare(uci.slice(2, 4), "rgba(193,80,47,0.75)");
+    const status = $("retry-status");
+    if (status) status.textContent = "That doesn't hold — one more try.";
+  }
+}
+
+function retryFinish(outcome, uci) {
+  retry.status = "done";
+  retry.outcome = outcome;
+  retry.playedUci = uci;
+  renderPosition();                      // reveals feedback, arrows, legend
+  flashSquare((uci || retry.mk.retry.solutions[0]).slice(2, 4),
+    outcome === "solved" ? "rgba(201,162,75,0.8)"
+    : outcome === "acceptable" ? "rgba(231,215,171,0.8)" : "rgba(193,80,47,0.75)");
+}
+
+// --------------------------------------------------------------------------
+// Eval graph: win% per ply as a clickable SVG sparkline, two-way synced with
+// the replay. Renders only when GAME.evals is present (one win% entry per
+// half-move, user's perspective) — older pages never show it.
+// --------------------------------------------------------------------------
+
+const GRAPH_W = 390, GRAPH_H = 84, GPAD_X = 6, GPAD_Y = 8;
+let graphCursor = null;   // the vertical current-ply marker; null = no graph
+
+function graphX(ply) { return GPAD_X + (GRAPH_W - 2 * GPAD_X) * ply / totalPlies; }
+function graphY(win) {
+  const w = Math.max(0, Math.min(100, win));
+  return GPAD_Y + (GRAPH_H - 2 * GPAD_Y) * (1 - w / 100);
+}
+// win% at replay position k: 50 at the start, then GAME.evals[k-1] after ply k
+function graphWin(k) { return k === 0 ? 50 : GAME.evals[k - 1]; }
+
+function buildEvalGraph() {
+  const mount = $("eval-graph");
+  const svg = svgEl("svg", { viewBox: "0 0 " + GRAPH_W + " " + GRAPH_H });
+
+  svg.appendChild(svgEl("line", {
+    x1: GPAD_X, y1: graphY(50), x2: GRAPH_W - GPAD_X, y2: graphY(50),
+    stroke: "#8b93a1", "stroke-width": 0.75, "stroke-dasharray": "3 3", opacity: 0.5
+  }));
+
+  const pts = [];
+  for (let k = 0; k <= totalPlies; k++) pts.push(graphX(k) + "," + graphY(graphWin(k)));
+  svg.appendChild(svgEl("polygon", {
+    points: pts.join(" ") + " " + graphX(totalPlies) + "," + graphY(0) + " " + graphX(0) + "," + graphY(0),
+    fill: "rgba(201,162,75,0.10)", stroke: "none"
+  }));
+  svg.appendChild(svgEl("polyline", {
+    points: pts.join(" "), fill: "none", stroke: "#c9a24b",
+    "stroke-width": 1.6, "stroke-linejoin": "round", "stroke-linecap": "round"
+  }));
+
+  graphCursor = svgEl("line", {
+    x1: graphX(0), y1: GPAD_Y - 2, x2: graphX(0), y2: GRAPH_H - GPAD_Y + 2,
+    stroke: "#ece7da", "stroke-width": 1, opacity: 0.65
+  });
+  svg.appendChild(graphCursor);
+
+  // clicking anywhere on the graph jumps the replay to that ply
+  svg.addEventListener("click", (evt) => {
+    const rect = svg.getBoundingClientRect();
+    const x = (evt.clientX - rect.left) * (GRAPH_W / rect.width);
+    goTo(Math.round((x - GPAD_X) / (GRAPH_W - 2 * GPAD_X) * totalPlies));
+  });
+
+  // mistake dots sit on the point after the played move; clicking one behaves
+  // exactly like clicking that mistake's card
+  for (const mk of mistakes) {
+    if (mk.ply + 1 > totalPlies) continue;
+    const dot = svgEl("circle", {
+      cx: graphX(mk.ply + 1), cy: graphY(graphWin(mk.ply + 1)), r: 3.4,
+      fill: "#c1502f", stroke: "#12161d", "stroke-width": 1,
+      class: "graph-dot", "data-ply": mk.ply
+    });
+    const tip = document.createElementNS(SVG_NS, "title");
+    tip.textContent = sanLabel(mk.ply, mk.played) + (mk.title ? " — " + mk.title.replace(/<[^>]*>/g, "") : "");
+    dot.appendChild(tip);
+    dot.addEventListener("click", (e) => { e.stopPropagation(); openMistake(mk); });
+    svg.appendChild(dot);
+  }
+
+  mount.appendChild(svg);
+  const cap = document.createElement("div");
+  cap.className = "graph-caption";
+  cap.textContent = "your winning chances by move · click to jump";
+  mount.appendChild(cap);
+  mount.hidden = false;
+}
+
+function updateGraphCursor() {
+  if (!graphCursor) return;
+  const x = graphX(current);
+  graphCursor.setAttribute("x1", x);
+  graphCursor.setAttribute("x2", x);
+}
+
+// --------------------------------------------------------------------------
+// Time bar: seconds spent on each half-move (from PGN %clk comments), drawn
+// as thin clickable bars aligned with the eval graph. Renders only when
+// GAME.timeSpent is present (one number per half-move) — pages from PGNs
+// without clock data never show it.
+// --------------------------------------------------------------------------
+
+const TBAR_H = 34, TPAD_Y = 4;
+
+function buildTimeBar() {
+  const mount = $("time-bar");
+  const svg = svgEl("svg", { viewBox: "0 0 " + GRAPH_W + " " + TBAR_H });
+  const secs = GAME.timeSpent.map((t) => Math.max(0, Number(t) || 0));
+  const maxT = Math.max.apply(null, secs) || 1;
+  for (let k = 0; k < totalPlies; k++) {
+    const t = secs[k];
+    // sqrt scale keeps short thinks visible next to one long tank
+    const h = Math.max(1.5, (TBAR_H - 2 * TPAD_Y) * Math.sqrt(t / maxT));
+    const x0 = graphX(k), x1 = graphX(k + 1);
+    const isUser = ((k % 2 === 0) === (GAME.playerColor === "white"));
+    const fast = isUser && t < 10;
+    const bar = svgEl("rect", {
+      x: x0 + (x1 - x0) * 0.15, y: TBAR_H - TPAD_Y - h,
+      width: Math.max(1, (x1 - x0) * 0.7), height: h,
+      fill: fast ? "#c1502f" : isUser ? "#c9a24b" : "rgba(139,147,161,0.4)",
+      class: "tb", "data-ply": k
+    });
+    const tip = document.createElementNS(SVG_NS, "title");
+    tip.textContent = sanLabel(k, GAME.movesSan[k]) + " · " + t + "s" +
+      (fast ? " · under 10 seconds" : "");
+    bar.appendChild(tip);
+    bar.addEventListener("click", () => goTo(k + 1));
+    svg.appendChild(bar);
+  }
+  mount.appendChild(svg);
+  const cap = document.createElement("div");
+  cap.className = "graph-caption";
+  cap.textContent = "time per move · gold = you · rust = under 10s";
+  mount.appendChild(cap);
+  mount.hidden = false;
 }
 
 if (positions) {
@@ -1214,6 +2494,7 @@ if (positions) {
   piecesLayer = svg.querySelector("#layer-pieces");
   hlLayer = svg.querySelector("#layer-hl");
   arrowsLayer = svg.querySelector("#layer-arrows");
+  svg.addEventListener("click", (evt) => onRetryBoardClick(evt, svg));
 
   // move list
   const list = $("move-list");
@@ -1235,7 +2516,11 @@ if (positions) {
     list.appendChild(pair);
   }
 
-  // mistake cards
+  // mistake cards — when Maia data is present, the ranking blends in recurrence,
+  // so say so instead of the Stockfish-only wording baked into the markup
+  if (mistakes.some((mk) => mk.playedPopularity || mk.recurrenceRisk)) {
+    $("mistake-sub").innerHTML = "Ranked by evaluation swing <em>times</em> how often players at your level make the same mistake — a smaller slip you're likely to repeat outranks a bigger one-off. Click one to jump the board to that moment and read the feedback.";
+  }
   const mlist = $("mistake-list");
   for (const mk of mistakes) {
     const card = document.createElement("button");
@@ -1254,14 +2539,123 @@ if (positions) {
       mk.played + "</span> · better <span class=\"best-san\">" + mk.best + "</span>";
     text.appendChild(h3);
     text.appendChild(mv);
-    const badge = document.createElement("span");
-    badge.className = "swing-badge";
-    badge.textContent = mk.swing;
+    const badges = document.createElement("div");
+    badges.className = "mc-badges";
+    badges.appendChild(makeSwingBadge(mk));
+    const tag = makeRecurTag(mk);
+    if (tag) badges.appendChild(tag);
+    const tags = makeTagRow(mk);
+    if (tags) badges.appendChild(tags);
+    if (mk.retry) {
+      const chip = document.createElement("span");
+      chip.className = "retry-chip";
+      chip.textContent = "↻ retry";
+      chip.title = "Jump to this position and find the right move yourself";
+      chip.addEventListener("click", (e) => { e.stopPropagation(); startRetry(mk); card.blur(); });
+      badges.appendChild(chip);
+    }
     card.appendChild(num);
     card.appendChild(text);
-    card.appendChild(badge);
-    card.addEventListener("click", () => { goTo(mk.ply); card.blur(); });
+    card.appendChild(badges);
+    card.addEventListener("click", () => {
+      openMistake(mk);
+      card.blur();
+    });
     mlist.appendChild(card);
+  }
+
+  // "Practice first" (active recall): with the toggle on, clicking a mistake
+  // card starts a retry instead of revealing the coaching, so every mistake is
+  // attempted before it is read. The preference survives reloads.
+  if (mistakes.some((mk) => mk.retry)) {
+    const wrap = $("practice-toggle");
+    wrap.hidden = false;
+    const box = $("practice-first");
+    try { box.checked = localStorage.getItem("chess-coach-practice-first") === "1"; } catch (e) { /* storage unavailable */ }
+    box.addEventListener("change", () => {
+      try { localStorage.setItem("chess-coach-practice-first", box.checked ? "1" : "0"); } catch (e) { /* ignore */ }
+    });
+  }
+
+  // eval graph — only when the pipeline emitted a complete win% series
+  if (Array.isArray(GAME.evals) && GAME.evals.length === totalPlies && totalPlies > 0) {
+    buildEvalGraph();
+  }
+
+  // time bar — only when the PGN carried clock data for every half-move
+  if (Array.isArray(GAME.timeSpent) && GAME.timeSpent.length === totalPlies && totalPlies > 0) {
+    buildTimeBar();
+  }
+
+  // "what you did well" highlight cards — clickable jumps, like mistake cards
+  if (highlights.length) {
+    $("highlight-head").hidden = false;
+    $("highlight-sub").hidden = false;
+    const hlist = $("highlight-list");
+    for (const hl of highlights) {
+      const card = document.createElement("button");
+      card.className = "highlight-card";
+      card.dataset.ply = hl.ply;
+      const num = document.createElement("span");
+      num.className = "move-no";
+      num.textContent = moveNumOfPly(hl.ply);
+      const text = document.createElement("div");
+      text.className = "hc-text";
+      const mv = document.createElement("span");
+      mv.className = "hc-move";
+      mv.textContent = sanLabel(hl.ply, hl.move) + " · " + sideOfPly(hl.ply).toLowerCase();
+      const note = document.createElement("span");
+      note.className = "hc-note";
+      note.innerHTML = hl.note || "";
+      text.appendChild(mv);
+      text.appendChild(note);
+      card.appendChild(num);
+      card.appendChild(text);
+      card.addEventListener("click", () => { goTo(hl.ply); card.blur(); });
+      hlist.appendChild(card);
+    }
+  }
+
+  // opening report — one bordered paragraph, only when the field is present
+  const orep = GAME.openingReport;
+  if (orep && (orep.note || orep.bookExitPly != null)) {
+    const el = $("opening-report");
+    el.hidden = false;
+    const eb = document.createElement("span");
+    eb.className = "or-eyebrow";
+    eb.textContent = "Opening report";
+    el.appendChild(eb);
+    const note = document.createElement("span");
+    note.innerHTML = orep.note || "";
+    el.appendChild(note);
+    const exitInRange = orep.bookExitPly != null &&
+      orep.bookExitPly >= 0 && orep.bookExitPly < totalPlies;
+    if (exitInRange || orep.explorerUrl) {
+      const ex = document.createElement("span");
+      ex.className = "or-exit";
+      if (exitInRange) {
+        const who = ((orep.bookExitPly % 2 === 0) === (GAME.playerColor === "white"))
+          ? "you" : "your opponent";
+        ex.innerHTML = "left known theory on <b>" +
+          sanLabel(orep.bookExitPly, GAME.movesSan[orep.bookExitPly]) +
+          "</b> (" + who + ") · ";
+        const jump = document.createElement("a");
+        jump.href = "#";
+        jump.textContent = "jump there";
+        jump.addEventListener("click", (e) => { e.preventDefault(); goTo(orep.bookExitPly); });
+        ex.appendChild(jump);
+      }
+      if (orep.explorerUrl) {
+        if (exitInRange) ex.appendChild(document.createTextNode(" · "));
+        const a = document.createElement("a");
+        a.href = orep.explorerUrl;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = "study this opening on Lichess";
+        ex.appendChild(a);
+      }
+      el.appendChild(ex);
+    }
   }
 
   // controls
@@ -1284,12 +2678,27 @@ if (positions) {
   renderFeedbackDefault();
 }
 
+function practiceFirstOn() {
+  const box = $("practice-first");
+  return !!(box && box.checked);
+}
+
 // test/debug hook
 window.__review = {
   goTo: goTo,
   getPly: () => current,
   total: () => totalPlies,
   placement: (k) => positions ? fenPlacement(positions[k].board) : null,
+  noteAt: (ply) => annoByPly.get(ply) || null,
+  retryStart: (i) => { const mk = mistakes[i]; if (mk) startRetry(mk); },
+  retryPlay: (uci) => {
+    if (retry && retry.status === "await" && retry.mk.retry.legal.includes(uci)) retryGrade(uci);
+  },
+  retryState: () => retry
+    ? { ply: retry.mk.ply, attempts: retry.attempts, status: retry.status, outcome: retry.outcome }
+    : null,
+  graphPly: () => graphCursor ? current : null,
+  graphClick: (ply) => { if (graphCursor) goTo(ply); },
   error: parseError
 };
 

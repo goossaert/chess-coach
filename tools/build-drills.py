@@ -49,7 +49,10 @@ def compute_retry(mistake, engine):
 
     solutions = [mistake["bestUci"]]
     human = mistake.get("humanBestUci")
-    if human and human not in solutions:
+    # The human-findable move can coincide with the move actually played (a
+    # move most peers would also make); it must not become a retry "solution",
+    # or attempting the very mistake would grade as solved.
+    if human and human not in solutions and human != mistake.get("playedUci"):
         solutions.append(human)
     for uci in solutions:
         if uci not in legal:

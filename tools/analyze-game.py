@@ -405,6 +405,24 @@ def ensure_maia_ready(port):
             raise RuntimeError("maia serve.mjs did not come up")
 
 
+def _normalize_maia_moves(entry):
+    """lc0 reports castling in king-takes-rook notation (e1h1 / e8h8); the rest
+    of the pipeline (legal-move lists, arrows, findability lookups) uses the
+    standard king-two-squares form (e1g1 / e8g8). Canonicalize the move keys of
+    one {fen, moves, value} entry through the board so a castling human-best or
+    engine-best move lines up everywhere."""
+    board = chess.Board(entry["fen"])
+    normalized = {}
+    for uci, prob in entry["moves"].items():
+        try:
+            std = board.uci(board.parse_uci(uci))
+        except ValueError:
+            std = uci
+        normalized[std] = normalized.get(std, 0.0) + prob
+    entry["moves"] = normalized
+    return entry
+
+
 def maia_query(fens, port):
     """One batch call to tools/maia/query.cjs → {band: {fen: {moves, value}}}."""
     env = dict(os.environ, MAIA_PORT=str(port))
@@ -421,7 +439,8 @@ def maia_query(fens, port):
         raw = json.loads(r.stdout)
     finally:
         os.unlink(job)
-    return {band: {e["fen"]: e for e in entries} for band, entries in raw.items()}
+    return {band: {e["fen"]: _normalize_maia_moves(e) for e in entries}
+            for band, entries in raw.items()}
 
 
 # --------------------------------------------------------------------------

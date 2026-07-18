@@ -545,6 +545,258 @@
   .find-row .hb { color: #e7d7ab; font-weight: 600; }
   .dot.cream { background: #e7d7ab; }
 
+  /* ---------- Learning-loop additions ----------
+     Accuracy stat strip, phase-chip accuracy, mistake tag chips, win% row,
+     drill links. Every element renders only when the GAME data carries the
+     matching field, so older pages stay valid. */
+  .stat-strip { margin-top: 14px; }
+  .stat-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .stat-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 9px;
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .stat-chip b { color: var(--cream); font-weight: 600; }
+  .stat-chip.accuracy b { color: var(--gold); }
+  .stat-chip .q-inacc { color: var(--gold); }
+  .stat-chip .q-mist { color: #d98d70; }
+  .stat-chip .q-blun { color: var(--rust); font-weight: 600; }
+
+  .tag-row { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .tag-chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    padding: 3px 7px;
+    border-radius: 5px;
+    color: var(--muted);
+    border: 1px solid var(--panel-border);
+    background: rgba(139,147,161,0.06);
+    white-space: nowrap;
+  }
+
+  .win-row {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: -8px 0 20px;
+    text-align: center;
+  }
+  .win-row b { color: var(--cream); font-weight: 600; }
+  .win-row b.after { color: var(--rust); }
+
+  .drill-links {
+    border-top: 1px dashed rgba(201,162,75,0.25);
+    padding: 12px 0 10px;
+    margin-top: 2px;
+  }
+  .drill-head {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .drill-links ul { margin: 0; padding: 0; list-style: none; }
+  .drill-links li { padding: 0 0 6px; font-size: 12.5px; }
+  .drill-links a {
+    color: #e7d7ab;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(231,215,171,0.4);
+  }
+  .drill-links a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ---------- Retry mode (learning loop part 2) ----------
+     Renders only when a mistake carries a `retry` field — older pages
+     without it never show any of this. */
+  .retry-chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 7px;
+    border-radius: 5px;
+    white-space: nowrap;
+    color: var(--gold);
+    border: 1px solid rgba(201,162,75,0.4);
+    cursor: pointer;
+  }
+  .retry-chip:hover { background: rgba(201,162,75,0.12); }
+  .practice-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    margin: 0 0 14px;
+    cursor: pointer;
+  }
+  .practice-toggle input { accent-color: var(--gold); margin: 0; }
+  .retry-status {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: #e8a18c;
+    min-height: 18px;
+    margin: 0 0 12px;
+  }
+  .retry-result {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin: 0 0 14px;
+  }
+  .retry-result.solved { color: var(--gold); background: rgba(201,162,75,0.12); border: 1px solid rgba(201,162,75,0.4); }
+  .retry-result.acceptable { color: #e7d7ab; background: rgba(231,215,171,0.08); border: 1px solid rgba(231,215,171,0.35); }
+  .retry-result.revealed { color: #e8a18c; background: rgba(193,80,47,0.12); border: 1px solid rgba(193,80,47,0.4); }
+  button.retry-act {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--cream);
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+  }
+  button.retry-act:hover { border-color: var(--gold); color: var(--gold); }
+  @keyframes flashfade { from { opacity: 0.85; } to { opacity: 0; } }
+  .grade-flash { animation: flashfade 900ms ease-out forwards; }
+
+  /* ---------- Eval graph (learning loop part 3) ----------
+     Renders only when GAME.evals is present — older pages never show it. */
+  .eval-graph {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 8px 8px 4px;
+  }
+  .eval-graph[hidden] { display: none; }
+  .eval-graph svg { display: block; width: 100%; height: auto; cursor: crosshair; }
+  .eval-graph .graph-dot { cursor: pointer; }
+  .eval-graph .graph-dot:hover { stroke: var(--cream); }
+  .graph-caption {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding: 3px 0 1px;
+  }
+
+  /* ---------- Polish additions (learning loop part 4) ----------
+     Opening report, "what you did well" highlights, per-move time bar.
+     Every element renders only when the GAME data carries the matching
+     field, so older pages stay valid. */
+  .opening-report {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-top: 28px;
+    position: relative;
+    overflow: hidden;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #cfc9ba;
+  }
+  .opening-report::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  .or-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .opening-report .or-exit {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    display: block;
+    margin-top: 9px;
+  }
+  .opening-report .or-exit b { color: var(--cream); font-weight: 600; }
+  .opening-report a {
+    color: #e7d7ab;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(231,215,171,0.4);
+  }
+  .opening-report a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .highlight-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    text-align: left;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    color: var(--cream);
+    font-family: var(--sans);
+    transition: border-color 120ms;
+  }
+  .highlight-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  .highlight-card:hover { border-color: var(--gold); }
+  .highlight-card.active { border-color: var(--gold); background: #1c222d; }
+  .highlight-card .move-no { font-size: 26px; min-width: 42px; }
+  .highlight-card .hc-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .highlight-card .hc-move {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--gold);
+  }
+  .highlight-card .hc-note { font-size: 13.5px; line-height: 1.5; color: #cfc9ba; }
+  .fb-panel.highlight-active::before { background: var(--gold); opacity: 0.7; }
+
+  .time-bar {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 8px 8px 4px;
+  }
+  .time-bar[hidden] { display: none; }
+  .time-bar svg { display: block; width: 100%; height: auto; }
+  .time-bar rect.tb { cursor: pointer; }
+  .time-bar rect.tb:hover { stroke: var(--cream); stroke-width: 0.6; }
+
   footer {
     max-width: 980px;
     margin: 40px auto 0;
@@ -568,7 +820,7 @@
 
 <nav style="max-width:1000px;margin:0 auto;padding:16px 24px 0;display:flex;justify-content:space-between;align-items:baseline;font-family:var(--sans);font-size:13px;letter-spacing:.02em;">
   <a href="index.html" style="color:var(--gold);text-decoration:none;">&larr;&nbsp;Back to index</a>
-  <span style="color:var(--muted);">Version&nbsp;2</span>
+  <span style="color:var(--muted);">Version&nbsp;6</span>
 </nav>
 
 <header class="page-head">
@@ -576,6 +828,7 @@
   <h1 class="title" id="head-title"></h1>
   <p class="subtitle" id="head-subtitle"></p>
   <div class="strength-line" id="head-strength" hidden></div>
+  <div class="stat-strip" id="head-stats" hidden></div>
 </header>
 
 <main>
@@ -599,10 +852,14 @@
       </div>
       <div class="move-counter" id="move-counter"></div>
       <div class="kbd-hint">&larr; &rarr; move &middot; shift+&larr;&rarr; jump 10 &middot; home/end</div>
+      <div class="eval-graph" id="eval-graph" hidden></div>
+      <div class="time-bar" id="time-bar" hidden></div>
     </div>
 
     <aside class="fb-panel" id="fb-panel"></aside>
   </section>
+
+  <section class="opening-report" id="opening-report" hidden></section>
 
   <h2 class="section-head">The moves</h2>
   <p class="section-sub">Click any move to jump there. Moves marked in rust are the key mistakes.</p>
@@ -610,7 +867,15 @@
 
   <h2 class="section-head">The biggest mistakes</h2>
   <p class="section-sub" id="mistake-sub">Ranked by how hard the evaluation swung. Click one to jump the board to that moment and read the feedback.</p>
+  <label class="practice-toggle" id="practice-toggle" hidden>
+    <input type="checkbox" id="practice-first">
+    practice first — clicking a mistake makes you retry the position before the coaching is revealed
+  </label>
   <div id="mistake-list"></div>
+
+  <h2 class="section-head" id="highlight-head" hidden>What you did well</h2>
+  <p class="section-sub" id="highlight-sub" hidden>Moments worth repeating. Click one to jump the board to that moment.</p>
+  <div id="highlight-list"></div>
 </main>
 
 <footer id="page-footer"></footer>
@@ -630,74 +895,386 @@ const GAME = {
   date: "2026-07-15",
   event: "Play vs. Maia 800 \u00b7 maiachess.com",
   opening: "Queen\u2019s Pawn Game (D02) \u00b7 Chigorin setup by Black",
-
-  movesSan: ["d4","d5","Nf3","Nc6","e3","Nf6","c3","g6","Bd3","Bg7","O-O","O-O","Nbd2","Bg4","e4","dxe4","Nxe4","Nxe4","Bxe4","Bxf3","Bxf3","e5","d5","Ne7","c4","c6","Be3","cxd5","cxd5","Nxd5","Bxd5","e4","Bxe4","Qxd1","Raxd1","Bxb2","Bc5","Rfe8","Rfe1","Bc3","Re3","Bg7","Bxb7","Rab8","Bc6","Rxe3","fxe3","Rc8","Rd6","Bf8","Rd5","Rxc6","Bd4","Rc1+","Kf2","Rc2+","Kf3","Rxa2","e4","Ra3+","Kf4","Bh6+","Ke5","Bg7+","Kd6","Bxd4","Rxd4","Ra6+","Kc7","Ra2","Rd8+","Kg7","Ra8","Rxg2","Rxa7","Rxh2","Ra4","Re2","Kc6","h5","Kd5","h4","Ra1","h3","Kd4","h2","Kd3","Rg2","Ke3","Rg1","Rxg1","hxg1=Q+","Kf3","g5","e5","g4+","Ke4","g3","e6","g2","exf7","Kxf7","Ke5","Qf1","Kd6","g1=Q"],
-
+  movesSan: ["d4", "d5", "Nf3", "Nc6", "e3", "Nf6", "c3", "g6", "Bd3", "Bg7", "O-O", "O-O", "Nbd2", "Bg4", "e4", "dxe4", "Nxe4", "Nxe4", "Bxe4", "Bxf3", "Bxf3", "e5", "d5", "Ne7", "c4", "c6", "Be3", "cxd5", "cxd5", "Nxd5", "Bxd5", "e4", "Bxe4", "Qxd1", "Raxd1", "Bxb2", "Bc5", "Rfe8", "Rfe1", "Bc3", "Re3", "Bg7", "Bxb7", "Rab8", "Bc6", "Rxe3", "fxe3", "Rc8", "Rd6", "Bf8", "Rd5", "Rxc6", "Bd4", "Rc1+", "Kf2", "Rc2+", "Kf3", "Rxa2", "e4", "Ra3+", "Kf4", "Bh6+", "Ke5", "Bg7+", "Kd6", "Bxd4", "Rxd4", "Ra6+", "Kc7", "Ra2", "Rd8+", "Kg7", "Ra8", "Rxg2", "Rxa7", "Rxh2", "Ra4", "Re2", "Kc6", "h5", "Kd5", "h4", "Ra1", "h3", "Kd4", "h2", "Kd3", "Rg2", "Ke3", "Rg1", "Rxg1", "hxg1=Q+", "Kf3", "g5", "e5", "g4+", "Ke4", "g3", "e6", "g2", "exf7", "Kxf7", "Ke5", "Qf1", "Kd6", "g1=Q"],
   summary: "You built a completely winning game out of the opening: when Maia grabbed the d5 pawn with 15\u2026Nxd5??, 16.Bxd5 won a whole piece, and by move 24 you were +5.5 with two bishops against a rook\u2019s lone bishop. The collapse came in three installments. 25.Rd6? blocked your own c5-bishop\u2019s escape square, and 25\u2026Bf8! won the piece straight back \u2014 dead equal. In the rook endgame, 33.Kd6? chased activity away from your own g2/h2 pawns and Black\u2019s rook ate them all. And at the end, 45.Ke3?? stood on the g1\u2013a7 diagonal, so 45\u2026Rg1! deflected your rook and the h-pawn queened with check. Three different moves, one theme: in a winning position, every move needs a \u201cwhat does this give up?\u201d check before it needs a plan.",
-
-  analysisNote: "Analyzed with Stockfish 16 \u00b7 depth 20, alternatives re-checked at depth 18 \u00b7 evaluations from White\u2019s perspective \u00b7 Human model: Maia rating-band networks (lc0 via zerofish WASM), conditioned at \u22481900, the best-fit band \u2014 note the fit is nearly flat. Maia-3 is unreachable from this sandbox; the original Maia-1 bands stand in.",
-
-  estimatedElo: "\u22481900",
-  estimatedEloNote: "Weak evidence: the fit across the 1100\u20131900 bands is nearly flat for this game \u2014 a long, mostly forced endgame says little about level. The phase split below is more telling than the headline number.",
-  phaseElo: { opening: "\u22481800 \u00b7 10 moves", middlegame: "\u22481900 \u00b7 7 moves", endgame: "\u22481100 \u00b7 35 moves" },
+  analysisNote: "Analyzed with Stockfish \u00b7 depth 18 \u00b7 evaluations from White\u2019s perspective \u00b7 Human model: Maia rating-band networks (lc0 via zerofish WASM), conditioned at \u22481800, the best-fit band \u2014 the fit is nearly flat, so treat the level as unclear. Maia-3 is unreachable from this sandbox; the original Maia-1 bands stand in.",
+  estimatedElo: "unclear",
+  estimatedEloNote: "Weak evidence \u2014 the fit across the 1100\u20131900 bands is nearly flat, so no single band is credible, and it rails to the 1100 floor in the endgame. ACPL 38 is typical of ~1400\u20131700 rapid; a long, partly-forced endgame says little about level. The phase split below is more telling than any headline number.",
+  phaseElo: {
+    opening: "\u22481800 \u00b7 10 moves",
+    middlegame: "\u22481900 \u00b7 8 moves",
+    endgame: "unclear \u00b7 21 moves"
+  },
   weakestPhase: "endgame",
-
-  // Engine's pick and the human-findable move (Maia ≈1900, most popular move
-  // that keeps the eval — present on every entry, often the engine's pick
-  // itself) for every move you played; mistake plies are covered by the
-  // mistakes entries below.
-  moveNotes: [
-    { ply: 0, best: "e4", bestArrow: ["e2","e4"], humanBest: "e4", humanBestArrow: ["e2","e4"] },
-    { ply: 2, best: "c4", bestArrow: ["c2","c4"], humanBest: "Nf3", humanBestArrow: ["g1","f3"] },
-    { ply: 4, best: "c4", bestArrow: ["c2","c4"], humanBest: "Bf4", humanBestArrow: ["c1","f4"] },
-    { ply: 6, best: "c4", bestArrow: ["c2","c4"], humanBest: "c4", humanBestArrow: ["c2","c4"] },
-    { ply: 8, best: "c4", bestArrow: ["c3","c4"], humanBest: "Bd3", humanBestArrow: ["f1","d3"] },
-    { ply: 10, best: "c4", bestArrow: ["c3","c4"], humanBest: "Nbd2", humanBestArrow: ["b1","d2"] },
-    { ply: 12, best: "c4", bestArrow: ["c3","c4"], humanBest: "Nbd2", humanBestArrow: ["b1","d2"] },
-    { ply: 14, best: "h3", bestArrow: ["h2","h3"], humanBest: "h3", humanBestArrow: ["h2","h3"] },
-    { ply: 16, best: "Nxe4", bestArrow: ["d2","e4"], humanBest: "Nxe4", humanBestArrow: ["d2","e4"] },
-    { ply: 18, best: "Bxe4", bestArrow: ["d3","e4"], humanBest: "Bxe4", humanBestArrow: ["d3","e4"] },
-    { ply: 20, best: "Qxf3", bestArrow: ["d1","f3"], humanBest: "Qxf3", humanBestArrow: ["d1","f3"] },
-    { ply: 24, best: "a4", bestArrow: ["a2","a4"], humanBest: "c4", humanBestArrow: ["c3","c4"] },
-    { ply: 26, best: "dxc6", bestArrow: ["d5","c6"], humanBest: "Bg5", humanBestArrow: ["c1","g5"] },
-    { ply: 28, best: "Bxd5", bestArrow: ["f3","d5"], humanBest: "cxd5", humanBestArrow: ["c4","d5"] },
-    { ply: 30, best: "Bxd5", bestArrow: ["f3","d5"], humanBest: "Bxd5", humanBestArrow: ["f3","d5"] },
-    { ply: 32, best: "Qb3", bestArrow: ["d1","b3"], humanBest: "Bxe4", humanBestArrow: ["d5","e4"] },
-    { ply: 34, best: "Raxd1", bestArrow: ["a1","d1"], humanBest: "Raxd1", humanBestArrow: ["a1","d1"] },
-    { ply: 36, best: "Bxb7", bestArrow: ["e4","b7"], humanBest: "Bxb7", humanBestArrow: ["e4","b7"] },
-    { ply: 38, best: "Bxb7", bestArrow: ["e4","b7"], humanBest: "Bxb7", humanBestArrow: ["e4","b7"] },
-    { ply: 40, best: "Re3", bestArrow: ["e1","e3"], humanBest: "Re3", humanBestArrow: ["e1","e3"] },
-    { ply: 42, best: "Bxb7", bestArrow: ["e4","b7"], humanBest: "Bxb7", humanBestArrow: ["e4","b7"] },
-    { ply: 44, best: "Rxe8+", bestArrow: ["e3","e8"], humanBest: "Rxe8+", humanBestArrow: ["e3","e8"] },
-    { ply: 46, best: "Bxe3", bestArrow: ["c5","e3"], humanBest: "Bxe3", humanBestArrow: ["c5","e3"] },
-    { ply: 50, best: "Rd5", bestArrow: ["d6","d5"], humanBest: "Rd5", humanBestArrow: ["d6","d5"] },
-    { ply: 52, best: "Bd4", bestArrow: ["c5","d4"], humanBest: "Bxa7", humanBestArrow: ["c5","a7"] },
-    { ply: 54, best: "Kf2", bestArrow: ["g1","f2"], humanBest: "Kf2", humanBestArrow: ["g1","f2"] },
-    { ply: 56, best: "Kg3", bestArrow: ["f2","g3"], humanBest: "Kf3", humanBestArrow: ["f2","f3"] },
-    { ply: 58, best: "Rd8", bestArrow: ["d5","d8"], humanBest: "Rd7", humanBestArrow: ["d5","d7"] },
-    { ply: 60, best: "Ke2", bestArrow: ["f3","e2"], humanBest: "Kf4", humanBestArrow: ["f3","f4"] },
-    { ply: 62, best: "Kg4", bestArrow: ["f4","g4"], humanBest: "Ke5", humanBestArrow: ["f4","e5"] },
-    { ply: 66, best: "Rxd4", bestArrow: ["d5","d4"], humanBest: "Rxd4", humanBestArrow: ["d5","d4"] },
-    { ply: 68, best: "Kd5", bestArrow: ["d6","d5"], humanBest: "Ke7", humanBestArrow: ["d6","e7"] },
-    { ply: 70, best: "g3", bestArrow: ["g2","g3"], humanBest: "g3", humanBestArrow: ["g2","g3"] },
-    { ply: 72, best: "Rd3", bestArrow: ["d8","d3"], humanBest: "g3", humanBestArrow: ["g2","g3"] },
-    { ply: 74, best: "h3", bestArrow: ["h2","h3"], humanBest: "Rxa7", humanBestArrow: ["a8","a7"] },
-    { ply: 76, best: "Kd6", bestArrow: ["c7","d6"], humanBest: "Kd6", humanBestArrow: ["c7","d6"] },
-    { ply: 78, best: "Kd6", bestArrow: ["c7","d6"], humanBest: "Kd6", humanBestArrow: ["c7","d6"] },
-    { ply: 80, best: "Kd5", bestArrow: ["c6","d5"], humanBest: "Kd5", humanBestArrow: ["c6","d5"] },
-    { ply: 82, best: "Kd4", bestArrow: ["d5","d4"], humanBest: "e5", humanBestArrow: ["e4","e5"] },
-    { ply: 84, best: "Ke5", bestArrow: ["d5","e5"], humanBest: "Rh1", humanBestArrow: ["a1","h1"] },
-    { ply: 86, best: "Rf1", bestArrow: ["a1","f1"], humanBest: "Rh1", humanBestArrow: ["a1","h1"] },
-    { ply: 90, best: "Ra4", bestArrow: ["a1","a4"], humanBest: "Rxg1", humanBestArrow: ["a1","g1"] },
-    { ply: 92, best: "Kd3", bestArrow: ["e3","d3"], humanBest: "Kf4", humanBestArrow: ["e3","f4"] },
-    { ply: 94, best: "e5", bestArrow: ["e4","e5"], humanBest: "e5", humanBestArrow: ["e4","e5"] },
-    { ply: 96, best: "Kf4", bestArrow: ["f3","f4"], humanBest: "Kf4", humanBestArrow: ["f3","f4"] },
-    { ply: 98, best: "Kd3", bestArrow: ["e4","d3"], humanBest: "Kf3", humanBestArrow: ["e4","f3"] },
-    { ply: 100, best: "e7", bestArrow: ["e6","e7"], humanBest: "e7", humanBestArrow: ["e6","e7"] },
-    { ply: 102, best: "Kf3", bestArrow: ["e4","f3"], humanBest: "Kf3", humanBestArrow: ["e4","f3"] },
-    { ply: 104, best: "Kd5", bestArrow: ["e5","d5"], humanBest: "Ke4", humanBestArrow: ["e5","e4"] }
+  accuracy: "87%",
+  acpl: 38,
+  moveQuality: { inaccuracies: 1, mistakes: 0, blunders: 1 },
+  phaseAccuracy: { opening: "92%", middlegame: "93%", endgame: "84%" },
+  evals: [52.4, 52.8, 52.8, 55.6, 54.5, 55.2, 51.7, 53.5, 50.0, 49.5, 49.6, 50.0, 48.4, 53.9, 46.5, 49.6, 50.0, 54.4, 54.2, 59.1, 57.8, 57.0, 50.1, 51.0, 49.7, 53.8, 51.1, 51.6, 49.8, 87.4, 86.7, 88.6, 88.3, 89.1, 88.8, 88.7, 87.9, 88.2, 84.9, 86.5, 87.2, 87.7, 87.8, 88.2, 87.6, 88.5, 84.9, 84.8, 50.2, 50.0, 50.0, 50.0, 50.0, 53.2, 53.0, 52.4, 50.2, 50.1, 49.7, 49.9, 49.7, 50.0, 44.7, 45.1, 26.1, 25.6, 24.5, 28.0, 20.5, 18.9, 16.0, 15.0, 12.3, 11.1, 11.1, 10.0, 9.3, 9.2, 9.2, 9.0, 9.3, 9.1, 9.4, 9.6, 7.6, 7.7, 5.1, 5.0, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5],
+  openingReport: {
+    bookExitPly: 4,
+    note: "Your 3.e3 left book quietly \u2014 solid, but 3.c4 or 3.Bf4 are the moves that press against Maia's Chigorin-style \u2026Nc6 setup. The first improvable decision came much later (8.e4, 53.9% \u2192 46.5%); the opening itself was your cleanest yet. Third analyzed game with 1.d4 d5 \u2014 worth 20 minutes of study.",
+    explorerUrl: "https://lichess.org/analysis"
+  },
+  highlights: [
+    {
+      ply: 10,
+      move: "O-O",
+      note: "Castled by move 6, before the centre opened \u2014 fewer than 1% of your band gets the king safe this early in this structure. Your 87%-accuracy game grew out of a textbook setup.",
+      arrow: ["e1", "g1"]
+    },
+    {
+      ply: 32,
+      move: "Bxe4",
+      note: "When Maia tried the \u2026e4 trick you calmly took with the d5-bishop \u2014 the one clean way through the small tactics, staying a full piece up at +5.",
+      arrow: ["d5", "e4"]
+    }
   ],
-
+  moveNotes: [
+    {
+      ply: 0,
+      best: "e4",
+      bestArrow: ["e2", "e4"],
+      humanBest: "e4",
+      humanBestArrow: ["e2", "e4"]
+    },
+    {
+      ply: 2,
+      best: "c4",
+      bestArrow: ["c2", "c4"],
+      humanBest: "Nf3",
+      humanBestArrow: ["g1", "f3"]
+    },
+    {
+      ply: 4,
+      best: "c4",
+      bestArrow: ["c2", "c4"],
+      humanBest: "Bf4",
+      humanBestArrow: ["c1", "f4"]
+    },
+    {
+      ply: 6,
+      best: "c4",
+      bestArrow: ["c2", "c4"],
+      humanBest: "c4",
+      humanBestArrow: ["c2", "c4"]
+    },
+    {
+      ply: 8,
+      best: "c4",
+      bestArrow: ["c3", "c4"],
+      humanBest: "c4",
+      humanBestArrow: ["c3", "c4"]
+    },
+    {
+      ply: 10,
+      best: "O-O",
+      bestArrow: ["e1", "g1"],
+      humanBest: "Nbd2",
+      humanBestArrow: ["b1", "d2"]
+    },
+    {
+      ply: 12,
+      best: "c4",
+      bestArrow: ["c3", "c4"],
+      humanBest: "Nbd2",
+      humanBestArrow: ["b1", "d2"]
+    },
+    {
+      ply: 14,
+      best: "h3",
+      bestArrow: ["h2", "h3"],
+      humanBest: "h3",
+      humanBestArrow: ["h2", "h3"]
+    },
+    {
+      ply: 16,
+      best: "Nxe4",
+      bestArrow: ["d2", "e4"],
+      humanBest: "Nxe4",
+      humanBestArrow: ["d2", "e4"]
+    },
+    {
+      ply: 18,
+      best: "Bxe4",
+      bestArrow: ["d3", "e4"],
+      humanBest: "Bxe4",
+      humanBestArrow: ["d3", "e4"]
+    },
+    {
+      ply: 20,
+      best: "Qxf3",
+      bestArrow: ["d1", "f3"],
+      humanBest: "Qxf3",
+      humanBestArrow: ["d1", "f3"]
+    },
+    {
+      ply: 24,
+      best: "a4",
+      bestArrow: ["a2", "a4"],
+      humanBest: "c4",
+      humanBestArrow: ["c3", "c4"]
+    },
+    {
+      ply: 26,
+      best: "d6",
+      bestArrow: ["d5", "d6"],
+      humanBest: "Bg5",
+      humanBestArrow: ["c1", "g5"]
+    },
+    {
+      ply: 28,
+      best: "Bxd5",
+      bestArrow: ["f3", "d5"],
+      humanBest: "Bxd5",
+      humanBestArrow: ["f3", "d5"]
+    },
+    {
+      ply: 30,
+      best: "Bxd5",
+      bestArrow: ["f3", "d5"],
+      humanBest: "Bxd5",
+      humanBestArrow: ["f3", "d5"]
+    },
+    {
+      ply: 32,
+      best: "Bxe4",
+      bestArrow: ["d5", "e4"],
+      humanBest: "Bxe4",
+      humanBestArrow: ["d5", "e4"]
+    },
+    {
+      ply: 34,
+      best: "Raxd1",
+      bestArrow: ["a1", "d1"],
+      humanBest: "Raxd1",
+      humanBestArrow: ["a1", "d1"]
+    },
+    {
+      ply: 36,
+      best: "Bxb7",
+      bestArrow: ["e4", "b7"],
+      humanBest: "Bxb7",
+      humanBestArrow: ["e4", "b7"]
+    },
+    {
+      ply: 38,
+      best: "Bxb7",
+      bestArrow: ["e4", "b7"],
+      humanBest: "Bxb7",
+      humanBestArrow: ["e4", "b7"]
+    },
+    {
+      ply: 40,
+      best: "Re3",
+      bestArrow: ["e1", "e3"],
+      humanBest: "Re3",
+      humanBestArrow: ["e1", "e3"]
+    },
+    {
+      ply: 42,
+      best: "Bxb7",
+      bestArrow: ["e4", "b7"],
+      humanBest: "Bxb7",
+      humanBestArrow: ["e4", "b7"]
+    },
+    {
+      ply: 44,
+      best: "Rxe8+",
+      bestArrow: ["e3", "e8"],
+      humanBest: "Rxe8+",
+      humanBestArrow: ["e3", "e8"]
+    },
+    {
+      ply: 46,
+      best: "Bxe3",
+      bestArrow: ["c5", "e3"],
+      humanBest: "Bxe3",
+      humanBestArrow: ["c5", "e3"]
+    },
+    {
+      ply: 50,
+      best: "Rd5",
+      bestArrow: ["d6", "d5"],
+      humanBest: "Rd5",
+      humanBestArrow: ["d6", "d5"]
+    },
+    {
+      ply: 52,
+      best: "Bxa7",
+      bestArrow: ["c5", "a7"],
+      humanBest: "Bxa7",
+      humanBestArrow: ["c5", "a7"]
+    },
+    {
+      ply: 54,
+      best: "Kf2",
+      bestArrow: ["g1", "f2"],
+      humanBest: "Kf2",
+      humanBestArrow: ["g1", "f2"]
+    },
+    {
+      ply: 56,
+      best: "Kg3",
+      bestArrow: ["f2", "g3"],
+      humanBest: "Kf3",
+      humanBestArrow: ["f2", "f3"]
+    },
+    {
+      ply: 58,
+      best: "Rd8",
+      bestArrow: ["d5", "d8"],
+      humanBest: "Rd7",
+      humanBestArrow: ["d5", "d7"]
+    },
+    {
+      ply: 60,
+      best: "Ke2",
+      bestArrow: ["f3", "e2"],
+      humanBest: "Kf4",
+      humanBestArrow: ["f3", "f4"]
+    },
+    {
+      ply: 62,
+      best: "Kg4",
+      bestArrow: ["f4", "g4"],
+      humanBest: "Kg4",
+      humanBestArrow: ["f4", "g4"]
+    },
+    {
+      ply: 66,
+      best: "Rxd4",
+      bestArrow: ["d5", "d4"],
+      humanBest: "Rxd4",
+      humanBestArrow: ["d5", "d4"]
+    },
+    {
+      ply: 68,
+      best: "Ke5",
+      bestArrow: ["d6", "e5"],
+      humanBest: "Ke5",
+      humanBestArrow: ["d6", "e5"]
+    },
+    {
+      ply: 70,
+      best: "g3",
+      bestArrow: ["g2", "g3"],
+      humanBest: "g3",
+      humanBestArrow: ["g2", "g3"]
+    },
+    {
+      ply: 72,
+      best: "g4",
+      bestArrow: ["g2", "g4"],
+      humanBest: "g4",
+      humanBestArrow: ["g2", "g4"]
+    },
+    {
+      ply: 74,
+      best: "h4",
+      bestArrow: ["h2", "h4"],
+      humanBest: "Rxa7",
+      humanBestArrow: ["a8", "a7"]
+    },
+    {
+      ply: 76,
+      best: "Kd6",
+      bestArrow: ["c7", "d6"],
+      humanBest: "Kd6",
+      humanBestArrow: ["c7", "d6"]
+    },
+    {
+      ply: 78,
+      best: "Kd6",
+      bestArrow: ["c7", "d6"],
+      humanBest: "Kd6",
+      humanBestArrow: ["c7", "d6"]
+    },
+    {
+      ply: 80,
+      best: "Kd5",
+      bestArrow: ["c6", "d5"],
+      humanBest: "Kd5",
+      humanBestArrow: ["c6", "d5"]
+    },
+    {
+      ply: 82,
+      best: "Ra3",
+      bestArrow: ["a4", "a3"],
+      humanBest: "Ra3",
+      humanBestArrow: ["a4", "a3"]
+    },
+    {
+      ply: 84,
+      best: "Ke5",
+      bestArrow: ["d5", "e5"],
+      humanBest: "Rh1",
+      humanBestArrow: ["a1", "h1"]
+    },
+    {
+      ply: 86,
+      best: "Kd5",
+      bestArrow: ["d4", "d5"],
+      humanBest: "Rh1",
+      humanBestArrow: ["a1", "h1"]
+    },
+    {
+      ply: 90,
+      best: "Ra4",
+      bestArrow: ["a1", "a4"],
+      humanBest: "Rxg1",
+      humanBestArrow: ["a1", "g1"]
+    },
+    {
+      ply: 92,
+      best: "Kf3",
+      bestArrow: ["e3", "f3"],
+      humanBest: "Kf4",
+      humanBestArrow: ["e3", "f4"]
+    },
+    {
+      ply: 94,
+      best: "Ke2",
+      bestArrow: ["f3", "e2"],
+      humanBest: "e5",
+      humanBestArrow: ["e4", "e5"]
+    },
+    {
+      ply: 96,
+      best: "Ke4",
+      bestArrow: ["f3", "e4"],
+      humanBest: "Kf4",
+      humanBestArrow: ["f3", "f4"]
+    },
+    {
+      ply: 98,
+      best: "Kd3",
+      bestArrow: ["e4", "d3"],
+      humanBest: "Kf3",
+      humanBestArrow: ["e4", "f3"]
+    },
+    {
+      ply: 100,
+      best: "Kd5",
+      bestArrow: ["e4", "d5"],
+      humanBest: "e7",
+      humanBestArrow: ["e6", "e7"]
+    },
+    {
+      ply: 102,
+      best: "Kf3",
+      bestArrow: ["e4", "f3"],
+      humanBest: "Kf3",
+      humanBestArrow: ["e4", "f3"]
+    },
+    {
+      ply: 104,
+      best: "Kd4",
+      bestArrow: ["e5", "d4"],
+      humanBest: "Ke4",
+      humanBestArrow: ["e5", "e4"]
+    }
+  ],
   mistakes: [
     {
       ply: 88,
@@ -709,15 +1286,33 @@ const GAME = {
       swing: "mate",
       title: "The king stepped onto the promotion diagonal \u2014 and made the deflection work",
       explanation: "The position was already gone \u2014 Black\u2019s h-pawn on h2, shepherded by the rook, wins against any defense \u2014 but 45.Ke3 turned a long grind into mate on the spot. The king now stands on the g1\u2013a7 diagonal, the exact line a new queen on g1 would check along. Black\u2019s 45\u2026Rg1! is a pure deflection: the rook offers itself on the queening square, and 46.Rxg1 hxg1=Q+ promotes <em>with check</em>, so you never get a move to fight the new queen. 46% of players at your level find the right setup here \u2014 45.Rh1, planting the rook on the queening square where nothing can budge it. You saw that idea a move too late; the deeper habit is the pre-move scan: before touching the king in a promotion race, ask which squares the new queen will check from, and stay off those lines.",
-      playedArrow: ["d3","e3"],
-      bestArrow: ["a1","h1"],
+      playedArrow: ["d3", "e3"],
+      bestArrow: ["a1", "h1"],
+      winBefore: "5%",
+      winAfter: "3%",
+      tags: ["unsafe-king-move", "promotion-race"],
+      drillLinks: [
+        {
+          label: "Exposed king \u2014 Lichess puzzle theme",
+          url: "https://lichess.org/training/exposedKing"
+        },
+        {
+          label: "Advanced pawn \u2014 Lichess puzzle theme",
+          url: "https://lichess.org/training/advancedPawn"
+        }
+      ],
       playedPopularity: "17%",
       bestFindability: "46%",
       humanBest: "Rh1",
-      humanBestArrow: ["a1","h1"],
+      humanBestArrow: ["a1", "h1"],
       humanBestFindability: "46%",
-      expectedPointsLost: "\u00b10.00",
       recurrenceRisk: "medium",
+      retry: {
+        fen: "8/5pk1/6p1/8/4P3/3K4/6rp/R7 w - - 2 45",
+        solutions: ["a1h1"],
+        acceptable: [],
+        legal: ["a1a2", "a1a3", "a1a4", "a1a5", "a1a6", "a1a7", "a1a8", "a1b1", "a1c1", "a1d1", "a1e1", "a1f1", "a1g1", "a1h1", "d3c3", "d3c4", "d3d4", "d3e3", "e4e5"]
+      },
       takeaways: [
         {
           lesson: "When an enemy pawn reaches the 7th (or 2nd) rank, park your rook on the queening square.",
@@ -739,15 +1334,33 @@ const GAME = {
       swing: "\u22122.77",
       title: "The king marched forward when its job was to walk home",
       explanation: "After the checks 31\u2026Bh6+ and 32\u2026Bg7+, your king on e5 had a genuine coin-flip \u2014 and Maia\u2019s numbers say your level treats it as one: 51% go forward with 33.Kd6, 50% turn back with 33.Kf4. The board says it isn\u2019t close. On f4 the king shields e4 and stays within reach of g2 and h2, and after 33\u2026Bxd4 34.Rxd4 the endgame holds (\u22120.4). On d6 the king has walked off the edge of its own position: 33\u2026Ra6+! drives it further (34.Ke7 Re6+ 35.Kd7 Rxe4 simply wins the pawn), and in the game 33\u2026Bxd4 34.Rxd4 Ra6+ 35.Kc7 Ra2 left Black\u2019s rook to eat g2 and h2 for free while your king watched from the queenside. An advanced king is only strong when it attacks something; this one had nothing to bite and everything behind it undefended.",
-      playedArrow: ["e5","d6"],
-      bestArrow: ["e5","f4"],
+      playedArrow: ["e5", "d6"],
+      bestArrow: ["e5", "f4"],
+      winBefore: "45%",
+      winAfter: "26%",
+      tags: ["unsafe-king-move", "endgame-technique"],
+      drillLinks: [
+        {
+          label: "Exposed king \u2014 Lichess puzzle theme",
+          url: "https://lichess.org/training/exposedKing"
+        },
+        {
+          label: "Rook endgames \u2014 Lichess puzzle theme",
+          url: "https://lichess.org/training/rookEndgame"
+        }
+      ],
       playedPopularity: "51%",
       bestFindability: "50%",
       humanBest: "Kf4",
-      humanBestArrow: ["e5","f4"],
+      humanBestArrow: ["e5", "f4"],
       humanBestFindability: "49%",
-      expectedPointsLost: "\u00b10.00",
       recurrenceRisk: "high",
+      retry: {
+        fen: "6k1/p4pbp/6p1/3RK3/3BP3/r7/6PP/8 w - - 5 33",
+        solutions: ["e5f4"],
+        acceptable: [],
+        legal: ["e5d6", "e5f4"]
+      },
       takeaways: [
         {
           lesson: "Advance the king only toward something it can attack or escort; otherwise keep it in touch with its own pawns.",
@@ -769,14 +1382,33 @@ const GAME = {
       swing: "\u22124.80",
       title: "One rook move gave the whole piece back",
       explanation: "After 24\u2026Rc8 both of your bishops stood on the c-file in the rook\u2019s crosshairs, and this was the move the game turned on. 25.Rd6 looks natural \u2014 it defends the c6-bishop sideways \u2014 but it commits two crimes at once: the rook occupies d6, the c5-bishop\u2019s only retreat along the a3\u2013f8 diagonal, and it stands on a square a bishop can hit. 25\u2026Bf8! attacked the rook, and there was no good square: 26.Rd5 abandoned c6, and after 26\u2026Rxc6 27.Bd4 the extra piece \u2014 and the game \u2014 was gone (+0.0). The engine\u2019s save, 25.Ba3!, is a back-rank magic trick fewer than 1% of your peers would find (25\u2026Rxc6 26.Rd8+ Bf8 27.Bxf8 keeps the piece). The move to remember is the one your peers actually play: 25.Bxa7 was Maia\u2019s top choice at 14%, calmly trading the doomed c6-bishop for the a-pawn \u2014 after 25\u2026Rxc6 you\u2019re a clean pawn up with a passed a-pawn (+2.3) instead of a piece up, but the win is still yours to keep.",
-      playedArrow: ["d1","d6"],
-      bestArrow: ["c5","a3"],
+      playedArrow: ["d1", "d6"],
+      bestArrow: ["c5", "a3"],
+      winBefore: "85%",
+      winAfter: "50%",
+      tags: ["conversion-drift", "hanging-piece"],
+      drillLinks: [
+        {
+          label: "Winning advantage \u2014 Lichess puzzle theme",
+          url: "https://lichess.org/training/advantage"
+        },
+        {
+          label: "Hanging pieces \u2014 Lichess puzzle theme",
+          url: "https://lichess.org/training/hangingPiece"
+        }
+      ],
       playedPopularity: "7%",
       bestFindability: "0.8%",
       humanBest: "Be7",
-      humanBestArrow: ["c5","e7"],
+      humanBestArrow: ["c5", "e7"],
       humanBestFindability: "2%",
       recurrenceRisk: "low",
+      retry: {
+        fen: "2r3k1/p4pbp/2B3p1/2B5/8/4P3/P5PP/3R2K1 w - - 1 25",
+        solutions: ["c5a3", "c5e7"],
+        acceptable: ["c5b4", "d1d5"],
+        legal: ["a2a3", "a2a4", "c5a3", "c5a7", "c5b4", "c5b6", "c5d4", "c5d6", "c5e7", "c5f8", "c6a4", "c6a8", "c6b5", "c6b7", "c6d5", "c6d7", "c6e4", "c6e8", "c6f3", "d1a1", "d1b1", "d1c1", "d1d2", "d1d3", "d1d4", "d1d5", "d1d6", "d1d7", "d1d8", "d1e1", "d1f1", "e3e4", "g1f1", "g1f2", "g1h1", "g2g3", "g2g4", "h2h3", "h2h4"]
+      },
       takeaways: [
         {
           lesson: "Before defending a piece, check what square your defender takes away.",
@@ -798,15 +1430,33 @@ const GAME = {
       swing: "\u22120.86",
       title: "The center push released the pressure \u2014 the capture won a pawn",
       explanation: "When Black struck with 11\u2026e5, your last move 11.Bxf3 had quietly loaded the answer: 12.dxe5! wins a pawn outright, because after 12\u2026Nxe5 the f3-bishop\u2019s long diagonal opens onto b7 \u2014 13.Bxb7 picks it off, and 13\u2026Qxd1 14.Rxd1 changes nothing (+0.9 and a clean extra pawn). Instead 12.d5 gained a tempo on the knight but closed the very diagonal that was your best asset, and after 12\u2026Ne7 13.c4 c6! Black dissolved the pawn spearhead and full equality set in. This one is a pattern worth drilling, because your level splits three ways here \u2014 27% trade on c6, 26% push d5, and only 16% find the capture: when your opponent challenges a center pawn, calculate the capture first, especially when taking opens a line for a piece you just developed.",
-      playedArrow: ["d4","d5"],
-      bestArrow: ["d4","e5"],
+      playedArrow: ["d4", "d5"],
+      bestArrow: ["d4", "e5"],
+      winBefore: "57%",
+      winAfter: "50%",
+      tags: ["missed-tactic", "pawn-break-timing"],
+      drillLinks: [
+        {
+          label: "Mixed puzzles \u2014 Lichess daily training",
+          url: "https://lichess.org/training/mix"
+        },
+        {
+          label: "When to push the pawns in front of the king \u2014 discussion",
+          url: "https://lichess.org/forum/general-chess-discussion/when-to-push-the-pawns-infront-the-king?page=1"
+        }
+      ],
       playedPopularity: "26%",
       bestFindability: "16%",
       humanBest: "dxe5",
-      humanBestArrow: ["d4","e5"],
+      humanBestArrow: ["d4", "e5"],
       humanBestFindability: "16%",
-      expectedPointsLost: "\u00b10.00",
       recurrenceRisk: "high",
+      retry: {
+        fen: "r2q1rk1/ppp2pbp/2n3p1/4p3/3P4/2P2B2/PP3PPP/R1BQ1RK1 w - - 0 12",
+        solutions: ["d4e5"],
+        acceptable: ["d1b3"],
+        legal: ["a1b1", "a2a3", "a2a4", "b2b3", "b2b4", "c1d2", "c1e3", "c1f4", "c1g5", "c1h6", "c3c4", "d1a4", "d1b3", "d1c2", "d1d2", "d1d3", "d1e1", "d1e2", "d4d5", "d4e5", "f1e1", "f3c6", "f3d5", "f3e2", "f3e4", "f3g4", "f3h5", "g1h1", "g2g3", "g2g4", "h2h3", "h2h4"]
+      },
       takeaways: [
         {
           lesson: "When a center pawn is challenged, calculate the capture before the push.",
@@ -818,7 +1468,7 @@ const GAME = {
         }
       ]
     }
-  ]
+  ],
 };
 // ============================================================================
 // === END GAME DATA ==========================================================
@@ -1154,21 +1804,46 @@ function renderHeader() {
   if (GAME.estimatedElo) {
     const s = $("head-strength");
     s.hidden = false;
-    let html = "Maia strength estimate — you played this game like a <b>" +
+    s.innerHTML = "Maia strength estimate — you played this game like a <b>" +
       GAME.estimatedElo + "</b>" +
-      (GAME.estimatedEloNote ? " <span class=\"note\">(" + GAME.estimatedEloNote + ")</span>" : "");
-    if (GAME.phaseElo) {
-      html += "<div class=\"phase-row\">";
-      for (const ph of ["opening", "middlegame", "endgame"]) {
-        if (!GAME.phaseElo[ph]) continue;
-        const wk = GAME.weakestPhase === ph;
-        html += "<span class=\"phase-chip" + (wk ? " weakest" : "") + "\">" + ph +
-          " <b>" + GAME.phaseElo[ph] + "</b>" + (wk ? " · weakest" : "") + "</span>";
-      }
-      html += "</div>";
-    }
-    s.innerHTML = html;
+      (GAME.estimatedEloNote ? " <span class=\"note\">(" + GAME.estimatedEloNote + ")</span>" : "") +
+      buildPhaseRow();
   }
+
+  // Accuracy stat strip (renders only when the fields are present). When there
+  // is no strength line to host them, the phase chips move down here.
+  const q = GAME.moveQuality;
+  if (GAME.accuracy || GAME.acpl != null || q || (!GAME.estimatedElo && (GAME.phaseElo || GAME.phaseAccuracy))) {
+    const s = $("head-stats");
+    s.hidden = false;
+    let chips = "";
+    if (GAME.accuracy) chips += "<span class=\"stat-chip accuracy\">accuracy <b>" + GAME.accuracy + "</b></span>";
+    if (GAME.acpl != null) chips += "<span class=\"stat-chip\" title=\"Average centipawn loss vs the engine's best move\">acpl <b>" + GAME.acpl + "</b></span>";
+    if (q) {
+      chips += "<span class=\"stat-chip quality\" title=\"?! inaccuracies · ? mistakes · ?? blunders — moves dropping your win probability by 10 / 20 / 30+ points\">" +
+        "<span class=\"q-inacc\">?!&nbsp;" + (q.inaccuracies || 0) + "</span> · " +
+        "<span class=\"q-mist\">?&nbsp;" + (q.mistakes || 0) + "</span> · " +
+        "<span class=\"q-blun\">??&nbsp;" + (q.blunders || 0) + "</span></span>";
+    }
+    s.innerHTML = (chips ? "<div class=\"stat-row\">" + chips + "</div>" : "") +
+      (GAME.estimatedElo ? "" : buildPhaseRow());
+  }
+}
+
+// One chip per phase, combining the Maia phase Elo and the phase accuracy —
+// either may be absent; a phase with neither gets no chip.
+function buildPhaseRow() {
+  let html = "";
+  for (const ph of ["opening", "middlegame", "endgame"]) {
+    const elo = GAME.phaseElo && GAME.phaseElo[ph];
+    const acc = GAME.phaseAccuracy && GAME.phaseAccuracy[ph];
+    if (!elo && !acc) continue;
+    const wk = GAME.weakestPhase === ph;
+    const val = (elo || "") + (elo && acc ? " · " : "") + (acc ? acc + " acc." : "");
+    html += "<span class=\"phase-chip" + (wk ? " weakest" : "") + "\">" + ph +
+      " <b>" + val + "</b>" + (wk ? " · weakest" : "") + "</span>";
+  }
+  return html ? "<div class=\"phase-row\">" + html + "</div>" : "";
 }
 
 // ---- Maia badge helpers (all return null when the GAME fields are absent) ----
@@ -1214,6 +1889,29 @@ function makeRecurTag(mk) {
   return el;
 }
 
+function makeTagRow(mk) {
+  if (!mk.tags || !mk.tags.length) return null;
+  const row = document.createElement("div");
+  row.className = "tag-row";
+  for (const t of mk.tags) {
+    const el = document.createElement("span");
+    el.className = "tag-chip";
+    el.textContent = t;
+    row.appendChild(el);
+  }
+  return row;
+}
+
+function makeWinRow(mk) {
+  if (!mk.winBefore || !mk.winAfter) return null;
+  const div = document.createElement("div");
+  div.className = "win-row";
+  div.innerHTML = "your winning chances: <b>" + mk.winBefore +
+    "</b> → <b class=\"after\">" + mk.winAfter + "</b>";
+  div.title = "Win probability from the Stockfish evaluation (Lichess win% model), before and after the move you played";
+  return div;
+}
+
 function makeFindRow(mk) {
   if (!mk.bestFindability) return null;
   const div = document.createElement("div");
@@ -1234,7 +1932,7 @@ function sanLabel(ply, san) { return moveNumOfPly(ply) + (ply % 2 ? "…" : ".")
 
 function renderFeedbackDefault() {
   const panel = $("fb-panel");
-  panel.classList.remove("mistake-active");
+  panel.classList.remove("mistake-active", "highlight-active");
   panel.innerHTML = "";
   const eyebrow = document.createElement("span");
   eyebrow.className = "fb-eyebrow";
@@ -1250,10 +1948,27 @@ function renderFeedbackDefault() {
   panel.appendChild(hint);
 }
 
-function renderFeedbackMistake(mk) {
+function renderFeedbackMistake(mk, retryOutcome) {
   const panel = $("fb-panel");
+  panel.classList.remove("highlight-active");
   panel.classList.add("mistake-active");
   panel.innerHTML = "";
+
+  if (retryOutcome) {
+    const rb = document.createElement("div");
+    rb.className = "retry-result " + retryOutcome;
+    if (retryOutcome === "solved") {
+      rb.textContent = "Retry solved — you found " + retrySan(mk, retry.playedUci) +
+        (retry.attempts > 1 ? " on the second try." : ".");
+    } else if (retryOutcome === "acceptable") {
+      rb.textContent = "Retry: " + retrySan(mk, retry.playedUci) +
+        " also holds — the cleanest was " + mk.best + ".";
+    } else {
+      rb.textContent = "Retry revealed — the answer was " + mk.best +
+        (mk.humanBest && mk.humanBest !== mk.best ? " (or the human-findable " + mk.humanBest + ")" : "") + ".";
+    }
+    panel.appendChild(rb);
+  }
 
   const head = document.createElement("div");
   head.className = "fb-head";
@@ -1314,34 +2029,93 @@ function renderFeedbackMistake(mk) {
   }
   panel.appendChild(cmp);
 
+  const wr = makeWinRow(mk);
+  if (wr) panel.appendChild(wr);
+
   const fr = makeFindRow(mk);
   if (fr) panel.appendChild(fr);
 
-  if (mk.takeaways && mk.takeaways.length) {
+  const hasTakeaways = mk.takeaways && mk.takeaways.length;
+  const hasDrills = mk.drillLinks && mk.drillLinks.length;
+  if (hasTakeaways || hasDrills) {
     const box = document.createElement("div");
     box.className = "retain";
-    const rh = document.createElement("span");
-    rh.className = "retain-head";
-    rh.textContent = "What to retain";
-    box.appendChild(rh);
-    const ol = document.createElement("ol");
-    for (const t of mk.takeaways) {
-      const li = document.createElement("li");
-      const body = document.createElement("div");
-      const les = document.createElement("span");
-      les.className = "lesson";
-      les.textContent = t.lesson;
-      const det = document.createElement("span");
-      det.className = "detail";
-      det.textContent = t.detail || "";
-      body.appendChild(les);
-      if (t.detail) body.appendChild(det);
-      li.appendChild(body);
-      ol.appendChild(li);
+    if (hasTakeaways) {
+      const rh = document.createElement("span");
+      rh.className = "retain-head";
+      rh.textContent = "What to retain";
+      box.appendChild(rh);
+      const ol = document.createElement("ol");
+      for (const t of mk.takeaways) {
+        const li = document.createElement("li");
+        const body = document.createElement("div");
+        const les = document.createElement("span");
+        les.className = "lesson";
+        les.textContent = t.lesson;
+        const det = document.createElement("span");
+        det.className = "detail";
+        det.textContent = t.detail || "";
+        body.appendChild(les);
+        if (t.detail) body.appendChild(det);
+        li.appendChild(body);
+        ol.appendChild(li);
+      }
+      box.appendChild(ol);
     }
-    box.appendChild(ol);
+    if (hasDrills) {
+      const dl = document.createElement("div");
+      dl.className = "drill-links";
+      const dh = document.createElement("span");
+      dh.className = "drill-head";
+      dh.textContent = "Where to practice";
+      dl.appendChild(dh);
+      const ul = document.createElement("ul");
+      for (const d of mk.drillLinks) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = d.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = d.label;
+        li.appendChild(a);
+        ul.appendChild(li);
+      }
+      dl.appendChild(ul);
+      box.appendChild(dl);
+    }
     panel.appendChild(box);
   }
+}
+
+function renderFeedbackHighlight(hl) {
+  const panel = $("fb-panel");
+  panel.classList.remove("mistake-active");
+  panel.classList.add("highlight-active");
+  panel.innerHTML = "";
+
+  const head = document.createElement("div");
+  head.className = "fb-head";
+  const num = document.createElement("span");
+  num.className = "move-no";
+  num.textContent = moveNumOfPly(hl.ply);
+  const text = document.createElement("div");
+  text.className = "fb-head-text";
+  const eb = document.createElement("span");
+  eb.className = "eyebrow";
+  eb.textContent = "What you did well · move " + moveNumOfPly(hl.ply);
+  const h2 = document.createElement("h2");
+  h2.className = "played-move";
+  h2.textContent = moveNumOfPly(hl.ply) + (hl.ply % 2 ? "… " : ". ") + hl.move;
+  text.appendChild(eb);
+  text.appendChild(h2);
+  head.appendChild(num);
+  head.appendChild(text);
+  panel.appendChild(head);
+
+  const p = document.createElement("p");
+  p.className = "explain";
+  p.innerHTML = hl.note || "";
+  panel.appendChild(p);
 }
 
 // --------------------------------------------------------------------------
@@ -1370,6 +2144,11 @@ const mistakes = (GAME.mistakes || []).slice();
 const mistakeByPly = new Map();
 for (const mk of mistakes) mistakeByPly.set(mk.ply, mk);
 
+// "What you did well" highlights (optional) — mistakes win on a shared ply.
+const highlights = (GAME.highlights || []).slice();
+const highlightByPly = new Map();
+for (const hl of highlights) if (!mistakeByPly.has(hl.ply)) highlightByPly.set(hl.ply, hl);
+
 // Per-ply board annotations (played / engine's pick / human-findable arrows):
 // every moveNotes entry, with mistakes overriding their plies.
 const annoByPly = new Map();
@@ -1380,10 +2159,10 @@ let current = 0;
 let piecesLayer = null, hlLayer = null, arrowsLayer = null;
 const moveButtons = [];
 
-function activeMistakeAt(ply) {
-  // feedback stays visible on the position before the mistake and just after it
-  return mistakeByPly.get(ply) || mistakeByPly.get(ply - 1) || null;
-}
+// Retry mode: null when inactive, else { mk, attempts, status, outcome,
+// from, playedUci }. status: "await" (taking input) | "done" (resolved,
+// feedback revealed with a result banner).
+let retry = null;
 
 // Keep the current move visible in the move list by scrolling ONLY that
 // container — never Element.scrollIntoView(), which also scrolls the window
@@ -1425,7 +2204,9 @@ function renderPosition() {
   }
 
   arrowsLayer.innerHTML = "";
-  const note = current < totalPlies ? annoByPly.get(current) : null;
+  // while a retry is taking input, arrows, legend, and feedback stay hidden
+  const awaitingRetry = retry && retry.status === "await";
+  const note = (!awaitingRetry && current < totalPlies) ? annoByPly.get(current) : null;
   if (note) {
     const specs = [];
     const last = positions[current + 1].last;   // the move actually played at this ply
@@ -1466,18 +2247,305 @@ function renderPosition() {
     scrollMoveListToCurrent();
   }
 
-  // feedback panel + mistake cards
-  const mk = activeMistakeAt(current);
-  if (mk) renderFeedbackMistake(mk); else renderFeedbackDefault();
+  // feedback panel + mistake/highlight cards — an exact position match wins
+  // over a lingering "just after" match, mistakes win over highlights
+  let mk = mistakeByPly.get(current) || null;
+  let hl = mk ? null : highlightByPly.get(current) || null;
+  if (!mk && !hl) mk = mistakeByPly.get(current - 1) || null;
+  if (!mk && !hl) hl = highlightByPly.get(current - 1) || null;
+  if (awaitingRetry) renderRetryPrompt();
+  else if (mk) renderFeedbackMistake(mk, retry && retry.mk === mk ? retry.outcome : null);
+  else if (hl) renderFeedbackHighlight(hl);
+  else renderFeedbackDefault();
   document.querySelectorAll(".mistake-card").forEach((card) => {
     card.classList.toggle("active", !!mk && Number(card.dataset.ply) === mk.ply);
   });
+  document.querySelectorAll(".highlight-card").forEach((card) => {
+    card.classList.toggle("active", !!hl && Number(card.dataset.ply) === hl.ply);
+  });
+
+  updateGraphCursor();
+}
+
+// What clicking a mistake card does: retry when the practice-first toggle is
+// on and the mistake supports it, otherwise jump to the position + feedback.
+// The graph's mistake dots share this exact behavior.
+function openMistake(mk) {
+  if (practiceFirstOn() && mk.retry) startRetry(mk); else goTo(mk.ply);
 }
 
 function goTo(ply) {
   if (!positions) return;
-  current = Math.max(0, Math.min(totalPlies, ply));
+  const target = Math.max(0, Math.min(totalPlies, ply));
+  // navigating away abandons an active retry (and drops a stale result banner)
+  if (retry && (retry.status === "await" ? target !== retry.mk.ply
+                                         : target !== retry.mk.ply && target !== retry.mk.ply + 1)) {
+    retry = null;
+  }
+  current = target;
   renderPosition();
+}
+
+// --------------------------------------------------------------------------
+// Retry mode: the board becomes an answer box. Grading was precomputed by
+// the pipeline (mistake.retry), so the page needs no engine. Active only for
+// mistakes that carry `retry` — older pages never enter this code.
+// --------------------------------------------------------------------------
+
+function startRetry(mk) {
+  if (!mk.retry) return;
+  retry = { mk: mk, attempts: 0, status: "await", outcome: null, from: null, playedUci: null };
+  current = mk.ply;
+  renderPosition();
+}
+
+function retrySan(mk, uci) {
+  if (!uci) return "";
+  const r = mk.retry;
+  if (uci === r.solutions[0]) return mk.best;
+  if (mk.humanBest && uci === r.solutions[1]) return mk.humanBest;
+  return uci;
+}
+
+function renderRetryPrompt() {
+  const mk = retry.mk;
+  const panel = $("fb-panel");
+  panel.classList.remove("mistake-active", "highlight-active");
+  panel.innerHTML = "";
+
+  const eyebrow = document.createElement("span");
+  eyebrow.className = "fb-eyebrow";
+  eyebrow.textContent = "Retry · move " + moveNumOfPly(mk.ply) + " · " + sideOfPly(mk.ply).toLowerCase() + " to move";
+  panel.appendChild(eyebrow);
+
+  const h2 = document.createElement("h2");
+  h2.className = "played-move";
+  h2.textContent = "Your move — find a better one than you played.";
+  panel.appendChild(h2);
+
+  const p = document.createElement("p");
+  p.className = "explain";
+  p.textContent = "Click a piece, then its destination square (promotions become queens). " +
+    "The engine's best and the human-findable move both count as solved; a wrong move gets one more try.";
+  panel.appendChild(p);
+
+  const status = document.createElement("p");
+  status.className = "retry-status";
+  status.id = "retry-status";
+  panel.appendChild(status);
+
+  const reveal = document.createElement("button");
+  reveal.className = "retry-act";
+  reveal.id = "retry-reveal";
+  reveal.textContent = "Show the answer";
+  reveal.addEventListener("click", () => retryFinish("revealed", null));
+  panel.appendChild(reveal);
+}
+
+function clearRetrySelection() {
+  retry.from = null;
+  hlLayer.querySelectorAll(".sel, .target-dot").forEach((el) => el.remove());
+}
+
+function retrySelectFrom(name) {
+  clearRetrySelection();
+  retry.from = name;
+  const [x, y] = sqXY(sqIndex(name));
+  hlLayer.appendChild(svgEl("rect", { x: x, y: y, width: SQ, height: SQ, fill: "rgba(201,162,75,0.45)", class: "sel" }));
+  for (const uci of retry.mk.retry.legal) {
+    if (uci.slice(0, 2) !== name) continue;
+    const [tx, ty] = sqXY(sqIndex(uci.slice(2, 4)));
+    hlLayer.appendChild(svgEl("circle", { cx: tx + SQ / 2, cy: ty + SQ / 2, r: 6, fill: "rgba(201,162,75,0.5)", class: "target-dot" }));
+  }
+}
+
+function flashSquare(name, color) {
+  const [x, y] = sqXY(sqIndex(name));
+  hlLayer.appendChild(svgEl("rect", { x: x, y: y, width: SQ, height: SQ, fill: color, class: "grade-flash" }));
+}
+
+function retryHasLegalFrom(name) {
+  return retry.mk.retry.legal.some((u) => u.slice(0, 2) === name);
+}
+
+function boardClickSquare(evt, svg) {
+  const rect = svg.getBoundingClientRect();
+  const x = (evt.clientX - rect.left) * (BOARD_PX / rect.width);
+  const y = (evt.clientY - rect.top) * (BOARD_PX / rect.height);
+  const vc = Math.floor((x - ORIGIN) / SQ), vr = Math.floor((y - ORIGIN) / SQ);
+  if (vc < 0 || vc > 7 || vr < 0 || vr > 7) return null;
+  const f = flipped ? 7 - vc : vc;      // invert sqXY's orientation mapping
+  const r = flipped ? vr : 7 - vr;
+  return sqName(r * 8 + f);
+}
+
+function onRetryBoardClick(evt, svg) {
+  if (!retry || retry.status !== "await") return;
+  const name = boardClickSquare(evt, svg);
+  if (!name) return;
+  if (retry.from === null) {
+    if (retryHasLegalFrom(name)) retrySelectFrom(name);
+    return;
+  }
+  if (name === retry.from) { clearRetrySelection(); return; }
+  let uci = retry.from + name;
+  const piece = positions[current].board[sqIndex(retry.from)];
+  if (piece && piece.toUpperCase() === "P" && (name[1] === "8" || name[1] === "1") &&
+      retry.mk.retry.legal.includes(uci + "q")) {
+    uci += "q";                          // promotions default to queen
+  }
+  if (retry.mk.retry.legal.includes(uci)) { clearRetrySelection(); retryGrade(uci); return; }
+  if (retryHasLegalFrom(name)) { retrySelectFrom(name); return; }
+  // not a legal move and not a reselect — an illegal move is not an answer
+}
+
+function retryGrade(uci) {
+  const r = retry.mk.retry;
+  retry.attempts += 1;
+  if (r.solutions.includes(uci)) {
+    retryFinish("solved", uci);
+  } else if (r.acceptable.includes(uci)) {
+    retryFinish("acceptable", uci);
+  } else if (retry.attempts >= 2) {
+    retryFinish("revealed", uci);
+  } else {
+    flashSquare(uci.slice(2, 4), "rgba(193,80,47,0.75)");
+    const status = $("retry-status");
+    if (status) status.textContent = "That doesn't hold — one more try.";
+  }
+}
+
+function retryFinish(outcome, uci) {
+  retry.status = "done";
+  retry.outcome = outcome;
+  retry.playedUci = uci;
+  renderPosition();                      // reveals feedback, arrows, legend
+  flashSquare((uci || retry.mk.retry.solutions[0]).slice(2, 4),
+    outcome === "solved" ? "rgba(201,162,75,0.8)"
+    : outcome === "acceptable" ? "rgba(231,215,171,0.8)" : "rgba(193,80,47,0.75)");
+}
+
+// --------------------------------------------------------------------------
+// Eval graph: win% per ply as a clickable SVG sparkline, two-way synced with
+// the replay. Renders only when GAME.evals is present (one win% entry per
+// half-move, user's perspective) — older pages never show it.
+// --------------------------------------------------------------------------
+
+const GRAPH_W = 390, GRAPH_H = 84, GPAD_X = 6, GPAD_Y = 8;
+let graphCursor = null;   // the vertical current-ply marker; null = no graph
+
+function graphX(ply) { return GPAD_X + (GRAPH_W - 2 * GPAD_X) * ply / totalPlies; }
+function graphY(win) {
+  const w = Math.max(0, Math.min(100, win));
+  return GPAD_Y + (GRAPH_H - 2 * GPAD_Y) * (1 - w / 100);
+}
+// win% at replay position k: 50 at the start, then GAME.evals[k-1] after ply k
+function graphWin(k) { return k === 0 ? 50 : GAME.evals[k - 1]; }
+
+function buildEvalGraph() {
+  const mount = $("eval-graph");
+  const svg = svgEl("svg", { viewBox: "0 0 " + GRAPH_W + " " + GRAPH_H });
+
+  svg.appendChild(svgEl("line", {
+    x1: GPAD_X, y1: graphY(50), x2: GRAPH_W - GPAD_X, y2: graphY(50),
+    stroke: "#8b93a1", "stroke-width": 0.75, "stroke-dasharray": "3 3", opacity: 0.5
+  }));
+
+  const pts = [];
+  for (let k = 0; k <= totalPlies; k++) pts.push(graphX(k) + "," + graphY(graphWin(k)));
+  svg.appendChild(svgEl("polygon", {
+    points: pts.join(" ") + " " + graphX(totalPlies) + "," + graphY(0) + " " + graphX(0) + "," + graphY(0),
+    fill: "rgba(201,162,75,0.10)", stroke: "none"
+  }));
+  svg.appendChild(svgEl("polyline", {
+    points: pts.join(" "), fill: "none", stroke: "#c9a24b",
+    "stroke-width": 1.6, "stroke-linejoin": "round", "stroke-linecap": "round"
+  }));
+
+  graphCursor = svgEl("line", {
+    x1: graphX(0), y1: GPAD_Y - 2, x2: graphX(0), y2: GRAPH_H - GPAD_Y + 2,
+    stroke: "#ece7da", "stroke-width": 1, opacity: 0.65
+  });
+  svg.appendChild(graphCursor);
+
+  // clicking anywhere on the graph jumps the replay to that ply
+  svg.addEventListener("click", (evt) => {
+    const rect = svg.getBoundingClientRect();
+    const x = (evt.clientX - rect.left) * (GRAPH_W / rect.width);
+    goTo(Math.round((x - GPAD_X) / (GRAPH_W - 2 * GPAD_X) * totalPlies));
+  });
+
+  // mistake dots sit on the point after the played move; clicking one behaves
+  // exactly like clicking that mistake's card
+  for (const mk of mistakes) {
+    if (mk.ply + 1 > totalPlies) continue;
+    const dot = svgEl("circle", {
+      cx: graphX(mk.ply + 1), cy: graphY(graphWin(mk.ply + 1)), r: 3.4,
+      fill: "#c1502f", stroke: "#12161d", "stroke-width": 1,
+      class: "graph-dot", "data-ply": mk.ply
+    });
+    const tip = document.createElementNS(SVG_NS, "title");
+    tip.textContent = sanLabel(mk.ply, mk.played) + (mk.title ? " — " + mk.title.replace(/<[^>]*>/g, "") : "");
+    dot.appendChild(tip);
+    dot.addEventListener("click", (e) => { e.stopPropagation(); openMistake(mk); });
+    svg.appendChild(dot);
+  }
+
+  mount.appendChild(svg);
+  const cap = document.createElement("div");
+  cap.className = "graph-caption";
+  cap.textContent = "your winning chances by move · click to jump";
+  mount.appendChild(cap);
+  mount.hidden = false;
+}
+
+function updateGraphCursor() {
+  if (!graphCursor) return;
+  const x = graphX(current);
+  graphCursor.setAttribute("x1", x);
+  graphCursor.setAttribute("x2", x);
+}
+
+// --------------------------------------------------------------------------
+// Time bar: seconds spent on each half-move (from PGN %clk comments), drawn
+// as thin clickable bars aligned with the eval graph. Renders only when
+// GAME.timeSpent is present (one number per half-move) — pages from PGNs
+// without clock data never show it.
+// --------------------------------------------------------------------------
+
+const TBAR_H = 34, TPAD_Y = 4;
+
+function buildTimeBar() {
+  const mount = $("time-bar");
+  const svg = svgEl("svg", { viewBox: "0 0 " + GRAPH_W + " " + TBAR_H });
+  const secs = GAME.timeSpent.map((t) => Math.max(0, Number(t) || 0));
+  const maxT = Math.max.apply(null, secs) || 1;
+  for (let k = 0; k < totalPlies; k++) {
+    const t = secs[k];
+    // sqrt scale keeps short thinks visible next to one long tank
+    const h = Math.max(1.5, (TBAR_H - 2 * TPAD_Y) * Math.sqrt(t / maxT));
+    const x0 = graphX(k), x1 = graphX(k + 1);
+    const isUser = ((k % 2 === 0) === (GAME.playerColor === "white"));
+    const fast = isUser && t < 10;
+    const bar = svgEl("rect", {
+      x: x0 + (x1 - x0) * 0.15, y: TBAR_H - TPAD_Y - h,
+      width: Math.max(1, (x1 - x0) * 0.7), height: h,
+      fill: fast ? "#c1502f" : isUser ? "#c9a24b" : "rgba(139,147,161,0.4)",
+      class: "tb", "data-ply": k
+    });
+    const tip = document.createElementNS(SVG_NS, "title");
+    tip.textContent = sanLabel(k, GAME.movesSan[k]) + " · " + t + "s" +
+      (fast ? " · under 10 seconds" : "");
+    bar.appendChild(tip);
+    bar.addEventListener("click", () => goTo(k + 1));
+    svg.appendChild(bar);
+  }
+  mount.appendChild(svg);
+  const cap = document.createElement("div");
+  cap.className = "graph-caption";
+  cap.textContent = "time per move · gold = you · rust = under 10s";
+  mount.appendChild(cap);
+  mount.hidden = false;
 }
 
 if (positions) {
@@ -1486,6 +2554,7 @@ if (positions) {
   piecesLayer = svg.querySelector("#layer-pieces");
   hlLayer = svg.querySelector("#layer-hl");
   arrowsLayer = svg.querySelector("#layer-arrows");
+  svg.addEventListener("click", (evt) => onRetryBoardClick(evt, svg));
 
   // move list
   const list = $("move-list");
@@ -1535,11 +2604,118 @@ if (positions) {
     badges.appendChild(makeSwingBadge(mk));
     const tag = makeRecurTag(mk);
     if (tag) badges.appendChild(tag);
+    const tags = makeTagRow(mk);
+    if (tags) badges.appendChild(tags);
+    if (mk.retry) {
+      const chip = document.createElement("span");
+      chip.className = "retry-chip";
+      chip.textContent = "↻ retry";
+      chip.title = "Jump to this position and find the right move yourself";
+      chip.addEventListener("click", (e) => { e.stopPropagation(); startRetry(mk); card.blur(); });
+      badges.appendChild(chip);
+    }
     card.appendChild(num);
     card.appendChild(text);
     card.appendChild(badges);
-    card.addEventListener("click", () => { goTo(mk.ply); card.blur(); });
+    card.addEventListener("click", () => {
+      openMistake(mk);
+      card.blur();
+    });
     mlist.appendChild(card);
+  }
+
+  // "Practice first" (active recall): with the toggle on, clicking a mistake
+  // card starts a retry instead of revealing the coaching, so every mistake is
+  // attempted before it is read. The preference survives reloads.
+  if (mistakes.some((mk) => mk.retry)) {
+    const wrap = $("practice-toggle");
+    wrap.hidden = false;
+    const box = $("practice-first");
+    try { box.checked = localStorage.getItem("chess-coach-practice-first") === "1"; } catch (e) { /* storage unavailable */ }
+    box.addEventListener("change", () => {
+      try { localStorage.setItem("chess-coach-practice-first", box.checked ? "1" : "0"); } catch (e) { /* ignore */ }
+    });
+  }
+
+  // eval graph — only when the pipeline emitted a complete win% series
+  if (Array.isArray(GAME.evals) && GAME.evals.length === totalPlies && totalPlies > 0) {
+    buildEvalGraph();
+  }
+
+  // time bar — only when the PGN carried clock data for every half-move
+  if (Array.isArray(GAME.timeSpent) && GAME.timeSpent.length === totalPlies && totalPlies > 0) {
+    buildTimeBar();
+  }
+
+  // "what you did well" highlight cards — clickable jumps, like mistake cards
+  if (highlights.length) {
+    $("highlight-head").hidden = false;
+    $("highlight-sub").hidden = false;
+    const hlist = $("highlight-list");
+    for (const hl of highlights) {
+      const card = document.createElement("button");
+      card.className = "highlight-card";
+      card.dataset.ply = hl.ply;
+      const num = document.createElement("span");
+      num.className = "move-no";
+      num.textContent = moveNumOfPly(hl.ply);
+      const text = document.createElement("div");
+      text.className = "hc-text";
+      const mv = document.createElement("span");
+      mv.className = "hc-move";
+      mv.textContent = sanLabel(hl.ply, hl.move) + " · " + sideOfPly(hl.ply).toLowerCase();
+      const note = document.createElement("span");
+      note.className = "hc-note";
+      note.innerHTML = hl.note || "";
+      text.appendChild(mv);
+      text.appendChild(note);
+      card.appendChild(num);
+      card.appendChild(text);
+      card.addEventListener("click", () => { goTo(hl.ply); card.blur(); });
+      hlist.appendChild(card);
+    }
+  }
+
+  // opening report — one bordered paragraph, only when the field is present
+  const orep = GAME.openingReport;
+  if (orep && (orep.note || orep.bookExitPly != null)) {
+    const el = $("opening-report");
+    el.hidden = false;
+    const eb = document.createElement("span");
+    eb.className = "or-eyebrow";
+    eb.textContent = "Opening report";
+    el.appendChild(eb);
+    const note = document.createElement("span");
+    note.innerHTML = orep.note || "";
+    el.appendChild(note);
+    const exitInRange = orep.bookExitPly != null &&
+      orep.bookExitPly >= 0 && orep.bookExitPly < totalPlies;
+    if (exitInRange || orep.explorerUrl) {
+      const ex = document.createElement("span");
+      ex.className = "or-exit";
+      if (exitInRange) {
+        const who = ((orep.bookExitPly % 2 === 0) === (GAME.playerColor === "white"))
+          ? "you" : "your opponent";
+        ex.innerHTML = "left known theory on <b>" +
+          sanLabel(orep.bookExitPly, GAME.movesSan[orep.bookExitPly]) +
+          "</b> (" + who + ") · ";
+        const jump = document.createElement("a");
+        jump.href = "#";
+        jump.textContent = "jump there";
+        jump.addEventListener("click", (e) => { e.preventDefault(); goTo(orep.bookExitPly); });
+        ex.appendChild(jump);
+      }
+      if (orep.explorerUrl) {
+        if (exitInRange) ex.appendChild(document.createTextNode(" · "));
+        const a = document.createElement("a");
+        a.href = orep.explorerUrl;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = "study this opening on Lichess";
+        ex.appendChild(a);
+      }
+      el.appendChild(ex);
+    }
   }
 
   // controls
@@ -1562,6 +2738,11 @@ if (positions) {
   renderFeedbackDefault();
 }
 
+function practiceFirstOn() {
+  const box = $("practice-first");
+  return !!(box && box.checked);
+}
+
 // test/debug hook
 window.__review = {
   goTo: goTo,
@@ -1569,6 +2750,15 @@ window.__review = {
   total: () => totalPlies,
   placement: (k) => positions ? fenPlacement(positions[k].board) : null,
   noteAt: (ply) => annoByPly.get(ply) || null,
+  retryStart: (i) => { const mk = mistakes[i]; if (mk) startRetry(mk); },
+  retryPlay: (uci) => {
+    if (retry && retry.status === "await" && retry.mk.retry.legal.includes(uci)) retryGrade(uci);
+  },
+  retryState: () => retry
+    ? { ply: retry.mk.ply, attempts: retry.attempts, status: retry.status, outcome: retry.outcome }
+    : null,
+  graphPly: () => graphCursor ? current : null,
+  graphClick: (ply) => { if (graphCursor) goTo(ply); },
   error: parseError
 };
 

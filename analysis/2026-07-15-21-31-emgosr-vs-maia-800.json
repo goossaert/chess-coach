@@ -14,7 +14,7 @@
  "engine": {
   "stockfish": "depth 18",
   "maia": "Maia-1 rating-band networks 1100-1900 via zerofish WASM lc0, nodes=1",
-  "generated": "2026-07-17 backfill (docs/0005 part 1)"
+  "generated": "2026-07-18 regenerated to v6 (docs/0010 single-game backfill)"
  },
  "plies": [
   {
@@ -4263,7 +4263,17 @@
      "d3e3",
      "e4e5"
     ]
-   }
+   },
+   "drillLinks": [
+    {
+     "label": "Exposed king — Lichess puzzle theme",
+     "url": "https://lichess.org/training/exposedKing"
+    },
+    {
+     "label": "Advanced pawn — Lichess puzzle theme",
+     "url": "https://lichess.org/training/advancedPawn"
+    }
+   ]
   },
   {
    "ply": 64,
@@ -4323,7 +4333,17 @@
      "e5d6",
      "e5f4"
     ]
-   }
+   },
+   "drillLinks": [
+    {
+     "label": "Exposed king — Lichess puzzle theme",
+     "url": "https://lichess.org/training/exposedKing"
+    },
+    {
+     "label": "Rook endgames — Lichess puzzle theme",
+     "url": "https://lichess.org/training/rookEndgame"
+    }
+   ]
   },
   {
    "ply": 48,
@@ -4423,7 +4443,17 @@
      "h2h3",
      "h2h4"
     ]
-   }
+   },
+   "drillLinks": [
+    {
+     "label": "Winning advantage — Lichess puzzle theme",
+     "url": "https://lichess.org/training/advantage"
+    },
+    {
+     "label": "Hanging pieces — Lichess puzzle theme",
+     "url": "https://lichess.org/training/hangingPiece"
+    }
+   ]
   },
   {
    "ply": 22,
@@ -4515,7 +4545,17 @@
      "h2h3",
      "h2h4"
     ]
-   }
+   },
+   "drillLinks": [
+    {
+     "label": "Mixed puzzles — Lichess daily training",
+     "url": "https://lichess.org/training/mix"
+    },
+    {
+     "label": "When to push the pawns in front of the king — discussion",
+     "url": "https://lichess.org/forum/general-chess-discussion/when-to-push-the-pawns-infront-the-king?page=1"
+    }
+   ]
   }
  ],
  "highlights": [

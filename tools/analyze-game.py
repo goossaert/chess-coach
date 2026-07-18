@@ -480,7 +480,9 @@ def parse_pgn(path):
     moves = list(game.mainline_moves())
     if not moves:
         sys.exit(f"no moves in {path}")
-    return headers, moves
+    # game.board() honours a FEN/SetUp header (From-Position games); otherwise it
+    # is the standard start. A copy of it is the true starting position.
+    return headers, moves, game.board()
 
 
 def main():
@@ -501,7 +503,13 @@ def main():
     args = ap.parse_args()
 
     user_color = chess.WHITE if args.color == "white" else chess.BLACK
-    headers, moves = parse_pgn(args.pgn)
+    headers, moves, start_board = parse_pgn(args.pgn)
+    # Half-move offset of the movetext's first ply within a full game. 0 for a
+    # standard start; for a From-Position game it places the ply numbering (phase
+    # cutoff, displayed move numbers) at the true board move number.
+    start_ply_offset = 2 * (start_board.fullmove_number - 1) + (0 if start_board.turn == chess.WHITE else 1)
+    start_fen = start_board.fen()
+    from_position = start_board != chess.Board()
     stamp = Path(args.pgn).stem
     sidecar_path = Path(args.sidecar) if args.sidecar else ROOT / "analysis" / f"{stamp}.json"
     if sidecar_path.exists() and not args.force:
@@ -515,12 +523,12 @@ def main():
     engine.configure({"Threads": 1, "Hash": 512})
     ev = Evaluator(engine, user_color)
 
-    board = chess.Board()
+    board = start_board.copy()
     plies = []
     endgame = False
     pos_evals = []               # eval dict at every position 0..N
     for i, move in enumerate(moves):
-        phase, endgame = phase_for(board, i, endgame)
+        phase, endgame = phase_for(board, i + start_ply_offset, endgame)
         entry = {
             "ply": i,
             "san": board.san(move),
@@ -701,7 +709,9 @@ def main():
     acc = accuracy_block(plies, len(plies))
 
     # ---- Opening report + highlight inputs (step 3b) ---------------------
-    book_exit = book_exit_ply(moves)
+    # A From-Position game has no opening phase to report on (and the book walk
+    # would start from the wrong board), so skip the book-exit lookup for it.
+    book_exit = None if from_position else book_exit_ply(moves)
     recurrence = opening_recurrence(plies, stamp)
     hl_cands = highlight_candidates(user_plies, maia, band if maia else None)
 
@@ -741,6 +751,7 @@ def main():
             "event": headers.get("Event", ""), "opening": opening,
             "userColor": args.color,
             "pgnFile": f"pgn/{stamp}.txt", "pageFile": f"games/{stamp}.html",
+            **({"startFen": start_fen, "startPly": start_ply_offset} if from_position else {}),
         },
         "engine": engine_block,
         "plies": [sidecar_ply(p) for p in plies],
@@ -756,6 +767,7 @@ def main():
 
     # ---- One JSON document to stdout -------------------------------------
     display = {
+        **({"startFen": start_fen, "startPly": start_ply_offset} if from_position else {}),
         "accuracy": f"{round(acc['game'])}%" if acc["game"] is not None else None,
         "acpl": acc["acpl"],
         "moveQuality": acc["quality"],

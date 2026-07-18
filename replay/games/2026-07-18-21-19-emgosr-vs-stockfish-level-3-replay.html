@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Game Review</title>
+<title>Replay: from lost to won — win it faster · emgosr vs Stockfish Level 3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -886,146 +886,1010 @@
 // This placeholder shows the expected shape; see CLAUDE.md for field docs.
 // ============================================================================
 const GAME = {
-  // Header
-  title: "A four-move lesson<br><em>in fatal routine.</em>",
-  subtitle: "Scholar's mate, delivered by the book. One natural-looking developing move walked straight into checkmate — placeholder data demonstrating the template.",
-  version: "version 6",
-  white: "White",
-  black: "Black",
-  playerColor: "black",           // "white" | "black" — which side the user played
-  result: "1-0",                   // "1-0" | "0-1" | "1/2-1/2"
-  date: "2026-01-01",
-  event: "Casual game",
-  opening: "Scholar's Mate",
-
-  // Full game in SAN, one entry per half-move (ply), straight from the PGN.
-  movesSan: ["e4","e5","Qh5","Nc6","Bc4","Nf6","Qxf7#"],
-
-  // 2–3 sentence narrative shown in the feedback panel by default.
-  summary: "White went for the oldest trap in the book: queen and bishop both aiming at f7. Black developed on autopilot and missed that 3…Nf6 does nothing about the one real threat on the board. The game ended before it began — a reminder that every move must answer the opponent's idea first.",
-
-  // Shown in the footer, describing how the analysis was produced.
-  // All evaluations are from the PLAYER's perspective (playerColor):
-  // positive = good for the player, "#−1" = player gets mated in 1.
-  analysisNote: "Stockfish 16 · depth 20 · evaluations from Black's perspective · human model: Maia rating-band networks conditioned at ≈1100 · pts = expected score lost against human opposition at your level · template.html demo data",
-
-  // Maia strength estimate (optional — omit all of these on a Stockfish-only page).
-  estimatedElo: "≈1100",             // best-fit Maia rating band for this game
-  estimatedEloNote: "demo data — a 7-ply game is far too short for a real fit",
-  phaseElo: { opening: "≈1100" },    // per-phase fits; any of the three keys may be omitted
-  weakestPhase: "opening",           // highlights that chip in the header
-
-  // Accuracy stats (optional; Stockfish-only, so they belong on every new page).
-  // Lichess-style: win% from centipawns, per-move accuracy from the win% drop.
-  accuracy: "44%",                   // game accuracy, 0–100%
-  acpl: 333,                         // average centipawn loss (number, not string)
-  moveQuality: { inaccuracies: 0, mistakes: 0, blunders: 1 },  // ?! / ? / ?? tally
-  phaseAccuracy: { opening: "44%" }, // merged into the phase chips (or shown alone)
-
-  // Win% after each half-move, user's perspective — one number per entry of
-  // movesSan (optional; the whole series or nothing). Powers the clickable
-  // eval graph under the board. Real Stockfish depth-20 numbers.
-  evals: [47.0, 47.8, 52.8, 51.8, 51.7, 2.5, 0.0],
-
-  // Seconds spent on each half-move (optional; only when the PGN carried
-  // %clk clock comments — one number per movesSan entry, the whole series or
-  // nothing). Renders the thin time bar under the eval graph; user moves
-  // under 10 seconds draw in rust. Demo numbers.
-  timeSpent: [4, 6, 2, 9, 3, 21, 1],
-
-  // Opening report (optional): one bordered paragraph between the summary
-  // and the move list. bookExitPly = 0-based ply of the first move with no
-  // entry in tools/book/gm2001.bin; note = one sentence on the first
-  // improvable opening decision (and cross-game repetition when a structure
-  // keeps recurring); explorerUrl only from verified URL families.
-  openingReport: {
-    bookExitPly: 2,
-    note: "2.Qh5 already leaves every book line — good news in a sense: no theory was needed to punish it, only the question \"what does the queen threaten?\"",
-    explorerUrl: "https://lichess.org/analysis"
+  "title": "From <em>lost</em> to won &mdash;<br>now win it faster",
+  "subtitle": "Replaying the game you dropped to Maia&nbsp;800: this time the win was never in doubt &mdash; but the mate came three times slower than it had to.",
+  "white": "emgosr",
+  "black": "Stockfish Level 3",
+  "playerColor": "white",
+  "result": "1-0",
+  "date": "2026-07-18",
+  "event": "From-Position replay — continued from move 17 of emgosr vs Maia 800",
+  "opening": "",
+  "startFen": "3k1rr1/Qppqn1b1/p2p2p1/3Pp2p/2P1P3/2NB4/PP3PPP/R1B2RK1 w - - 2 17",
+  "movesSan": [
+    "Qxb7",
+    "Qc8",
+    "Qa7",
+    "Kd7",
+    "Qe3",
+    "Qb7",
+    "Qh3+",
+    "Kd8",
+    "Bg5",
+    "Bf6",
+    "Qg3",
+    "Qb6",
+    "Be3",
+    "Qb4",
+    "Rab1",
+    "Rg7",
+    "a3",
+    "Qb7",
+    "c5",
+    "Rff7",
+    "cxd6",
+    "cxd6",
+    "b4",
+    "Qc7",
+    "Bxa6",
+    "h4",
+    "Qf3",
+    "h3",
+    "Qxh3",
+    "Ke8",
+    "Rbc1",
+    "Rh7",
+    "Qf3",
+    "Rh5",
+    "Bb5+",
+    "Kd8",
+    "Na4",
+    "Bg7",
+    "Bb6",
+    "Nf5",
+    "Qc3",
+    "Nd4",
+    "Qxc7+",
+    "Rxc7",
+    "Bxc7+",
+    "Kc8",
+    "Ba6+",
+    "Kd7",
+    "Bb8",
+    "Ke7",
+    "Rc7+",
+    "Kf8",
+    "Bc8",
+    "Ne2+",
+    "Kh1",
+    "Bf6",
+    "Re1",
+    "Nd4",
+    "Rd7",
+    "Be7",
+    "Nb6",
+    "Rh6",
+    "Bxd6",
+    "Bxd6",
+    "Rxd6",
+    "Kf7",
+    "Nc4",
+    "Kg7",
+    "Nxe5",
+    "Kf8",
+    "Nxg6+",
+    "Ke8",
+    "e5",
+    "Rh5",
+    "e6",
+    "Rh7",
+    "Bd7+",
+    "Kd8",
+    "e7+",
+    "Kc7",
+    "e8=Q",
+    "Rxh2+",
+    "Kxh2",
+    "Nb3",
+    "Rc6+",
+    "Kb7",
+    "Qc8+",
+    "Ka7",
+    "Qa6+",
+    "Kb8",
+    "Rc8#"
+  ],
+  "summary": "This is the very position you <em>lost</em> as White against Maia&nbsp;800 &mdash; and this time you converted it cleanly: <strong>98% accuracy, zero blunders, ACPL&nbsp;24</strong> over 46 moves. Nothing here threw the win away. But your instinct that it dragged is exactly right, and the analysis pins down why: you reached a <em>forced mate</em> at least twice &mdash; mate in five on move&nbsp;36, mate in six on move&nbsp;40 &mdash; and each time you chose a safe, tidy move instead of the forcing one, so a five-move finish became a 26-move grind. The lesson of this replay isn&rsquo;t about safety, which you already have; it&rsquo;s about <em>forcing-move discipline</em>: when you&rsquo;re up a queen, calculate the checks and captures first, and only settle for a quiet improving move when nothing forcing works. Click either moment below to see the mate you had in hand.",
+  "analysisNote": "Replay of a From-Position game (Lichess), continued from move&nbsp;17 of your emgosr&ndash;Maia&nbsp;800 game. Engine: Stockfish at depth&nbsp;20, with the key mate distances re-checked to depth&nbsp;26; all evaluations from White&rsquo;s (your) perspective. Human model: Maia rating-band networks (lc0 via zerofish WASM), conditioned at ≈1800; Maia-3 unreachable from this sandbox, Maia-1 bands stand in. Accuracy and win% follow the Lichess formulas (mean of the volatility-weighted and harmonic means). This page lives in <code>replay/</code> and is deliberately excluded from the drill deck and progress dashboard so the replay doesn&rsquo;t double-count against your real games.",
+  "estimatedElo": "≈1800",
+  "estimatedEloNote": "band fit ≈1800; ACPL 24 is typical of ~1700–2000 rapid — but this was a won position throughout against a level-3 engine, so read it as a ceiling for tidy technique, not your playing strength.",
+  "phaseElo": {
+    "middlegame": "≈1300 · 22 moves",
+    "endgame": "≈1700 · 23 moves"
   },
-
-  // "What you did well" highlights (optional, 1–3): engine-approved moments
-  // in non-forced positions, shown as calmer gold cards under the mistake
-  // list and clickable exactly like mistake cards. arrow = the played move's
-  // from→to (data for cross-game consumers; the board draws its arrows from
-  // moveNotes as usual).
-  highlights: [
-    { ply: 3, move: "Nc6",
-      note: "Developing toward the center while defending e5 — the engine's own choice here, and the calm way to meet an early queen sortie.",
-      arrow: ["b8","c6"] }
+  "weakestPhase": "middlegame",
+  "accuracy": "98%",
+  "acpl": 24,
+  "moveQuality": {
+    "inaccuracies": 0,
+    "mistakes": 0,
+    "blunders": 0
+  },
+  "phaseAccuracy": {
+    "middlegame": "96%",
+    "endgame": "100%"
+  },
+  "evals": [
+    94.3,
+    94.5,
+    94.3,
+    95.5,
+    93.1,
+    94.8,
+    94.4,
+    94.3,
+    93.0,
+    92.5,
+    90.3,
+    92.4,
+    92.0,
+    92.4,
+    90.7,
+    94.1,
+    94.1,
+    93.8,
+    92.8,
+    95.3,
+    95.2,
+    95.5,
+    93.7,
+    95.5,
+    95.6,
+    96.9,
+    94.1,
+    97.1,
+    97.0,
+    97.5,
+    97.2,
+    97.5,
+    94.1,
+    96.7,
+    95.3,
+    97.5,
+    97.5,
+    97.5,
+    97.3,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5,
+    97.5
   ],
-
-  // Per-move annotations for EVERY move the user played (optional). Each entry
-  // carries the engine's pick for that ply — the played arrow is derived from
-  // the replay itself — plus the human-findable move. On a page with Maia data
-  // humanBest/humanBestArrow are ALWAYS present (the most popular move at the
-  // user's level that keeps the eval; often the engine's pick itself — never
-  // omit them just because they coincide, identical arrows render side by
-  // side). Omit the humanBest fields only on Stockfish-only pages.
-  // Plies covered by a mistake entry may be omitted: mistakes take precedence.
-  moveNotes: [
-    { ply: 1, best: "e5", bestArrow: ["e7","e5"], humanBest: "e5", humanBestArrow: ["e7","e5"] },
-    { ply: 3, best: "Nc6", bestArrow: ["b8","c6"], humanBest: "Nc6", humanBestArrow: ["b8","c6"] }
-    // ply 5 is covered by the mistake entry below
-  ],
-
-  // The key mistakes, most important first — with Maia, the display order is
-  // swing × recurrence likelihood, not raw swing (a smaller mistake the user's
-  // level repeats outranks a bigger one-off). Moves allowing mate always lead.
-  // ply: 0-based index into movesSan of the move that was PLAYED.
-  //      (ply 0 = White's 1st move, ply 1 = Black's 1st move, ply 5 = Black's 3rd move.)
-  mistakes: [
+  "moveNotes": [
     {
-      ply: 5,
-      played: "Nf6",
-      best: "g6",
-      evalBefore: "+0.3",
-      evalAfter: "#−1",
-      evalBest: "+0.3",
-      swing: "mate",
-      title: "Developed a piece while the house was on fire",
-      explanation: "After 3.Bc4 the queen on h5 and bishop on c4 both hit f7, defended only by the king. 3…Nf6 develops a piece and even attacks the queen — but it does nothing for f7, and White simply takes: 4.Qxf7#. 3…g6 hits the queen while closing the h5–f7 diagonal, and Black is fine — it is also the move a third of players at this level find.",
-      playedArrow: ["g8","f6"],
-      bestArrow: ["g7","g6"],
-      winBefore: "53%",               // win probability before/after the played move
-      winAfter: "0%",                 //   (Stockfish eval through the Lichess win% model)
-      tags: ["king-safety", "opening-principle"],   // 1–3 from the CLAUDE.md taxonomy
-      drillLinks: [                   // 1–3 curated links from tools/drill-links.json
-        { label: "Exposed king — Lichess puzzle theme", url: "https://lichess.org/training/exposedKing" },
-        { label: "Opening principles: king-safety-driven development — Lichess blog", url: "https://lichess.org/@/Kingscrusher-YouTube/blog/the-complete-guide-to-chess-opening-principles-king-safety-driven-development/5zEb9Utr" }
+      "ply": 0,
+      "best": "Qxb7",
+      "bestArrow": [
+        "a7",
+        "b7"
       ],
-      // Maia fields (all optional; real Maia-1100 numbers for this position):
-      playedPopularity: "15%",        // share of the user's level that plays the played move
-      bestFindability: "36%",         // share of the user's level that finds the best move
-      // humanBest / humanBestArrow / humanBestFindability: always present on a
-      // Maia page — here the best move IS the human move, so they coincide and
-      // the cream arrow renders beside the gold one; the find-row text only
-      // brings humanBest up when it differs from the engine's pick.
-      humanBest: "g6",
-      humanBestArrow: ["g7","g6"],
-      humanBestFindability: "36%",
-      expectedPointsLost: "−0.30",    // WDL-based cost in expected score at the user's level;
-                                      //   OMIT when it rounds to ±0.00 (the win% row tells the story)
-      recurrenceRisk: "medium",       // "high" | "medium" | "low" → card tag & badge tone
-      // Retry mode (optional, precomputed by the pipeline — the page stays
-      // engine-free): solutions = engine best + humanBest UCIs (deduped);
-      // acceptable = moves within 0.5 pawns of best from a multipv-5 probe,
-      // minus the solutions and the move actually played; legal = every
-      // legal move in the position. Real Stockfish depth-18 numbers.
-      retry: {
-        fen: "r1bqkbnr/pppp1ppp/2n5/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 3 3",
-        solutions: ["g7g6"],
-        acceptable: ["d8e7"],
-        legal: ["a7a5","a7a6","a8b8","b7b5","b7b6","c6a5","c6b4","c6b8","c6d4","c6e7","d7d5","d7d6","d8e7","d8f6","d8g5","d8h4","e8e7","f8a3","f8b4","f8c5","f8d6","f8e7","g7g5","g7g6","g8e7","g8f6","g8h6","h7h6"]
+      "humanBest": "Qxb7",
+      "humanBestArrow": [
+        "a7",
+        "b7"
+      ]
+    },
+    {
+      "ply": 2,
+      "best": "Qa7",
+      "bestArrow": [
+        "b7",
+        "a7"
+      ],
+      "humanBest": "Qb4",
+      "humanBestArrow": [
+        "b7",
+        "b4"
+      ]
+    },
+    {
+      "ply": 4,
+      "best": "c5",
+      "bestArrow": [
+        "c4",
+        "c5"
+      ],
+      "humanBest": "c5",
+      "humanBestArrow": [
+        "c4",
+        "c5"
+      ]
+    },
+    {
+      "ply": 6,
+      "best": "c5",
+      "bestArrow": [
+        "c4",
+        "c5"
+      ],
+      "humanBest": "c5",
+      "humanBestArrow": [
+        "c4",
+        "c5"
+      ]
+    },
+    {
+      "ply": 8,
+      "best": "c5",
+      "bestArrow": [
+        "c4",
+        "c5"
+      ],
+      "humanBest": "Bg5",
+      "humanBestArrow": [
+        "c1",
+        "g5"
+      ]
+    },
+    {
+      "ply": 10,
+      "best": "Bh6",
+      "bestArrow": [
+        "g5",
+        "h6"
+      ],
+      "humanBest": "Bxf6",
+      "humanBestArrow": [
+        "g5",
+        "f6"
+      ]
+    },
+    {
+      "ply": 12,
+      "best": "Bh6",
+      "bestArrow": [
+        "g5",
+        "h6"
+      ],
+      "humanBest": "Bh6",
+      "humanBestArrow": [
+        "g5",
+        "h6"
+      ]
+    },
+    {
+      "ply": 14,
+      "best": "Be2",
+      "bestArrow": [
+        "d3",
+        "e2"
+      ],
+      "humanBest": "a3",
+      "humanBestArrow": [
+        "a2",
+        "a3"
+      ]
+    },
+    {
+      "ply": 16,
+      "best": "a3",
+      "bestArrow": [
+        "a2",
+        "a3"
+      ],
+      "humanBest": "a3",
+      "humanBestArrow": [
+        "a2",
+        "a3"
+      ]
+    },
+    {
+      "ply": 18,
+      "best": "Bh6",
+      "bestArrow": [
+        "e3",
+        "h6"
+      ],
+      "humanBest": "b4",
+      "humanBestArrow": [
+        "b2",
+        "b4"
+      ]
+    },
+    {
+      "ply": 20,
+      "best": "Qh3",
+      "bestArrow": [
+        "g3",
+        "h3"
+      ],
+      "humanBest": "cxd6",
+      "humanBestArrow": [
+        "c5",
+        "d6"
+      ]
+    },
+    {
+      "ply": 22,
+      "best": "Qh3",
+      "bestArrow": [
+        "g3",
+        "h3"
+      ],
+      "humanBest": "Qh3",
+      "humanBestArrow": [
+        "g3",
+        "h3"
+      ]
+    },
+    {
+      "ply": 24,
+      "best": "Bxa6",
+      "bestArrow": [
+        "d3",
+        "a6"
+      ],
+      "humanBest": "Rfc1",
+      "humanBestArrow": [
+        "f1",
+        "c1"
+      ]
+    },
+    {
+      "ply": 26,
+      "best": "Qh3",
+      "bestArrow": [
+        "g3",
+        "h3"
+      ],
+      "humanBest": "Qh3",
+      "humanBestArrow": [
+        "g3",
+        "h3"
+      ]
+    },
+    {
+      "ply": 28,
+      "best": "Qxh3",
+      "bestArrow": [
+        "f3",
+        "h3"
+      ],
+      "humanBest": "Qxh3",
+      "humanBestArrow": [
+        "f3",
+        "h3"
+      ]
+    },
+    {
+      "ply": 30,
+      "best": "Nb5",
+      "bestArrow": [
+        "c3",
+        "b5"
+      ],
+      "humanBest": "Nb5",
+      "humanBestArrow": [
+        "c3",
+        "b5"
+      ]
+    },
+    {
+      "ply": 32,
+      "best": "Qe6",
+      "bestArrow": [
+        "h3",
+        "e6"
+      ],
+      "humanBest": "Qe6",
+      "humanBestArrow": [
+        "h3",
+        "e6"
+      ]
+    },
+    {
+      "ply": 34,
+      "best": "Nb5",
+      "bestArrow": [
+        "c3",
+        "b5"
+      ],
+      "humanBest": "Nb5",
+      "humanBestArrow": [
+        "c3",
+        "b5"
+      ]
+    },
+    {
+      "ply": 36,
+      "best": "Na4",
+      "bestArrow": [
+        "c3",
+        "a4"
+      ],
+      "humanBest": "Na4",
+      "humanBestArrow": [
+        "c3",
+        "a4"
+      ]
+    },
+    {
+      "ply": 40,
+      "best": "Bxc7+",
+      "bestArrow": [
+        "b6",
+        "c7"
+      ],
+      "humanBest": "Bxc7+",
+      "humanBestArrow": [
+        "b6",
+        "c7"
+      ]
+    },
+    {
+      "ply": 42,
+      "best": "Bxc7+",
+      "bestArrow": [
+        "b6",
+        "c7"
+      ],
+      "humanBest": "Qxc7+",
+      "humanBestArrow": [
+        "c3",
+        "c7"
+      ]
+    },
+    {
+      "ply": 44,
+      "best": "Rxc7",
+      "bestArrow": [
+        "c1",
+        "c7"
+      ],
+      "humanBest": "Rxc7",
+      "humanBestArrow": [
+        "c1",
+        "c7"
+      ]
+    },
+    {
+      "ply": 48,
+      "best": "Nb6+",
+      "bestArrow": [
+        "a4",
+        "b6"
+      ],
+      "humanBest": "Nb6+",
+      "humanBestArrow": [
+        "a4",
+        "b6"
+      ]
+    },
+    {
+      "ply": 50,
+      "best": "f4",
+      "bestArrow": [
+        "f2",
+        "f4"
+      ],
+      "humanBest": "Rc7+",
+      "humanBestArrow": [
+        "c1",
+        "c7"
+      ]
+    },
+    {
+      "ply": 52,
+      "best": "b5",
+      "bestArrow": [
+        "b4",
+        "b5"
+      ],
+      "humanBest": "Rc8+",
+      "humanBestArrow": [
+        "c7",
+        "c8"
+      ]
+    },
+    {
+      "ply": 54,
+      "best": "Kh1",
+      "bestArrow": [
+        "g1",
+        "h1"
+      ],
+      "humanBest": "Kh1",
+      "humanBestArrow": [
+        "g1",
+        "h1"
+      ]
+    },
+    {
+      "ply": 56,
+      "best": "Bg4",
+      "bestArrow": [
+        "c8",
+        "g4"
+      ],
+      "humanBest": "Be6",
+      "humanBestArrow": [
+        "c8",
+        "e6"
+      ]
+    },
+    {
+      "ply": 58,
+      "best": "Rb7",
+      "bestArrow": [
+        "c7",
+        "b7"
+      ],
+      "humanBest": "Bg4",
+      "humanBestArrow": [
+        "c8",
+        "g4"
+      ]
+    },
+    {
+      "ply": 60,
+      "best": "Bxd6",
+      "bestArrow": [
+        "b8",
+        "d6"
+      ],
+      "humanBest": "Bxd6",
+      "humanBestArrow": [
+        "b8",
+        "d6"
+      ]
+    },
+    {
+      "ply": 62,
+      "best": "Bxd6",
+      "bestArrow": [
+        "b8",
+        "d6"
+      ],
+      "humanBest": "Bxd6",
+      "humanBestArrow": [
+        "b8",
+        "d6"
+      ]
+    },
+    {
+      "ply": 64,
+      "best": "Rxd6",
+      "bestArrow": [
+        "d7",
+        "d6"
+      ],
+      "humanBest": "Rxd6",
+      "humanBestArrow": [
+        "d7",
+        "d6"
+      ]
+    },
+    {
+      "ply": 66,
+      "best": "Rd7+",
+      "bestArrow": [
+        "d6",
+        "d7"
+      ],
+      "humanBest": "Be6+",
+      "humanBestArrow": [
+        "c8",
+        "e6"
+      ]
+    },
+    {
+      "ply": 68,
+      "best": "Nxe5",
+      "bestArrow": [
+        "c4",
+        "e5"
+      ],
+      "humanBest": "Nxe5",
+      "humanBestArrow": [
+        "c4",
+        "e5"
+      ]
+    },
+    {
+      "ply": 70,
+      "best": "Rc1",
+      "bestArrow": [
+        "e1",
+        "c1"
+      ],
+      "humanBest": "Nxg6+",
+      "humanBestArrow": [
+        "e5",
+        "g6"
+      ]
+    },
+    {
+      "ply": 72,
+      "best": "Rc1",
+      "bestArrow": [
+        "e1",
+        "c1"
+      ],
+      "humanBest": "e5",
+      "humanBestArrow": [
+        "e4",
+        "e5"
+      ]
+    },
+    {
+      "ply": 74,
+      "best": "Rf6",
+      "bestArrow": [
+        "d6",
+        "f6"
+      ],
+      "humanBest": "e6",
+      "humanBestArrow": [
+        "e5",
+        "e6"
+      ]
+    },
+    {
+      "ply": 76,
+      "best": "e7",
+      "bestArrow": [
+        "e6",
+        "e7"
+      ],
+      "humanBest": "Bd7+",
+      "humanBestArrow": [
+        "c8",
+        "d7"
+      ]
+    },
+    {
+      "ply": 78,
+      "best": "Rc1",
+      "bestArrow": [
+        "e1",
+        "c1"
+      ],
+      "humanBest": "e7+",
+      "humanBestArrow": [
+        "e6",
+        "e7"
+      ]
+    },
+    {
+      "ply": 80,
+      "best": "Rc1+",
+      "bestArrow": [
+        "e1",
+        "c1"
+      ],
+      "humanBest": "e8=Q",
+      "humanBestArrow": [
+        "e7",
+        "e8"
+      ]
+    },
+    {
+      "ply": 82,
+      "best": "Kxh2",
+      "bestArrow": [
+        "h1",
+        "h2"
+      ],
+      "humanBest": "Kxh2",
+      "humanBestArrow": [
+        "h1",
+        "h2"
+      ]
+    },
+    {
+      "ply": 84,
+      "best": "Qc8+",
+      "bestArrow": [
+        "e8",
+        "c8"
+      ],
+      "humanBest": "Rc6+",
+      "humanBestArrow": [
+        "d6",
+        "c6"
+      ]
+    },
+    {
+      "ply": 86,
+      "best": "Qc8+",
+      "bestArrow": [
+        "e8",
+        "c8"
+      ],
+      "humanBest": "Qc8+",
+      "humanBestArrow": [
+        "e8",
+        "c8"
+      ]
+    },
+    {
+      "ply": 88,
+      "best": "Ra6#",
+      "bestArrow": [
+        "c6",
+        "a6"
+      ],
+      "humanBest": "Ra6#",
+      "humanBestArrow": [
+        "c6",
+        "a6"
+      ]
+    },
+    {
+      "ply": 90,
+      "best": "Re8#",
+      "bestArrow": [
+        "e1",
+        "e8"
+      ],
+      "humanBest": "Rc8#",
+      "humanBestArrow": [
+        "c6",
+        "c8"
+      ]
+    }
+  ],
+  "mistakes": [
+    {
+      "ply": 38,
+      "played": "Bb6",
+      "best": "Qxf7",
+      "evalBefore": "#6",
+      "evalAfter": "9.70",
+      "evalBest": "#5",
+      "swing": "−0.30",
+      "playedArrow": [
+        "e3",
+        "b6"
+      ],
+      "bestArrow": [
+        "f3",
+        "f7"
+      ],
+      "winBefore": "98%",
+      "winAfter": "97%",
+      "playedPopularity": "15%",
+      "bestFindability": "17%",
+      "humanBest": "Rxc7",
+      "humanBestArrow": [
+        "c1",
+        "c7"
+      ],
+      "humanBestFindability": "30%",
+      "recurrenceRisk": "medium",
+      "expectedPointsLost": "−0.03",
+      "retry": {
+        "fen": "3k4/2q1nrb1/3p2p1/1B1Pp2r/NP2P3/P3BQ2/5PPP/2R2RK1 w - - 9 36",
+        "solutions": [
+          "f3f7",
+          "c1c7"
+        ],
+        "acceptable": [
+          "a4c5",
+          "f3g3",
+          "f3g4"
+        ],
+        "legal": [
+          "a4b2",
+          "a4b6",
+          "a4c3",
+          "a4c5",
+          "b5a6",
+          "b5c4",
+          "b5c6",
+          "b5d3",
+          "b5d7",
+          "b5e2",
+          "b5e8",
+          "c1a1",
+          "c1b1",
+          "c1c2",
+          "c1c3",
+          "c1c4",
+          "c1c5",
+          "c1c6",
+          "c1c7",
+          "c1d1",
+          "c1e1",
+          "e3a7",
+          "e3b6",
+          "e3c5",
+          "e3d2",
+          "e3d4",
+          "e3f4",
+          "e3g5",
+          "e3h6",
+          "f1d1",
+          "f1e1",
+          "f3d1",
+          "f3e2",
+          "f3f4",
+          "f3f5",
+          "f3f6",
+          "f3f7",
+          "f3g3",
+          "f3g4",
+          "f3h3",
+          "f3h5",
+          "g1h1",
+          "g2g3",
+          "g2g4",
+          "h2h3",
+          "h2h4"
+        ]
       },
-      takeaways: [
+      "title": "You had mate in five &mdash; and reached for a quiet move instead",
+      "explanation": "You were a full queen up with Black&rsquo;s king boxed on d8, and there was a <strong>forced mate</strong> here. The cleanest is the engine&rsquo;s <strong>36.Qxf7</strong>, mate in five (36&hellip;Qc5 37.Qe8+ Kc7 38.Ba6 and the net closes). But you didn&rsquo;t need to see the whole line: <strong>36.Rxc7</strong> &mdash; a move 30% of players at your level find &mdash; also forces mate by ripping away the last defender of the back rank. Instead <strong>36.Bb6</strong> just improved a bishop and gave the king room to breathe. Still winning (+9.7), but the forced finish was gone and the game dragged on another 26 moves.",
+      "takeaways": [
         {
-          lesson: "Before every move, ask: what is my opponent threatening right now?",
-          detail: "Make it a physical habit: after their move, scan every check and capture they have next turn before you touch a piece. Here one scan of Qxf7 would have saved the game."
+          "lesson": "When you&rsquo;re up a queen, hunt for the forcing move before the tidy one.",
+          "detail": "Before every move in a won position, ask one question first: is there a check or capture that starts a forced sequence? Calculate that line to the end before you even consider a quiet improving move."
         },
         {
-          lesson: "f7 and f2 are the weakest squares before castling — guard the diagonals that hit them.",
-          detail: "When an enemy queen or bishop points at f7/f2, treat it as an alarm. Meet the threat first (…g6, …Qe7, …Nh6), develop second."
+          "lesson": "Bring your heaviest pieces to the enemy king &mdash; don&rsquo;t reposition minor pieces.",
+          "detail": "Queens and rooks deliver mate; a bishop shuffle almost never does. Point your rooks at the file or rank the enemy king is sitting on and keep them there."
+        }
+      ],
+      "tags": [
+        "slow-mate",
+        "conversion-drift"
+      ],
+      "drillLinks": [
+        {
+          "label": "Mate in 3 — Lichess puzzle theme",
+          "url": "https://lichess.org/training/mateIn3"
+        },
+        {
+          "label": "Crushing advantage — Lichess puzzle theme",
+          "url": "https://lichess.org/training/crushing"
+        }
+      ]
+    },
+    {
+      "ply": 46,
+      "played": "Ba6+",
+      "best": "Bxd6+",
+      "evalBefore": "#6",
+      "evalAfter": "13.76",
+      "evalBest": "#5",
+      "swing": "0.00",
+      "playedArrow": [
+        "b5",
+        "a6"
+      ],
+      "bestArrow": [
+        "c7",
+        "d6"
+      ],
+      "winBefore": "98%",
+      "winAfter": "98%",
+      "playedPopularity": "14%",
+      "bestFindability": "56%",
+      "humanBest": "Bxd6+",
+      "humanBestArrow": [
+        "c7",
+        "d6"
+      ],
+      "humanBestFindability": "56%",
+      "recurrenceRisk": "medium",
+      "retry": {
+        "fen": "2k5/2B3b1/3p2p1/1B1Pp2r/NP1nP3/P7/5PPP/2R2RK1 w - - 1 40",
+        "solutions": [
+          "c7d6"
+        ],
+        "acceptable": [
+          "b5d3",
+          "c7a5",
+          "c7b6"
+        ],
+        "legal": [
+          "a4b2",
+          "a4b6",
+          "a4c3",
+          "a4c5",
+          "b5a6",
+          "b5c4",
+          "b5c6",
+          "b5d3",
+          "b5d7",
+          "b5e2",
+          "b5e8",
+          "c1a1",
+          "c1b1",
+          "c1c2",
+          "c1c3",
+          "c1c4",
+          "c1c5",
+          "c1c6",
+          "c1d1",
+          "c1e1",
+          "c7a5",
+          "c7b6",
+          "c7b8",
+          "c7d6",
+          "c7d8",
+          "f1d1",
+          "f1e1",
+          "f2f3",
+          "f2f4",
+          "g1h1",
+          "g2g3",
+          "g2g4",
+          "h2h3",
+          "h2h4"
+        ]
+      },
+      "title": "A check that chased the king in a circle, not the check that mated",
+      "explanation": "With <strong>40.Ba6+</strong> you gave a check &mdash; but after 40&hellip;Kd7 the king simply stepped back and you had gained nothing; the evaluation stayed around +16 and the position stalled. The engine&rsquo;s <strong>40.Bxd6+</strong> &mdash; a move more than half your peers find (56%) &mdash; is a check that <em>also</em> removes the d6 pawn and tears open the king, mating in five (40&hellip;Kd8 41.Nb6 and it&rsquo;s over). Same bishop, one square different, and the difference is the whole game: one check wins a pawn and mates, the other just says &ldquo;check.&rdquo;",
+      "takeaways": [
+        {
+          "lesson": "Only give a check if you&rsquo;re better after the king moves.",
+          "detail": "Before any check, picture the king&rsquo;s reply and ask &lsquo;am I actually improving?&rsquo; A check the king answers for free is just a lost tempo that lets it escape."
+        },
+        {
+          "lesson": "Prefer checks that also capture or open a line toward the king.",
+          "detail": "Bxd6+ removed a defender and a pawn shield in a single move. Rank your checks by what they destroy, not by the fact that they&rsquo;re legal."
+        }
+      ],
+      "tags": [
+        "slow-mate",
+        "conversion-drift"
+      ],
+      "drillLinks": [
+        {
+          "label": "Mate in 2 — Lichess puzzle theme",
+          "url": "https://lichess.org/training/mateIn2"
+        },
+        {
+          "label": "Winning advantage — Lichess puzzle theme",
+          "url": "https://lichess.org/training/advantage"
         }
       ]
     }

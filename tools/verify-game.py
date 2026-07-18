@@ -81,7 +81,7 @@ def parse_pgn_moves(path):
         game = chess.pgn.read_game(f)
     if game is None:
         return None
-    board = chess.Board()
+    board = game.board()          # honours a From-Position FEN/SetUp header
     sans = []
     for mv in game.mainline_moves():
         sans.append(board.san(mv))
@@ -125,8 +125,14 @@ def main():
     is_maia = out["isMaia"]
     user_white = G.get("playerColor") == "white"
 
+    # A From-Position page (GAME.startFen) begins mid-game; every python-chess
+    # replay and the ply→side parity must start from that board, not the standard one.
+    start_fen = G.get("startFen")
+    start_board = chess.Board(start_fen) if start_fen else chess.Board()
+    start_white = start_board.turn == chess.WHITE
+
     # ---- replay with python-chess: positions before every ply ------------
-    board = chess.Board()
+    board = start_board.copy(stack=False)
     pos_before = []
     replay_err = None
     for i, san in enumerate(moves_san):
@@ -145,7 +151,8 @@ def main():
               f"{out['placement']} vs {board.board_fen()}")
 
     def user_ply(p):
-        return (p % 2 == 0) == user_white
+        white_to_move = (p % 2 == 0) == start_white
+        return white_to_move == user_white
 
     # ---- mistakes: ply alignment, legality, arrows -----------------------
     ann = {}
@@ -304,7 +311,10 @@ def main():
         report()
 
     # ---- PGN parity -------------------------------------------------------
-    pgn_path = ROOT / "pgn" / f"{stamp}.txt"
+    # Pages live in <base>/games/; their pgn/analysis sit beside them under the
+    # same <base> (the repo root for games/, or e.g. replay/ for a replay page).
+    base_dir = page_path.resolve().parent.parent
+    pgn_path = base_dir / "pgn" / f"{stamp}.txt"
     check("pgn source exists", pgn_path.exists(), pgn_path)
     if pgn_path.exists():
         parsed = parse_pgn_moves(pgn_path)
@@ -315,7 +325,7 @@ def main():
                   f"{len(sans)} pgn vs {len(moves_san)} page moves")
 
     # ---- sidecar cross-checks --------------------------------------------
-    side_path = ROOT / "analysis" / f"{stamp}.json"
+    side_path = base_dir / "analysis" / f"{stamp}.json"
     check("sidecar exists", side_path.exists(), side_path)
     if side_path.exists():
         d = json.loads(side_path.read_text())
@@ -323,7 +333,7 @@ def main():
         check("sidecar has one entry per half-move", len(plies) == len(moves_san),
               f"{len(plies)} vs {len(moves_san)}")
         bad = []
-        b = chess.Board()
+        b = chess.Board(plies[0]["fenBefore"]) if plies else chess.Board()
         for p in plies:
             if p["fenBefore"] != b.fen():
                 bad.append(f"ply {p['ply']}: fenBefore mismatch")

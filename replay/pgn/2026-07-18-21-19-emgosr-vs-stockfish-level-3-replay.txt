@@ -1,0 +1,13 @@
+[Event " From Position game"]
+[Site "https://lichess.org/ocg_64777fa7"]
+[Date "2026.07.18"]
+[Variant "From Position"]
+[Round "?"]
+[White "Anonymous"]
+[Black "Stockfish Level 3"]
+[Result "1-0"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[FEN "3k1rr1/Qppqn1b1/p2p2p1/3Pp2p/2P1P3/2NB4/PP3PPP/R1B2RK1 w - - 2 17"]
+
+17. Qxb7 Qc8 18. Qa7 Kd7 19. Qe3 Qb7 20. Qh3+ Kd8 21. Bg5 Bf6 22. Qg3 Qb6 23. Be3 Qb4 24. Rab1 Rg7 25. a3 Qb7 26. c5 Rff7 27. cxd6 cxd6 28. b4 Qc7 29. Bxa6 h4 30. Qf3 h3 31. Qxh3 Ke8 32. Rbc1 Rh7 33. Qf3 Rh5 34. Bb5+ Kd8 35. Na4 Bg7 36. Bb6 Nf5 37. Qc3 Nd4 38. Qxc7+ Rxc7 39. Bxc7+ Kc8 40. Ba6+ Kd7 41. Bb8 Ke7 42. Rc7+ Kf8 43. Bc8 Ne2+ 44. Kh1 Bf6 45. Re1 Nd4 46. Rd7 Be7 47. Nb6 Rh6 48. Bxd6 Bxd6 49. Rxd6 Kf7 50. Nc4 Kg7 51. Nxe5 Kf8 52. Nxg6+ Ke8 53. e5 Rh5 54. e6 Rh7 55. Bd7+ Kd8 56. e7+ Kc7 57. e8=Q Rxh2+ 58. Kxh2 Nb3 59. Rc6+ Kb7 60. Qc8+ Ka7 61. Qa6+ Kb8 62. Rc8# 1-0

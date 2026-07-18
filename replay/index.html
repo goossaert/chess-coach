@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Replays — Chess Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12161d;
+    --panel: #181e27;
+    --panel-border: #262f3b;
+    --cream: #ece7da;
+    --muted: #8b93a1;
+    --gold: #c9a24b;
+    --rust: #c1502f;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body { padding: 0 0 64px; }
+
+  header.page-head {
+    padding: 48px 20px 12px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .eyebrow-top {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 14px;
+  }
+  h1.title {
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.05;
+    margin: 0 0 14px;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+  }
+  h1.title em { font-style: italic; color: var(--rust); }
+  p.subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    max-width: 62ch;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+  }
+
+  .note {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-left: 3px solid var(--gold);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .note strong { color: var(--cream); font-weight: 600; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 32px 0 4px;
+  }
+
+  a.game-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-top: 12px;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--cream);
+    transition: border-color 120ms;
+  }
+  a.game-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  a.game-card:hover { border-color: var(--gold); }
+
+  .gc-when {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-family: var(--mono);
+    text-align: right;
+    min-width: 92px;
+    flex-shrink: 0;
+  }
+  .gc-date { font-size: 13px; font-weight: 600; color: var(--gold); }
+  .gc-time { font-size: 11.5px; color: var(--muted); }
+
+  .gc-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+  .gc-text h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.25;
+    margin: 0;
+    color: var(--cream);
+  }
+  .gc-text h2 em { font-style: italic; color: var(--rust); }
+  .gc-players {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .gc-players .result { color: var(--gold); }
+  .gc-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(201,162,75,0.4);
+    border-radius: 6px;
+    padding: 1px 6px;
+    margin-top: 2px;
+    width: fit-content;
+  }
+
+  .gc-arrow {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  a.game-card:hover .gc-arrow { color: var(--gold); }
+
+  .backlink {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 16px 20px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .backlink a { color: var(--gold); text-decoration: none; }
+
+  @media (max-width: 480px) {
+    h1.title { font-size: 32px; }
+    a.game-card { flex-wrap: wrap; }
+    .gc-when { flex-direction: row; gap: 10px; min-width: 0; text-align: left; }
+  }
+
+  footer {
+    max-width: 760px;
+    margin: 40px auto 0;
+    padding: 20px 20px 0;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    border-top: 1px solid var(--panel-border);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="backlink"><a href="../games/index.html">&larr;&nbsp;Back to all games</a></div>
+
+<header class="page-head">
+  <span class="eyebrow-top">chess coach · replays</span>
+  <h1 class="title">Replays &mdash;<br><em>a second try</em>, studied.</h1>
+  <p class="subtitle">Positions you replayed from a game you&rsquo;d already finished &mdash; picking up from a critical moment to see how it could have gone. These are analyzed exactly like a normal game, but kept separate here on purpose: replays are <strong>excluded from the drill deck and the progress dashboard</strong>, so a position you revisit doesn&rsquo;t double-count against your real games.</p>
+</header>
+
+<main>
+  <div class="note">
+    <strong>Why a replay is walled off.</strong> When you continue a lost game from a
+    turning point, the same mistakes and positions would otherwise be counted twice
+    &mdash; once in the original, once in the do-over &mdash; inflating your recurring-mistake
+    tallies and drill schedule. Keeping replays in <code>replay/</code> lets you learn from
+    the second attempt without polluting the statistics that track your genuine games.
+  </div>
+
+  <p class="section-label">Replays &middot; newest first</p>
+
+  <!-- REPLAY LIST — one <a class="game-card"> per analyzed replay, newest first. -->
+  <a class="game-card" href="games/2026-07-18-21-19-emgosr-vs-stockfish-level-3-replay.html">
+    <span class="gc-when">
+      <span class="gc-date">2026-07-18</span>
+      <span class="gc-time">21:19</span>
+    </span>
+    <span class="gc-text">
+      <h2>From <em>lost</em> to won &mdash; now win it faster</h2>
+      <span class="gc-players">emgosr vs Stockfish Level 3 &middot; <span class="result">1-0</span> &middot; played white &middot; from move 17</span>
+      <span class="gc-tag">replay of emgosr vs Maia 800</span>
+    </span>
+    <span class="gc-arrow">&rarr;</span>
+  </a>
+  <!-- END REPLAY LIST -->
+
+  <p class="section-label">Original game</p>
+  <a class="game-card" href="../games/2026-07-18-16-14-emgosr-vs-maia-800.html" style="border-color:rgba(193,80,47,0.35);">
+    <span class="gc-when">
+      <span class="gc-date">2026-07-18</span>
+      <span class="gc-time">16:14</span>
+    </span>
+    <span class="gc-text">
+      <h2>The game this replay revisits</h2>
+      <span class="gc-players">emgosr vs Maia 800 &middot; <span class="result">0-1</span> &middot; played white</span>
+    </span>
+    <span class="gc-arrow">&rarr;</span>
+  </a>
+</main>
+
+<footer>
+  Replays are analyzed with the same pipeline as ordinary games (Stockfish + Maia rating-band model)
+  but are stored under <code>replay/</code> and intentionally left out of <code>tools/build-drills.py</code>
+  and <code>tools/build-progress.py</code>, both of which read only the top-level <code>analysis/</code> folder.
+</footer>
+
+</body>
+</html>

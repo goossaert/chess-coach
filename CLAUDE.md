@@ -985,3 +985,12 @@ and push.
   `docs/0003-plan-maia-engine.md` is the plan version 2 implements,
   `docs/0005-plan-learning-loop-1-foundation.md` the version-3 foundation,
   `docs/0006-plan-learning-loop-2-practice.md` the version-4 practice layer.
+
+## Git Workflow
+
+- **Work directly on the main branch** (or whatever the current branch is). Do not create temporary feature branches unless explicitly requested.
+- **Commit and push automatically** — whenever changes are complete, commit them with clear, descriptive messages and push to the remote immediately.
+- **Continuous integration** — all work should be committed and pushed as soon as it is ready; do not batch multiple changes or hold them locally.
+- **Branch exceptions** — only use a temporary branch if the user explicitly asks for it (e.g. "create a PR" or "work on a feature branch").
+
+This workflow keeps the main branch always current, eliminates the need to manage feature-branch PRs for routine work, and ensures changes are immediately available to the user.

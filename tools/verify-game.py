@@ -414,7 +414,9 @@ def main():
     # ---- humanBest engine re-check (the one check that needs Stockfish) --
     if is_maia and not args.no_engine:
         engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH)
-        engine.configure({"Threads": 3, "Hash": 512})
+        # Single-threaded so this re-check reproduces analyze-game.py's evals
+        # (multi-threaded search is non-deterministic at a fixed depth).
+        engine.configure({"Threads": 1, "Hash": 512})
         bad = []
         probes = 0
         try:

@@ -509,7 +509,10 @@ def main():
 
     # ---- Stockfish pass (step 2) -----------------------------------------
     engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH)
-    engine.configure({"Threads": 3, "Hash": 512})
+    # Single-threaded: multi-threaded Stockfish is non-reproducible at a fixed
+    # depth, so its evals wouldn't match verify-game.py's independent re-check
+    # and a borderline human-findable move could pass here yet fail there.
+    engine.configure({"Threads": 1, "Hash": 512})
     ev = Evaluator(engine, user_color)
 
     board = chess.Board()
@@ -595,6 +598,8 @@ def main():
             log(f"maia pass FAILED, falling back to Stockfish-only: {maia_error}")
 
     if maia:
+        # Maia move keys are already normalized to standard UCI at the query
+        # boundary (see _normalize_maia_moves), so castling lookups line up.
         for p in user_plies:
             p["maia"] = {}
             for band in BANDS:
@@ -617,9 +622,22 @@ def main():
                 phase_fits[phase] = f
         band = str(fit["best"])
         rechecks = 0
+        # The human-findable re-check runs on its OWN fresh engine, not the
+        # warm one that just did the depth-20 pass: that engine's hash is full
+        # of deep entries, so its depth-18 re-check reads a candidate as better
+        # than verify-game.py's cold, independent depth-18 re-check does, and a
+        # borderline pick would be accepted here yet fail verification. A fresh
+        # single-threaded engine reproduces verify's regime; best and candidate
+        # are both re-checked at DEPTH_RECHECK so they share one basis.
+        recheck_engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH)
+        recheck_engine.configure({"Threads": 1, "Hash": 512})
+        rev = Evaluator(recheck_engine, user_color)
         for p in user_plies:
             moves_at_band = maia[band][p["fenBefore"]]["moves"]
             human = p["bestUci"]
+            bb = chess.Board(p["fenBefore"])
+            bb.push(chess.Move.from_uci(p["bestUci"]))
+            best_recheck_cp = rev.eval_board(bb, DEPTH_RECHECK)["cp"]
             for uci, prob in sorted(moves_at_band.items(), key=lambda kv: -kv[1]):
                 if prob < HUMAN_MIN_PROB:
                     break
@@ -628,13 +646,14 @@ def main():
                     break
                 b = chess.Board(p["fenBefore"])
                 b.push(chess.Move.from_uci(uci))
-                cand = ev.eval_board(b, DEPTH_RECHECK)
+                cand = rev.eval_board(b, DEPTH_RECHECK)
                 rechecks += 1
-                if cand["cp"] >= p["cpBest"] - HUMAN_WINDOW_CP:
+                if cand["cp"] >= best_recheck_cp - HUMAN_WINDOW_CP:
                     human = uci
                     break
             p["humanBestUci"] = human
             p["humanBestSan"] = chess.Board(p["fenBefore"]).san(chess.Move.from_uci(human))
+        recheck_engine.quit()
         log(f"human-findable scan done ({rechecks} depth-{DEPTH_RECHECK} re-checks)")
 
     # ---- Per-candidate Maia numbers + weighting --------------------------

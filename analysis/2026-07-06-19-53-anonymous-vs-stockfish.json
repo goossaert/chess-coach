@@ -1674,7 +1674,7 @@
      "value": 0.761
     }
    },
-   "humanBestUci": "c6c7"
+   "humanBestUci": "f1f2"
   },
   {
    "ply": 43,
@@ -2814,7 +2814,7 @@
      "value": 0.946
     }
    },
-   "humanBestUci": "c8d6"
+   "humanBestUci": "d2c2"
   },
   {
    "ply": 73,
@@ -5221,7 +5221,27 @@
      "f4h6",
      "g3g4"
     ]
-   }
+   },
+   "humanBestUci": "f4b8",
+   "drillLinks": [
+    {
+     "label": "Hanging pieces — Lichess puzzle theme",
+     "url": "https://lichess.org/training/hangingPiece"
+    },
+    {
+     "label": "Winning advantage — Lichess puzzle theme",
+     "url": "https://lichess.org/training/advantage"
+    }
+   ],
+   "playedPopularity": "6%",
+   "bestFindability": "69%",
+   "humanBest": "Bxb8",
+   "humanBestArrow": [
+    "f4",
+    "b8"
+   ],
+   "humanBestFindability": "69%",
+   "recurrenceRisk": "low"
   },
   {
    "ply": 124,
@@ -5280,7 +5300,27 @@
      "g2g3",
      "g2g4"
     ]
-   }
+   },
+   "humanBestUci": "f2f3",
+   "drillLinks": [
+    {
+     "label": "Rook endgames — Lichess puzzle theme",
+     "url": "https://lichess.org/training/rookEndgame"
+    },
+    {
+     "label": "Winning advantage — Lichess puzzle theme",
+     "url": "https://lichess.org/training/advantage"
+    }
+   ],
+   "playedPopularity": "17%",
+   "bestFindability": "53%",
+   "humanBest": "Kf3",
+   "humanBestArrow": [
+    "f2",
+    "f3"
+   ],
+   "humanBestFindability": "53%",
+   "recurrenceRisk": "medium"
   },
   {
    "ply": 102,
@@ -5362,7 +5402,27 @@
      "g1h2",
      "g3g4"
     ]
-   }
+   },
+   "humanBestUci": "f4e5",
+   "drillLinks": [
+    {
+     "label": "Mixed puzzles — Lichess daily training",
+     "url": "https://lichess.org/training/mix"
+    },
+    {
+     "label": "Winning advantage — Lichess puzzle theme",
+     "url": "https://lichess.org/training/advantage"
+    }
+   ],
+   "playedPopularity": "0%",
+   "bestFindability": "69%",
+   "humanBest": "dxe5",
+   "humanBestArrow": [
+    "d4",
+    "e5"
+   ],
+   "humanBestFindability": "69%",
+   "recurrenceRisk": "low"
   }
  ],
  "highlights": [

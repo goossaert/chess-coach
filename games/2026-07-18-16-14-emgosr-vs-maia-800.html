@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>emgosr vs Maia 800 &mdash; Game Review</title>
+<title>emgosr vs Maia 800 — Game Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -887,7 +887,7 @@
 // ============================================================================
 const GAME = {
   "title": "The queen went hunting<br>while the <em>king stayed home</em>",
-  "subtitle": "You built a winning attack against Maia 800 &mdash; then spent five straight moves grabbing pawns and ignoring your own king, until it was mated in the corner.",
+  "subtitle": "You built a winning attack against Maia 800 — then spent five straight moves grabbing pawns and ignoring your own king, until it was mated in the corner.",
   "white": "emgosr",
   "black": "Maia 800",
   "playerColor": "white",
@@ -949,10 +949,10 @@ const GAME = {
     "Bf3",
     "Qxh2#"
   ],
-  "summary": "You came out of the opening completely winning &mdash; up a piece by move 10 and holding a clean <strong>+5 to +7</strong> deep into the middlegame. But once your queen set off pawn-hunting on the queenside, your king was left without defenders, and a single missed resource (<strong>20.Bxf6+</strong>) flipped a won game into a forced mate. Four of your last six moves reached for more material while a mating attack gathered on the g- and h-files. The lesson here isn't tactics &mdash; it's remembering to look at your <em>own</em> king the moment you start winning.",
-  "analysisNote": "Engine: Stockfish 16 at depth 20, evaluations from White's (your) perspective. Human model: Maia rating-band networks (lc0 via zerofish WASM), conditioned at the best-fit band; Maia-3 is unreachable from this sandbox, so the Maia-1 bands (1100&ndash;1900) stand in. Accuracy and win% use the Lichess formulas; game accuracy is the mean of the volatility-weighted and harmonic means of per-move accuracy. Opponent is a Maia 800 bot, so probabilities in sharp positions are approximate.",
+  "summary": "You came out of the opening completely winning — up a piece by move 10 and holding a clean <strong>+5 to +7</strong> deep into the middlegame. But once your queen set off pawn-hunting on the queenside, your king was left without defenders, and a single missed resource (<strong>20.Bxf6+</strong>) flipped a won game into a forced mate. Four of your last six moves reached for more material while a mating attack gathered on the g- and h-files. The lesson here isn't tactics — it's remembering to look at your <em>own</em> king the moment you start winning.",
+  "analysisNote": "Engine: Stockfish 16 at depth 20, evaluations from White's (your) perspective. Human model: Maia rating-band networks (lc0 via zerofish WASM), conditioned at the best-fit band; Maia-3 is unreachable from this sandbox, so the Maia-1 bands (1100–1900) stand in. Accuracy and win% use the Lichess formulas; game accuracy is the mean of the volatility-weighted and harmonic means of per-move accuracy. Opponent is a Maia 800 bot, so probabilities in sharp positions are approximate.",
   "estimatedElo": "≈1800",
-  "estimatedEloNote": "The Maia band fit lands at &asymp;1800, but read it with heavy skepticism: it's propped up almost entirely by very typical opening moves, while the game's ACPL of 174 is the fingerprint of a much weaker level (below ~900 in the rapid pool). The two signals disagree hard, and a game that threw away a +7 position argues for the lower one &mdash; the number to trust is the one from the middlegame, not the book.",
+  "estimatedEloNote": "The Maia band fit lands at ≈1800, but read it with heavy skepticism: it's propped up almost entirely by very typical opening moves, while the game's ACPL of 174 is the fingerprint of a much weaker level (below ~900 in the rapid pool). The two signals disagree hard, and a game that threw away a +7 position argues for the lower one — the number to trust is the one from the middlegame, not the book.",
   "phaseElo": {
     "opening": "≈1800 · 10 moves",
     "middlegame": "≈1300 · 6 moves"
@@ -1025,7 +1025,7 @@ const GAME = {
   ],
   "openingReport": {
     "bookExitPly": 5,
-    "note": "You followed the Ponziani (3.c3) out to move 3 and were on your own by move 5. The first real slip came at move 8: <strong>8.Bd3</strong> retreated the attacked bishop when <strong>8.dxc6</strong> simply won the stranded c6 knight. After 8.Bd3 Nce7 Black rescued the piece and your edge fell from +5 to +1 (winning chances 87% &rarr; 60%).",
+    "note": "You followed the Ponziani (3.c3) out to move 3 and were on your own by move 5. The first real slip came at move 8: <strong>8.Bd3</strong> retreated the attacked bishop when <strong>8.dxc6</strong> simply won the stranded c6 knight. After 8.Bd3 Nce7 Black rescued the piece and your edge fell from +5 to +1 (winning chances 87% → 60%).",
     "explorerUrl": "https://lichess.org/analysis"
   },
   "highlights": [
@@ -1036,7 +1036,7 @@ const GAME = {
         "d4",
         "d5"
       ],
-      "note": "The engine's top choice and the move that broke the game open: <strong>6.d5</strong> hit the c6 knight and, after the trade on f3, left it stranded &mdash; a central break only 41% of players your level find here. Reading the moment a pawn push wins material is exactly the timing skill worth keeping."
+      "note": "The engine's top choice and the move that broke the game open: <strong>6.d5</strong> hit the c6 knight and, after the trade on f3, left it stranded — a central break only 41% of players your level find here. Reading the moment a pawn push wins material is exactly the timing skill worth keeping."
     },
     {
       "ply": 18,
@@ -1045,7 +1045,7 @@ const GAME = {
         "c3",
         "c4"
       ],
-      "note": "Quiet, patient, and found by just <strong>8% of players at your level</strong>: <strong>10.c4</strong> clamps the queenside and hands Black no counterplay while you finish developing. This is the calm, space-gaining instinct the middlegame collapse later abandoned &mdash; trust it more often."
+      "note": "Quiet, patient, and found by just <strong>8% of players at your level</strong>: <strong>10.c4</strong> clamps the queenside and hands Black no counterplay while you finish developing. This is the calm, space-gaining instinct the middlegame collapse later abandoned — trust it more often."
     }
   ],
   "moveNotes": [
@@ -1345,8 +1345,8 @@ const GAME = {
       "evalAfter": "#−6",
       "evalBest": "5.72",
       "swing": "mate",
-      "title": "One move from winning &mdash; then you looked away from your king",
-      "explanation": "You were up a clean piece with a crushing <strong>+5.7</strong>. Black's only real attacker is the bishop on f6, shielding your invasion and eyeing your king. <strong>20.Bxf6+</strong> trades it off <em>with check</em> and leaves you a piece up with a quiet position &mdash; 57% of players at your level find it. Instead <strong>20.Bh6</strong> sidestepped and swung the door open: Black's rooks and queen pour down the g- and h-files and there is now a forced mate (&hellip;Rxg2+, &hellip;Qh3, &hellip;Qxh2#). The winning move wasn't a deep tactic &mdash; it just needed the question <em>&ldquo;is my own king safe?&rdquo;</em> before admiring the extra material.",
+      "title": "One move from winning — then you looked away from your king",
+      "explanation": "You were up a clean piece with a crushing <strong>+5.7</strong>. Black's only real attacker is the bishop on f6, shielding your invasion and eyeing your king. <strong>20.Bxf6+</strong> trades it off <em>with check</em> and leaves you a piece up with a quiet position — 57% of players at your level find it. Instead <strong>20.Bh6</strong> sidestepped and swung the door open: Black's rooks and queen pour down the g- and h-files and there is now a forced mate (…Rxg2+, …Qh3, …Qxh2#). The winning move wasn't a deep tactic — it just needed the question <em>“is my own king safe?”</em> before admiring the extra material.",
       "playedArrow": [
         "g5",
         "h6"
@@ -1446,7 +1446,7 @@ const GAME = {
         },
         {
           "lesson": "Trade off the one piece doing the attacking.",
-          "detail": "When a single enemy piece carries the whole attack (here the f6 bishop), hunt for a way to exchange it &mdash; a capture with check like Bxf6+ is the dream version."
+          "detail": "When a single enemy piece carries the whole attack (here the f6 bishop), hunt for a way to exchange it — a capture with check like Bxf6+ is the dream version."
         }
       ]
     },
@@ -1459,7 +1459,7 @@ const GAME = {
       "evalBest": "6.95",
       "swing": "mate",
       "title": "Developing a piece while the mate lands next move",
-      "explanation": "Still <strong>+6.7</strong> on the board, but the attack you invited two moves ago is now one move from mating you: &hellip;Rxg2+ followed by &hellip;Qh3 and &hellip;Qxh2# is coming. <strong>23.Nb5</strong> reaches for more &mdash; a knight lunge at your extra queenside pawns &mdash; while the fire is in your own house. The engine's <strong>23.Kh1</strong> tucks the king away and there is still nothing Black can do; you stay up a piece. Only 12% of players your level find Kh1 here, which is the real tell: once the attack is on, defending your king has to jump the queue over every ambitious idea on the far side of the board.",
+      "explanation": "Still <strong>+6.7</strong> on the board, but the attack you invited two moves ago is now one move from mating you: …Rxg2+ followed by …Qh3 and …Qxh2# is coming. <strong>23.Nb5</strong> reaches for more — a knight lunge at your extra queenside pawns — while the fire is in your own house. The engine's <strong>23.Kh1</strong> tucks the king away and there is still nothing Black can do; you stay up a piece. Only 12% of players your level find Kh1 here, which is the real tell: once the attack is on, defending your king has to jump the queue over every ambitious idea on the far side of the board.",
       "playedArrow": [
         "c3",
         "b5"
@@ -1556,7 +1556,7 @@ const GAME = {
         },
         {
           "lesson": "Give the king an escape square early.",
-          "detail": "Moves like Kh1 / g3 that create luft or step off a vulnerable diagonal are cheap insurance &mdash; play them the moment enemy heavy pieces point at your castled position, not after."
+          "detail": "Moves like Kh1 / g3 that create luft or step off a vulnerable diagonal are cheap insurance — play them the moment enemy heavy pieces point at your castled position, not after."
         }
       ]
     },
@@ -1568,8 +1568,8 @@ const GAME = {
       "evalAfter": "5.04",
       "evalBest": "7.29",
       "swing": "−2.30",
-      "title": "A free pawn with check &mdash; that pried open your own king",
-      "explanation": "<strong>19.Bxg5+</strong> is the most human move in the position &mdash; 56% of players at your level grab it &mdash; but taking on g5 tears open the very g-file Black's rook later mates on. You were <strong>+7.3</strong>; there was no rush. The engine's cool <strong>19.c5</strong> keeps the center clamped, and even the natural <strong>19.Qxa6</strong> (which 19% of your peers would pick) grabs a pawn on the safe side of the board and holds the whole edge. This is a knowledge gap, not a blunder: the fix is a rule you can carry into every game &mdash; <em>don't open lines next to your own king for a pawn.</em>",
+      "title": "A free pawn with check — that pried open your own king",
+      "explanation": "<strong>19.Bxg5+</strong> is the most human move in the position — 56% of players at your level grab it — but taking on g5 tears open the very g-file Black's rook later mates on. You were <strong>+7.3</strong>; there was no rush. The engine's cool <strong>19.c5</strong> keeps the center clamped, and even the natural <strong>19.Qxa6</strong> (which 19% of your peers would pick) grabs a pawn on the safe side of the board and holds the whole edge. This is a knowledge gap, not a blunder: the fix is a rule you can carry into every game — <em>don't open lines next to your own king for a pawn.</em>",
       "playedArrow": [
         "c1",
         "g5"
@@ -1658,7 +1658,7 @@ const GAME = {
       "takeaways": [
         {
           "lesson": "Don't rip open a file next to your own king for a pawn.",
-          "detail": "Before a capture near your king, picture the file or diagonal it opens. If an enemy rook or queen would then stare at your king, the pawn isn't worth it &mdash; especially when you're already winning."
+          "detail": "Before a capture near your king, picture the file or diagonal it opens. If an enemy rook or queen would then stare at your king, the pawn isn't worth it — especially when you're already winning."
         },
         {
           "lesson": "When you're up material, simplify and shut lines, don't open them.",
@@ -1675,7 +1675,7 @@ const GAME = {
       "evalBest": "5.26",
       "swing": "−5.08",
       "title": "The same pawn grab that was safe on move 19 was fatal on move 21",
-      "explanation": "Two moves earlier, taking on a6 was fine. Now it loses the game. Black has spent the interval building &mdash; &hellip;g5, &hellip;Bf6, &hellip;Rf7 &mdash; and your king has no defenders, so <strong>21.Qxa6</strong> sends your last active piece to the far corner while the storm breaks. Your evaluation collapses from <strong>+5</strong> to dead level (winning chances 87% &rarr; 50%). The engine's <strong>21.g3</strong> and the human-simple <strong>21.Kh1</strong> both just look after the king &mdash; and you're still winning. The queen had already eaten five pawns; the sixth cost you the game. When your opponent's pieces are massing on your king, call the queen home to help defend instead of sending it further away.",
+      "explanation": "Two moves earlier, taking on a6 was fine. Now it loses the game. Black has spent the interval building — …g5, …Bf6, …Rf7 — and your king has no defenders, so <strong>21.Qxa6</strong> sends your last active piece to the far corner while the storm breaks. Your evaluation collapses from <strong>+5</strong> to dead level (winning chances 87% → 50%). The engine's <strong>21.g3</strong> and the human-simple <strong>21.Kh1</strong> both just look after the king — and you're still winning. The queen had already eaten five pawns; the sixth cost you the game. When your opponent's pieces are massing on your king, call the queen home to help defend instead of sending it further away.",
       "playedArrow": [
         "b7",
         "a6"

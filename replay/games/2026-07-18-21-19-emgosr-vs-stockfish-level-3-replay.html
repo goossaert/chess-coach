@@ -886,8 +886,8 @@
 // This placeholder shows the expected shape; see CLAUDE.md for field docs.
 // ============================================================================
 const GAME = {
-  "title": "From <em>lost</em> to won &mdash;<br>now win it faster",
-  "subtitle": "Replaying the game you dropped to Maia&nbsp;800: this time the win was never in doubt &mdash; but the mate came three times slower than it had to.",
+  "title": "From <em>lost</em> to won —<br>now win it faster",
+  "subtitle": "Replaying the game you dropped to Maia&nbsp;800: this time the win was never in doubt — but the mate came three times slower than it had to.",
   "white": "emgosr",
   "black": "Stockfish Level 3",
   "playerColor": "white",
@@ -989,8 +989,8 @@ const GAME = {
     "Kb8",
     "Rc8#"
   ],
-  "summary": "This is the very position you <em>lost</em> as White against Maia&nbsp;800 &mdash; and this time you converted it cleanly: <strong>98% accuracy, zero blunders, ACPL&nbsp;24</strong> over 46 moves. Nothing here threw the win away. But your instinct that it dragged is exactly right, and the analysis pins down why: you reached a <em>forced mate</em> at least twice &mdash; mate in five on move&nbsp;36, mate in six on move&nbsp;40 &mdash; and each time you chose a safe, tidy move instead of the forcing one, so a five-move finish became a 26-move grind. The lesson of this replay isn&rsquo;t about safety, which you already have; it&rsquo;s about <em>forcing-move discipline</em>: when you&rsquo;re up a queen, calculate the checks and captures first, and only settle for a quiet improving move when nothing forcing works. Click either moment below to see the mate you had in hand.",
-  "analysisNote": "Replay of a From-Position game (Lichess), continued from move&nbsp;17 of your emgosr&ndash;Maia&nbsp;800 game. Engine: Stockfish at depth&nbsp;20, with the key mate distances re-checked to depth&nbsp;26; all evaluations from White&rsquo;s (your) perspective. Human model: Maia rating-band networks (lc0 via zerofish WASM), conditioned at ≈1800; Maia-3 unreachable from this sandbox, Maia-1 bands stand in. Accuracy and win% follow the Lichess formulas (mean of the volatility-weighted and harmonic means). This page lives in <code>replay/</code> and is deliberately excluded from the drill deck and progress dashboard so the replay doesn&rsquo;t double-count against your real games.",
+  "summary": "This is the very position you <em>lost</em> as White against Maia&nbsp;800 — and this time you converted it cleanly: <strong>98% accuracy, zero blunders, ACPL&nbsp;24</strong> over 46 moves. Nothing here threw the win away. But your instinct that it dragged is exactly right, and the analysis pins down why: you reached a <em>forced mate</em> at least twice — mate in five on move&nbsp;36, mate in six on move&nbsp;40 — and each time you chose a safe, tidy move instead of the forcing one, so a five-move finish became a 26-move grind. The lesson of this replay isn’t about safety, which you already have; it’s about <em>forcing-move discipline</em>: when you’re up a queen, calculate the checks and captures first, and only settle for a quiet improving move when nothing forcing works. Click either moment below to see the mate you had in hand.",
+  "analysisNote": "Replay of a From-Position game (Lichess), continued from move&nbsp;17 of your emgosr–Maia&nbsp;800 game. Engine: Stockfish at depth&nbsp;20, with the key mate distances re-checked to depth&nbsp;26; all evaluations from White’s (your) perspective. Human model: Maia rating-band networks (lc0 via zerofish WASM), conditioned at ≈1800; Maia-3 unreachable from this sandbox, Maia-1 bands stand in. Accuracy and win% follow the Lichess formulas (mean of the volatility-weighted and harmonic means). This page lives in <code>replay/</code> and is deliberately excluded from the drill deck and progress dashboard so the replay doesn’t double-count against your real games.",
   "estimatedElo": "≈1800",
   "estimatedEloNote": "band fit ≈1800; ACPL 24 is typical of ~1700–2000 rapid — but this was a won position throughout against a level-3 engine, so read it as a ceiling for tidy technique, not your playing strength.",
   "phaseElo": {
@@ -1765,15 +1765,15 @@ const GAME = {
           "h2h4"
         ]
       },
-      "title": "You had mate in five &mdash; and reached for a quiet move instead",
-      "explanation": "You were a full queen up with Black&rsquo;s king boxed on d8, and there was a <strong>forced mate</strong> here. The cleanest is the engine&rsquo;s <strong>36.Qxf7</strong>, mate in five (36&hellip;Qc5 37.Qe8+ Kc7 38.Ba6 and the net closes). But you didn&rsquo;t need to see the whole line: <strong>36.Rxc7</strong> &mdash; a move 30% of players at your level find &mdash; also forces mate by ripping away the last defender of the back rank. Instead <strong>36.Bb6</strong> just improved a bishop and gave the king room to breathe. Still winning (+9.7), but the forced finish was gone and the game dragged on another 26 moves.",
+      "title": "You had mate in five — and reached for a quiet move instead",
+      "explanation": "You were a full queen up with Black’s king boxed on d8, and there was a <strong>forced mate</strong> here. The cleanest is the engine’s <strong>36.Qxf7</strong>, mate in five (36…Qc5 37.Qe8+ Kc7 38.Ba6 and the net closes). But you didn’t need to see the whole line: <strong>36.Rxc7</strong> — a move 30% of players at your level find — also forces mate by ripping away the last defender of the back rank. Instead <strong>36.Bb6</strong> just improved a bishop and gave the king room to breathe. Still winning (+9.7), but the forced finish was gone and the game dragged on another 26 moves.",
       "takeaways": [
         {
-          "lesson": "When you&rsquo;re up a queen, hunt for the forcing move before the tidy one.",
+          "lesson": "When you’re up a queen, hunt for the forcing move before the tidy one.",
           "detail": "Before every move in a won position, ask one question first: is there a check or capture that starts a forced sequence? Calculate that line to the end before you even consider a quiet improving move."
         },
         {
-          "lesson": "Bring your heaviest pieces to the enemy king &mdash; don&rsquo;t reposition minor pieces.",
+          "lesson": "Bring your heaviest pieces to the enemy king — don’t reposition minor pieces.",
           "detail": "Queens and rooks deliver mate; a bishop shuffle almost never does. Point your rooks at the file or rank the enemy king is sitting on and keep them there."
         }
       ],
@@ -1867,15 +1867,15 @@ const GAME = {
         ]
       },
       "title": "A check that chased the king in a circle, not the check that mated",
-      "explanation": "With <strong>40.Ba6+</strong> you gave a check &mdash; but after 40&hellip;Kd7 the king simply stepped back and you had gained nothing; the evaluation stayed around +16 and the position stalled. The engine&rsquo;s <strong>40.Bxd6+</strong> &mdash; a move more than half your peers find (56%) &mdash; is a check that <em>also</em> removes the d6 pawn and tears open the king, mating in five (40&hellip;Kd8 41.Nb6 and it&rsquo;s over). Same bishop, one square different, and the difference is the whole game: one check wins a pawn and mates, the other just says &ldquo;check.&rdquo;",
+      "explanation": "With <strong>40.Ba6+</strong> you gave a check — but after 40…Kd7 the king simply stepped back and you had gained nothing; the evaluation stayed around +16 and the position stalled. The engine’s <strong>40.Bxd6+</strong> — a move more than half your peers find (56%) — is a check that <em>also</em> removes the d6 pawn and tears open the king, mating in five (40…Kd8 41.Nb6 and it’s over). Same bishop, one square different, and the difference is the whole game: one check wins a pawn and mates, the other just says “check.”",
       "takeaways": [
         {
-          "lesson": "Only give a check if you&rsquo;re better after the king moves.",
-          "detail": "Before any check, picture the king&rsquo;s reply and ask &lsquo;am I actually improving?&rsquo; A check the king answers for free is just a lost tempo that lets it escape."
+          "lesson": "Only give a check if you’re better after the king moves.",
+          "detail": "Before any check, picture the king’s reply and ask ‘am I actually improving?’ A check the king answers for free is just a lost tempo that lets it escape."
         },
         {
           "lesson": "Prefer checks that also capture or open a line toward the king.",
-          "detail": "Bxd6+ removed a defender and a pawn shield in a single move. Rank your checks by what they destroy, not by the fact that they&rsquo;re legal."
+          "detail": "Bxd6+ removed a defender and a pawn shield in a single move. Rank your checks by what they destroy, not by the fact that they’re legal."
         }
       ],
       "tags": [

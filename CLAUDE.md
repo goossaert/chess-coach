@@ -713,6 +713,19 @@ Conventions: all evals from the **user's** perspective (positive = good for the 
 mate scores as `#3` / `#−2` (negative = user gets mated). Use the minus sign `−` in
 displayed evals to match the house style.
 
+**Typography: literal Unicode characters, never HTML named entities.** Every
+piece of prose you write into GAME fields or the sidecar (`title`,
+`subtitle`, `summary`, `analysisNote`, `estimatedEloNote`, mistake
+`title`/`explanation`, `takeaways[].lesson`/`detail`, highlight `note`,
+`openingReport.note`, …) is JS/JSON string data, not HTML — it is never
+re-parsed as HTML, so an entity like `&mdash;` or `&rsquo;` does not
+decode and shows up on the page as the literal text `&mdash;`. Type the
+actual character instead: em dash **—**, curly quotes **’ ‘ “ ”**, ellipsis
+**…**, arrow **→**, approx **≈**. (Inline HTML *tags* like `<strong>`,
+`<em>`, `<br>`, `<code>` are fine and expected — this rule is only about
+named character entities.) `tools/verify-game.py` checks every page and
+sidecar for stray entities and fails the build if it finds one.
+
 ### 4e. Regenerate the trend report (on request)
 
 The cross-game trend report

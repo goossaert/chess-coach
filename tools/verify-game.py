@@ -54,12 +54,32 @@ TAGS = {
     "pawn-break-timing", "conversion-drift", "promotion-race",
     "endgame-technique", "opening-principle", "time-trouble",
 }
+HTML_ENTITY_RE = re.compile(r"&[a-zA-Z]+;")
 
 checks = []
 
 
 def check(name, ok, detail=""):
     checks.append((name, bool(ok), str(detail)))
+
+
+def find_html_entities(obj, path=""):
+    """Recursively collect stray HTML named entities (e.g. &mdash;, &rsquo;)
+    inside prose data. GAME/sidecar text is plain JS/JSON, never re-parsed as
+    HTML for its own sake — an entity here is always a typo for the literal
+    Unicode character (house style: em dash —, curly quotes ’‘“”, ellipsis …,
+    not their HTML escapes), not a legitimate escape."""
+    found = []
+    if isinstance(obj, str):
+        for m in HTML_ENTITY_RE.finditer(obj):
+            found.append(f"{path}: {m.group(0)}")
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            found.extend(find_html_entities(v, f"{path}.{k}" if path else k))
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            found.extend(find_html_entities(v, f"{path}[{i}]"))
+    return found
 
 
 def win_pct(cp):
@@ -119,6 +139,9 @@ def main():
     check("no page errors", not out["pageErrors"], "; ".join(out["pageErrors"][:3]))
 
     G = out["game"]
+    entities = find_html_entities(G)
+    check("no stray HTML entities in GAME text (use literal Unicode chars)",
+          not entities, " | ".join(entities[:6]))
     moves_san = G["movesSan"]
     mistakes = G.get("mistakes") or []
     notes = G.get("moveNotes") or []
@@ -329,6 +352,11 @@ def main():
     check("sidecar exists", side_path.exists(), side_path)
     if side_path.exists():
         d = json.loads(side_path.read_text())
+        entities = find_html_entities(d.get("mistakes")) + \
+            find_html_entities(d.get("highlights")) + \
+            find_html_entities(d.get("openingReport"))
+        check("no stray HTML entities in sidecar text (use literal Unicode chars)",
+              not entities, " | ".join(entities[:6]))
         plies = d["plies"]
         check("sidecar has one entry per half-move", len(plies) == len(moves_san),
               f"{len(plies)} vs {len(moves_san)}")

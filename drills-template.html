@@ -287,6 +287,53 @@
   }
   .empty p { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 18px; }
 
+  section.cat-guide {
+    max-width: 980px;
+    margin: 56px auto 0;
+    padding: 24px 20px 0;
+    border-top: 1px solid var(--panel-border);
+  }
+  h2.cat-guide-head {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 26px;
+    margin: 0 0 8px;
+    color: var(--cream);
+  }
+  p.cat-guide-sub {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0 0 22px;
+    max-width: 68ch;
+  }
+  .cat-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .cat-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 16px 18px 18px;
+  }
+  h3.cat-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--gold);
+    margin: 0 0 8px;
+  }
+  p.cat-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #cfc9ba;
+    margin: 0 0 14px;
+  }
+  .cat-stats-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
   @keyframes flashfade { from { opacity: 0.85; } to { opacity: 0; } }
   .grade-flash { animation: flashfade 900ms ease-out forwards; }
 
@@ -345,6 +392,12 @@
     <button class="act primary" id="btn-practice-ahead">Practice ahead anyway</button>
   </div>
 </main>
+
+<section class="cat-guide" id="cat-guide" hidden>
+  <h2 class="cat-guide-head">Mistake categories</h2>
+  <p class="cat-guide-sub">What each tag actually means, why it matters, and roughly when in a game it tends to strike — so a drill lands as a lesson, not just a puzzle. Sorted by how much of this deck each one accounts for.</p>
+  <div class="cat-list" id="cat-list"></div>
+</section>
 
 <footer>
   Drill deck generated from the analysis sidecars in <span style="color:var(--cream)">analysis/</span> ·
@@ -945,6 +998,124 @@ tagSel.addEventListener("change", () => {
   activeTag = tagSel.value;
   restartSession();
 });
+
+// --------------------------------------------------------------------------
+// Category guide — one static blurb per taxonomy tag (what it is, why it
+// matters, roughly when in the game it strikes) plus live counts from this
+// deck's actual drills. Only tags that appear in DRILLS get a section —
+// same set the tag dropdown above offers. Counts reflect the whole deck,
+// not whatever tag filter or due/practice-ahead state is active.
+// --------------------------------------------------------------------------
+
+const CATEGORY_INFO = {
+  "hanging-piece": {
+    label: "Hanging piece",
+    desc: "A piece sits where it can simply be taken for free — no combination required, just an attacker nobody watched. It matters because free material is the cheapest way to lose a game, and the fix is a habit (check every attacked square before moving on), not calculation. Shows up in any phase, most often the middlegame once several pieces are in contact."
+  },
+  "unsafe-capture": {
+    label: "Unsafe capture",
+    desc: "Material gets grabbed without reading the whole sequence — the capturing piece is itself lost to an in-between move or an extra attacker on the square. It's the gap between counting material and calculating the position. Concentrated in the middlegame, whenever a capture opens a tactical skirmish."
+  },
+  "wrong-recapture": {
+    label: "Wrong recapture",
+    desc: "When more than one piece could recapture, the wrong one takes — costing structure, a tempo, or activity the alternative would have kept. It matters because the choice is easy to get right once you compare the resulting positions instead of just the material. Almost always a middlegame moment, right after the first exchange."
+  },
+  "missed-tactic": {
+    label: "Missed tactic",
+    desc: "A fork, pin, skewer, discovered attack, or combination sitting in the position goes unseen. It matters because these patterns are learnable — missing one is a gap in pattern recognition, not raw calculating power. Most common in the tactically rich middlegame, though it can strike whenever pieces are loose."
+  },
+  "missed-mate": {
+    label: "Missed mate",
+    desc: "A forced mate was on the board and something short of mate got played instead. It matters less for points lost — the position was winning either way — and more as a calculation-discipline flag: always read forcing lines to the end before settling for “good enough”. Happens in won middlegame or endgame positions with an exposed king."
+  },
+  "slow-mate": {
+    label: "Slow mate",
+    desc: "Mate still landed, but by a far slower route than the fastest forced line — extra moves for the defender to find swindle chances or save material along the way. A late-middlegame or endgame habit: once mate is seen, look one move further for a faster one."
+  },
+  "king-safety": {
+    label: "King safety",
+    desc: "A decision — a loosening pawn move, a delayed castle, an opened file — that costs nothing immediately but leaves the king a standing target later. It matters because the debt comes due several moves after it's incurred, which is exactly why it's easy to underrate in the moment. Mostly an opening and early-middlegame pattern."
+  },
+  "unsafe-king-move": {
+    label: "Unsafe king move",
+    desc: "The king itself walks into danger — a check, a future mating net, or forfeited castling rights for no return. It matters because the piece that can least afford exposure is the one that just moved into it. Can occur any phase, but spikes in the middlegame and endgame once the king has left its pocket."
+  },
+  "pawn-break-timing": {
+    label: "Pawn break timing",
+    desc: "A central or flank pawn lever — …d5, …f5, c4, and the like — gets played a move early or a move late, before the pieces are ready to exploit it or after the moment has passed. The whole point of a break is the moment, not just the move. A middlegame structural decision."
+  },
+  "conversion-drift": {
+    label: "Conversion drift",
+    desc: "Technique slips while closing out an already-winning position — needless simplification, allowed counterplay, or just slow play that lets the opponent back in. Winning positions are lost this way far more often than to a single blunder. A late-middlegame and endgame pattern, once the result should already be decided."
+  },
+  "promotion-race": {
+    label: "Promotion race",
+    desc: "A pawn race to the queening square gets miscounted — whose pawn arrives first, whether the king or another piece can stop it in time. These races are won or lost on tempo arithmetic that can be counted out exactly, unlike most middlegame judgment calls. An endgame pattern by definition."
+  },
+  "endgame-technique": {
+    label: "Endgame technique",
+    desc: "General endgame know-how — king activity, opposition, rook-endgame principles, the right- versus wrong-colored bishop — falls short of what the position demands. Endgames reward known technique over calculation, so these gaps are worth drilling directly rather than working out at the board. An endgame pattern by definition."
+  },
+  "opening-principle": {
+    label: "Opening principle",
+    desc: "A basic opening principle — develop before attacking, contest the center, castle before the position opens — gets set aside early, before there's a concrete tactical reason to. Opening principles exist precisely to avoid the tactical and king-safety problems that show up ten moves later. Confined to the first ten or so moves by definition."
+  },
+  "time-trouble": {
+    label: "Time trouble",
+    desc: "A mistake played with very little clock time left, when the position called for more thought than the clock allowed. Time pressure turns findable moves into misses — the fix is pacing (don't let one phase of the game eat the clock the rest of it needs), not more chess knowledge. Concentrated wherever the clock shows a scramble, most often the middlegame or a long endgame."
+  }
+};
+
+function buildCategoryGuide() {
+  const counts = new Map();   // tag -> { total, overlap }
+  for (const d of DRILLS) {
+    const tags = d.tags || [];
+    for (const t of tags) {
+      const c = counts.get(t) || { total: 0, overlap: 0 };
+      c.total += 1;
+      if (tags.length > 1) c.overlap += 1;
+      counts.set(t, c);
+    }
+  }
+  const order = [...counts.keys()].sort((a, b) =>
+    counts.get(b).total - counts.get(a).total || a.localeCompare(b));
+  const list = $("cat-list");
+  for (const t of order) {
+    const info = CATEGORY_INFO[t] || { label: t, desc: "" };
+    const c = counts.get(t);
+
+    const card = document.createElement("article");
+    card.className = "cat-card";
+
+    const name = document.createElement("h3");
+    name.className = "cat-name";
+    name.textContent = info.label;
+    card.appendChild(name);
+
+    if (info.desc) {
+      const desc = document.createElement("p");
+      desc.className = "cat-desc";
+      desc.textContent = info.desc;
+      card.appendChild(desc);
+    }
+
+    const stats = document.createElement("div");
+    stats.className = "cat-stats-row";
+    const totalChip = document.createElement("span");
+    totalChip.className = "stat-chip";
+    totalChip.innerHTML = "<b>" + c.total + "</b> card" + (c.total === 1 ? "" : "s");
+    stats.appendChild(totalChip);
+    const overlapChip = document.createElement("span");
+    overlapChip.className = "stat-chip";
+    overlapChip.innerHTML = "<b>" + c.overlap + "</b> also in other categories";
+    stats.appendChild(overlapChip);
+    card.appendChild(stats);
+
+    list.appendChild(card);
+  }
+  $("cat-guide").hidden = order.length === 0;
+}
+buildCategoryGuide();
 
 $("btn-practice-ahead").addEventListener("click", () => {
   practiceAhead = true;

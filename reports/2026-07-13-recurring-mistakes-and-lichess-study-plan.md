@@ -1,7 +1,5 @@
 [← Back to index](../games/index.html)
 
-**Version 1**
-
 # Recurring Mistakes & Lichess Study Plan
 
 <!-- TREND:META -->

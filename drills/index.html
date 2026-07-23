@@ -201,6 +201,13 @@
     min-height: 18px;
     margin: 0 0 12px;
   }
+  .check-note {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--rust);
+    margin: 0 0 10px;
+  }
+  .check-glow { pointer-events: none; }
   .result-banner {
     font-family: var(--mono);
     font-size: 13px;
@@ -3256,6 +3263,48 @@ function fenBoard(fen) {
   return b;
 }
 
+// Geometry check (trimmed from template.html's applySan legality check) — used
+// only to tell the retry board when the side to move is in check, so a
+// position where most pieces have zero legal targets (blocked by the retry
+// data's own `legal` list, computed server-side) reads as "in check", not
+// as a broken board.
+function isWhitePiece(p) { return p === p.toUpperCase(); }
+
+function pieceAttacks(board, from, to) {
+  const p = board[from];
+  const pt = p.toUpperCase();
+  const ff = from % 8, fr = (from / 8) | 0;
+  const tf = to % 8, tr = (to / 8) | 0;
+  const df = tf - ff, dr = tr - fr;
+  if (df === 0 && dr === 0) return false;
+  switch (pt) {
+    case "N": return (Math.abs(df) === 1 && Math.abs(dr) === 2) || (Math.abs(df) === 2 && Math.abs(dr) === 1);
+    case "K": return Math.max(Math.abs(df), Math.abs(dr)) === 1;
+    case "P": { const dir = isWhitePiece(p) ? 1 : -1; return dr === dir && Math.abs(df) === 1; }
+    case "B": if (Math.abs(df) !== Math.abs(dr)) return false; break;
+    case "R": if (df !== 0 && dr !== 0) return false; break;
+    case "Q": if (df !== 0 && dr !== 0 && Math.abs(df) !== Math.abs(dr)) return false; break;
+    default: return false;
+  }
+  const sf = Math.sign(df), sr = Math.sign(dr);
+  let f = ff + sf, r = fr + sr;
+  while (f !== tf || r !== tr) {
+    if (board[r * 8 + f]) return false;
+    f += sf; r += sr;
+  }
+  return true;
+}
+
+function kingInCheck(board, white) {
+  const king = board.indexOf(white ? "K" : "k");
+  if (king < 0) return false;
+  for (let i = 0; i < 64; i++) {
+    const p = board[i];
+    if (p && isWhitePiece(p) !== white && pieceAttacks(board, i, king)) return true;
+  }
+  return false;
+}
+
 function buildBoardSvg() {
   const svg = svgEl("svg", { viewBox: "0 0 " + BOARD_PX + " " + BOARD_PX, class: "board-svg" });
   const defs = document.createElementNS(SVG_NS, "defs");
@@ -3289,6 +3338,7 @@ function buildBoardSvg() {
   }
   svg.appendChild(coords);
 
+  svg.appendChild(svgEl("g", { id: "layer-check" }));
   svg.appendChild(svgEl("g", { id: "layer-hl" }));
   svg.appendChild(svgEl("g", { id: "layer-pieces" }));
   svg.appendChild(svgEl("g", { id: "layer-arrows" }));
@@ -3427,6 +3477,7 @@ let attempts = 0;
 let status = "await";  // "await" | "solved" | "acceptable" | "failed"
 let selectedFrom = null;
 let boardArr = null;
+let inCheck = false;   // true iff the side to move's king is under attack in drill.fen
 let svg = null, hlLayer = null, piecesLayer = null, arrowsLayer = null;
 
 function sideWord(d) { return d.side === "white" ? "White" : "Black"; }
@@ -3437,10 +3488,19 @@ function renderBoard() {
   flipped = drill.side === "black";
   svg = buildBoardSvg();
   mount.appendChild(svg);
+  const checkLayer = svg.querySelector("#layer-check");
   hlLayer = svg.querySelector("#layer-hl");
   piecesLayer = svg.querySelector("#layer-pieces");
   arrowsLayer = svg.querySelector("#layer-arrows");
   boardArr = fenBoard(drill.fen);
+  inCheck = kingInCheck(boardArr, drill.side === "white");
+  if (inCheck) {
+    const [x, y] = sqXY(boardArr.indexOf(drill.side === "white" ? "K" : "k"));
+    checkLayer.appendChild(svgEl("circle", {
+      cx: x + SQ / 2, cy: y + SQ / 2, r: SQ * 0.52,
+      fill: "rgba(193,80,47,0.55)", class: "check-glow"
+    }));
+  }
   for (let i = 0; i < 64; i++) {
     const p = boardArr[i];
     if (!p) continue;
@@ -3494,7 +3554,11 @@ function onBoardClick(evt) {
   const name = clickedSquare(evt);
   if (!name) return;
   if (selectedFrom === null) {
-    if (hasLegalFrom(name)) selectFrom(name);
+    if (hasLegalFrom(name)) { selectFrom(name); return; }
+    // A tap on a piece that simply has no legal move (e.g. anything but the
+    // king/blocker/capturer while in check) should still visibly register —
+    // silence there reads as an unresponsive board, not "this piece is stuck".
+    if (boardArr[sqIndex(name)]) flashSquare(name, "rgba(139,147,161,0.4)");
     return;
   }
   if (name === selectedFrom) { clearSelection(); return; }
@@ -3506,6 +3570,7 @@ function onBoardClick(evt) {
   }
   if (drill.legal.includes(uci)) { clearSelection(); gradeMove(uci); return; }
   if (hasLegalFrom(name)) { selectFrom(name); return; }
+  if (boardArr[sqIndex(name)]) flashSquare(name, "rgba(139,147,161,0.4)");
   // illegal move, not an answer — ignore
 }
 
@@ -3592,6 +3657,14 @@ function renderPanelAwait() {
   ask.className = "drill-ask";
   ask.textContent = sideWord(drill) + " to move — find the strongest move.";
   panel.appendChild(ask);
+
+  if (inCheck) {
+    const checkNote = document.createElement("p");
+    checkNote.className = "check-note";
+    checkNote.textContent = sideWord(drill) + " is in check — only moves that deal with it " +
+      "(capture the checking piece, block it, or move the king) are legal here.";
+    panel.appendChild(checkNote);
+  }
 
   const note = document.createElement("p");
   note.className = "drill-note";

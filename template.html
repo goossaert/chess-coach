@@ -647,6 +647,13 @@
     min-height: 18px;
     margin: 0 0 12px;
   }
+  .check-note {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--rust);
+    margin: 0 0 10px;
+  }
+  .check-glow { pointer-events: none; }
   .retry-result {
     font-family: var(--mono);
     font-size: 13px;
@@ -1131,6 +1138,11 @@ function squareAttackedBy(board, sq, byWhite) {
 
 function findKing(board, white) { return board.indexOf(white ? "K" : "k"); }
 
+// Is the side-to-move's king in check on this board? Used only by retry mode's
+// check indicator (below) — a position where most pieces have zero legal
+// moves because of check should read as "in check", not as a broken board.
+function kingInCheck(board, white) { return squareAttackedBy(board, findKing(board, white), !white); }
+
 // Pseudo-legal move check (ignores self-check), including pawn pushes and en passant.
 function canMove(state, from, to) {
   const board = state.board;
@@ -1321,6 +1333,7 @@ function buildBoardSvg() {
   }
   svg.appendChild(coords);
 
+  svg.appendChild(svgEl("g", { id: "layer-check" }));
   svg.appendChild(svgEl("g", { id: "layer-hl" }));
   svg.appendChild(svgEl("g", { id: "layer-pieces" }));
   svg.appendChild(svgEl("g", { id: "layer-arrows" }));
@@ -1752,7 +1765,7 @@ for (const n of GAME.moveNotes || []) annoByPly.set(n.ply, n);
 for (const mk of mistakes) annoByPly.set(mk.ply, mk);
 
 let current = 0;
-let piecesLayer = null, hlLayer = null, arrowsLayer = null;
+let piecesLayer = null, hlLayer = null, arrowsLayer = null, checkLayer = null;
 const moveButtons = [];
 
 // Retry mode: null when inactive, else { mk, attempts, status, outcome,
@@ -1802,6 +1815,16 @@ function renderPosition() {
   arrowsLayer.innerHTML = "";
   // while a retry is taking input, arrows, legend, and feedback stay hidden
   const awaitingRetry = retry && retry.status === "await";
+
+  checkLayer.innerHTML = "";
+  if (awaitingRetry && kingInCheck(pos.board, !plyIsBlack(current))) {
+    const [x, y] = sqXY(findKing(pos.board, !plyIsBlack(current)));
+    checkLayer.appendChild(svgEl("circle", {
+      cx: x + SQ / 2, cy: y + SQ / 2, r: SQ * 0.52,
+      fill: "rgba(193,80,47,0.55)", class: "check-glow"
+    }));
+  }
+
   const note = (!awaitingRetry && current < totalPlies) ? annoByPly.get(current) : null;
   if (note) {
     const specs = [];
@@ -1919,6 +1942,14 @@ function renderRetryPrompt() {
   h2.textContent = "Your move — find a better one than you played.";
   panel.appendChild(h2);
 
+  if (kingInCheck(positions[current].board, !plyIsBlack(current))) {
+    const checkNote = document.createElement("p");
+    checkNote.className = "check-note";
+    checkNote.textContent = sideOfPly(mk.ply) + " is in check — only moves that deal with it " +
+      "(capture the checking piece, block it, or move the king) are legal here.";
+    panel.appendChild(checkNote);
+  }
+
   const p = document.createElement("p");
   p.className = "explain";
   p.textContent = "Click a piece, then its destination square (promotions become queens). " +
@@ -1980,7 +2011,11 @@ function onRetryBoardClick(evt, svg) {
   const name = boardClickSquare(evt, svg);
   if (!name) return;
   if (retry.from === null) {
-    if (retryHasLegalFrom(name)) retrySelectFrom(name);
+    if (retryHasLegalFrom(name)) { retrySelectFrom(name); return; }
+    // A tap on a piece that simply has no legal move (e.g. anything but the
+    // king/blocker/capturer while in check) should still visibly register —
+    // silence there reads as an unresponsive board, not "this piece is stuck".
+    if (positions[current].board[sqIndex(name)]) flashSquare(name, "rgba(139,147,161,0.4)");
     return;
   }
   if (name === retry.from) { clearRetrySelection(); return; }
@@ -1992,6 +2027,7 @@ function onRetryBoardClick(evt, svg) {
   }
   if (retry.mk.retry.legal.includes(uci)) { clearRetrySelection(); retryGrade(uci); return; }
   if (retryHasLegalFrom(name)) { retrySelectFrom(name); return; }
+  if (positions[current].board[sqIndex(name)]) flashSquare(name, "rgba(139,147,161,0.4)");
   // not a legal move and not a reselect — an illegal move is not an answer
 }
 
@@ -2150,6 +2186,7 @@ if (positions) {
   piecesLayer = svg.querySelector("#layer-pieces");
   hlLayer = svg.querySelector("#layer-hl");
   arrowsLayer = svg.querySelector("#layer-arrows");
+  checkLayer = svg.querySelector("#layer-check");
   svg.addEventListener("click", (evt) => onRetryBoardClick(evt, svg));
 
   // move list

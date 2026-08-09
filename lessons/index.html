@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lessons — Chess Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12161d;
+    --panel: #181e27;
+    --panel-border: #262f3b;
+    --cream: #ece7da;
+    --muted: #8b93a1;
+    --gold: #c9a24b;
+    --rust: #c1502f;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body { padding: 0 0 64px; }
+
+  header.page-head {
+    padding: 48px 20px 12px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .crumb {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .crumb a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--panel-border); }
+  .crumb a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+  .eyebrow-top {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 14px;
+  }
+  h1.title {
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.05;
+    margin: 0 0 14px;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+  }
+  h1.title em { font-style: italic; color: var(--rust); }
+  p.subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    max-width: 62ch;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+  }
+  .list-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  a.lesson-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-top: 12px;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--cream);
+    transition: border-color 120ms;
+  }
+  a.lesson-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  a.lesson-card:hover { border-color: var(--gold); }
+
+  .lc-when {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-family: var(--mono);
+    text-align: right;
+    min-width: 92px;
+    flex-shrink: 0;
+  }
+  .lc-date { font-size: 13px; font-weight: 600; color: var(--gold); }
+  .lc-steps {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 162, 75, 0.4);
+    background: rgba(201, 162, 75, 0.12);
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .lc-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+  .lc-text h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.25;
+    margin: 0;
+    color: var(--cream);
+  }
+  .lc-text h2 em { font-style: italic; color: var(--rust); }
+  .lc-meta {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .lc-meta .src { color: var(--gold); }
+  .lc-blurb {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .lc-arrow {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  a.lesson-card:hover .lc-arrow { color: var(--gold); }
+
+  @media (max-width: 480px) {
+    h1.title { font-size: 32px; }
+    a.lesson-card { flex-wrap: wrap; }
+    .lc-when { flex-direction: row; gap: 10px; min-width: 0; text-align: left; align-items: center; }
+  }
+
+  footer {
+    max-width: 760px;
+    margin: 40px auto 0;
+    padding: 20px 20px 0;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    border-top: 1px solid var(--panel-border);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <div class="crumb"><a href="../games/index.html">← Chess Coach</a></div>
+  <span class="eyebrow-top">Chess Coach · lessons</span>
+  <h1 class="title">Interactive <em>lessons</em></h1>
+  <p class="subtitle">
+    Published chess columns and articles rebuilt as step-by-step pages: the full
+    text beside a board, with every diagram and every hypothetical line playable.
+  </p>
+</header>
+
+<main>
+  <div class="list-label">All lessons</div>
+
+  <!-- ======================================================================
+       LESSON LIST — one <a class="lesson-card"> per lesson page, newest first.
+       Edit only inside this region.
+       ====================================================================== -->
+  <!-- LESSON LIST -->
+
+  <a class="lesson-card" href="heisman94.html">
+    <div class="lc-when">
+      <span class="lc-date">2008</span>
+      <span class="lc-steps">14 steps</span>
+    </div>
+    <div class="lc-text">
+      <h2>The Fun of <em>Pros and Cons</em></h2>
+      <div class="lc-meta">Novice Nook #94 · <span class="src">Dan Heisman</span> · ChessCafe.com</div>
+      <div class="lc-blurb">
+        Why weighing two candidate moves beats playing the first one you see —
+        three positions from a student’s slow game, with every alternative and
+        refutation playable on the board.
+      </div>
+    </div>
+    <span class="lc-arrow">→</span>
+  </a>
+
+  <!-- END LESSON LIST -->
+</main>
+
+<footer>
+  Lesson pages reproduce their source article’s text in full and unaltered; site
+  navigation and advertising from the original pages are left out, and anything
+  added here is marked as such on the page.
+</footer>
+
+</body>
+</html>

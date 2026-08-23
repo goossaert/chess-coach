@@ -267,10 +267,20 @@
   .article p { font-size: 15px; line-height: 1.72; color: var(--cream); margin: 0 0 16px; }
   .article ul, .article ol { margin: 0 0 16px; padding-left: 24px; }
   .article li { font-size: 15px; line-height: 1.72; margin-bottom: 8px; }
+  /* A cross-reference the original article hyperlinked. Blue with a dotted
+     underline whether or not we have the target lesson yet: the dotted state
+     tells the reader a link belongs here but the page does not exist. When
+     LESSON.xrefs names a lesson for it, the same run of text becomes a real
+     anchor and the underline goes solid. */
   .article .xref {
     color: var(--blue);
     border-bottom: 1px dotted rgba(91,139,181,0.7);
   }
+  .article a.xref {
+    text-decoration: none;
+    border-bottom: 1px solid rgba(91,139,181,0.85);
+  }
+  .article a.xref:hover { color: var(--gold); border-bottom-color: var(--gold); }
   .article em.bookttl { font-style: italic; color: var(--cream); }
   .article .quote-month {
     border-left: 3px solid var(--gold);
@@ -478,8 +488,10 @@
     Dan Heisman, ChessCafe.com, 2008. The column’s text is reproduced here verbatim and in
     full; the site navigation and the advertisements that surrounded it on the original page
     have been left out. Cross-references such as <span class="xref">The Principle of Tactical
-    Dominance</span> were hyperlinks to other Novice Nook columns in the original and are
-    kept here as plain text.
+    Dominance</span> were hyperlinks to other Novice Nook columns in the original. Here each
+    one links to that column’s own lesson page once it exists; until then it keeps this
+    blue dotted styling but is not clickable, so you can see where a link belongs. The
+    original ChessCafe.com addresses are not reproduced — they could not be verified.
   </p>
   <p>
     <span class="foot-strong">Added by this page:</span> the step numbering, the playable
@@ -498,6 +510,22 @@ const LESSON = {
   title: "The Fun of Pros and Cons",
   column: "Novice Nook",
   author: "Dan Heisman",
+
+  // Cross-reference registry: article title → the lesson page in this folder
+  // that covers it. Every <span class="xref"> in the step bodies is looked up
+  // here by its exact text; a hit becomes a real link to that page, a miss
+  // stays blue-and-dotted but inert, so the reader can see a link belongs
+  // there and simply is not built yet. Add an entry whenever the matching
+  // column is turned into a lesson — the keys below are the seven this
+  // article cross-references:
+  //
+  //   "The Principle of Tactical Dominance", "A Room Full of Grandmasters",
+  //   "Chess, Learning, and Fun", "Initial and Final Candidate Moves",
+  //   "Acquiescing", "Hope Chess", "Counting"
+  //
+  // Values are hrefs relative to this file, e.g. "heisman-hope-chess.html".
+  xrefs: {
+  },
 
   steps: [
   // ------------------------------------------------------------------ 0
@@ -1329,11 +1357,34 @@ function renderLineButtons() {
   box.appendChild(reset);
 }
 
+// Turns the cross-references the registry knows about into real links, and
+// leaves the rest exactly as authored: still blue, still dotted, not
+// clickable. Never rewrites the text itself — only the element around it.
+function linkXrefs(root) {
+  const map = LESSON.xrefs || {};
+  root.querySelectorAll("span.xref").forEach((span) => {
+    const label = span.textContent.trim();
+    const href = map[label];
+    if (!href) {
+      span.title = "“" + label + "” is another column in this series — no lesson page for it yet.";
+      return;
+    }
+    const a = document.createElement("a");
+    a.className = "xref";
+    a.href = href;
+    a.textContent = span.textContent;
+    a.title = "Lesson: " + label;
+    span.replaceWith(a);
+  });
+}
+
 function renderText() {
   const s = step();
   $("step-num").textContent = "Step " + stepIdx;
   $("step-title").textContent = s.title;
-  $("step-body").innerHTML = s.body;
+  const body = $("step-body");
+  body.innerHTML = s.body;
+  linkXrefs(body);
 }
 
 function renderRail() {
@@ -1391,6 +1442,13 @@ goStep(m0 ? parseInt(m0[1], 10) : 0, true);
 // Test hooks, mirroring window.__review on the game-review pages.
 window.__lesson = {
   data: () => STEPS,
+  xrefs: () => LESSON.xrefs || {},
+  // [{ label, linked, href }] for the cross-references on the current step.
+  xrefsOnStep: () => Array.from(document.querySelectorAll("#step-body .xref")).map((el) => ({
+    label: el.textContent.trim(),
+    linked: el.tagName === "A",
+    href: el.getAttribute("href")
+  })),
   steps: () => STEPS.length,
   step: () => stepIdx,
   lineIndex: () => lineIdx,

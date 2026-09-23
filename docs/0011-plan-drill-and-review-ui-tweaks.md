@@ -2,7 +2,8 @@
 
 **Scope**: three small UI changes, two on the drill deck
 (`drills-template.html` → `drills/index.html`) and one on the game review
-page (`template.html` → `games/*.html`). No analysis parameters change and no
+page (`template.html` → `games/*.html`, **including every page already
+generated**, see section 4). No analysis parameters change and no
 GAME or sidecar field is added. The only data change is one new field on each
 DRILLS entry (`playedUci`), which `tools/build-drills.py` derives.
 
@@ -181,17 +182,72 @@ per-position stepping loop:
 
 Then run `tools/verify-game.py` on every page and get `all checks passed`.
 
-### Rolling the template change out to existing pages
+## 4. Update every existing game page (mandatory, not optional)
 
-The generated pages in `games/` (13 today) embed the old markup and CSS. A
-template fix only reaches them if they are **re-templated**: for each
-`games/*.html` other than `index.html`, take its `const GAME = {…};` block
-and `<title>` verbatim, and splice them into a fresh copy of `template.html`
-with the step-4 regex (`re.subn(r"const GAME = \{.*?\n\};", …, count=1, flags=re.S)`).
-This is not a hand edit of a generated page. It re-runs the normal
-generation with unchanged data, so the GAME block must come out
-byte-identical, which the diff will show. No engine work and no sidecar
-changes are needed. Run `tools/verify-game.py` on each page afterwards.
+Changing `template.html` alone is **not** done. Generated pages embed a full
+copy of the template's markup, CSS and scripts, so the 11 live pages in
+`games/` would keep the old layout. This plan is complete only when every
+live page carries the new template.
+
+**Update, don't regenerate.** None of the changes touch game data, so there
+is no reason to re-run `tools/analyze-game.py`, Stockfish or Maia, or to
+rewrite prose, sidecars or PGNs. That would take hours and could shift
+numbers. Updating each page takes milliseconds per page instead: build it
+from the new template with its own data kept verbatim. That is the same
+thing step 4 of the workflow does, so it does not count as a hand edit of a
+generated page.
+
+**New tool: `tools/retemplate-games.py`** (plain python3, no venv or
+engines). Keep it for every future template change too:
+
+1. For each `games/*.html` except `index.html` (not recursive, so
+   `games/archive/` stays untouched): read the page's `const GAME = {…};`
+   block and its `<title>…</title>`.
+2. Take a fresh copy of `template.html`, splice in that GAME block with the
+   step-4 regex
+   (`re.subn(r"const GAME = \{.*?\n\};", …, count=1, flags=re.S)`, using a
+   replacement *function* so backslashes in the data are not treated as
+   escape sequences), and replace `<title>` the same way. Assert both
+   substitutions matched exactly once, and abort on that page if either
+   did not.
+3. Write the file only if its contents changed, and print one line per page
+   (`updated` / `unchanged`).
+4. `--check` mode: write nothing, exit non-zero if any page differs from
+   what the template would produce. This gives future sessions a one-call
+   way to detect template drift.
+5. The tool must be idempotent: a second run reports every page `unchanged`.
+
+**Before this plan, the pages already drift.** A dry run on 2026-09-23
+showed every live page differing from the current template by 41–94 lines,
+all outside the GAME block. Earlier template fixes, such as the retry-board
+check indicator, never reached them. The tool rolls those forward in the
+same pass, which is intended. It also means the reviewer should expect a
+diff larger than this plan's own changes.
+
+**Proving the data was untouched.** For each page, check that the GAME
+block and `<title>` before and after are byte-identical. The tool can assert
+this itself by re-extracting both from the written file. Everything else in
+the diff must be template content only.
+
+**Verify every page**, not a sample. Run
+`/tmp/chess-venv/bin/python tools/verify-game.py games/<page>.html` for all
+11 pages, including the new button- and legend-position checks from section
+3, and get `all checks passed` on each. Older pages lack newer fields
+(`evals`, `highlights`, `retry`, …). The template must still render them as
+before, and the verifier skips checks for fields a page doesn't carry. A
+failure on an old page is a bug in the template change, so fix
+`template.html` and re-run the tool; never patch the page. Then confirm that
+every `href` in `games/index.html` still resolves (filenames don't change).
+
+**Order of work**: the template change (section 3), then
+`tools/retemplate-games.py`, then verify all pages, then commit the template,
+tool and every updated page **together** in one commit. That way the repo
+never holds a template that its pages don't match.
+
+**Make it stick**: add a line to `CLAUDE.md` (the "Never edit the template's
+markup…" paragraph in step 4) saying that after any `template.html` change,
+`python3 tools/retemplate-games.py` must be run and the updated pages
+committed with it. `--check` is the way to confirm nothing is stale.
 
 ---
 
@@ -203,9 +259,15 @@ changes are needed. Run `tools/verify-game.py` on each page afterwards.
 - `drills/index.html`: regenerated, byte-identical when run twice.
 - `template.html`: legend moved below `.controls`, reserved via
   `visibility: hidden` with a fixed one-line height.
-- `games/*.html`: re-templated, with GAME blocks unchanged.
+- `tools/retemplate-games.py`: new tool (update mode + `--check`),
+  idempotent, never touches `games/archive/`.
+- `games/*.html`: **all 11 live pages** updated by the tool, with GAME
+  blocks and titles byte-identical and every page passing
+  `tools/verify-game.py`. Committed in the same commit as `template.html`.
 - `tools/verify-game.cjs`: button- and counter-position stability checks and
   the legend-below-controls check.
-- `CLAUDE.md`: in the step-6 checklist, add the new stability assertion
+- `CLAUDE.md`: in step 4, the "run `tools/retemplate-games.py` after any
+  template change" rule, plus the tool in the repo-layout list; in the
+  step-6 checklist, add the new stability assertion
   under the `moveNotes` Playwright bullet, and mention the rust played arrow
   in step 4c's deck description.

@@ -174,6 +174,30 @@ const out = await page.evaluate(() => {
       (!has('graphPly') || R.graphPly() === null));
   }
 
+  // --- layout stability: buttons and move counter never move ---------------
+  // (plan 0011 §3) the controls sit directly under the board and the legend,
+  // below them, keeps its one-line row even when hidden — so stepping between
+  // user moves, opponent moves, the start position, and retry mode moves
+  // neither #btn-prev nor #move-counter. Page coordinates, not viewport ones,
+  // so an incidental scroll doesn't read as a layout shift.
+  const pageTop = el => el.getBoundingClientRect().top + window.scrollY;
+  const posFails = [], orderFails = [];
+  const controls = document.querySelector('.controls');
+  const stable = $('btn-prev') && $('move-counter') && controls;
+  let btnTop0 = null, counterTop0 = null;
+  const probePositions = (label) => {
+    const bt = pageTop($('btn-prev')), ct = pageTop($('move-counter'));
+    if (btnTop0 === null) { btnTop0 = bt; counterTop0 = ct; }
+    if (Math.abs(bt - btnTop0) > 0.5) posFails.push(`${label}: #btn-prev top ${bt} vs ${btnTop0}`);
+    if (Math.abs(ct - counterTop0) > 0.5) posFails.push(`${label}: #move-counter top ${ct} vs ${counterTop0}`);
+    const lg = $('board-legend');
+    if (lg && lg.getBoundingClientRect().top < controls.getBoundingClientRect().bottom)
+      orderFails.push(`${label}: legend above the controls`);
+  };
+  if (stable) {
+    for (let k = 0; k <= total; k++) { R.goTo(k); probePositions(`ply ${k}`); }
+  }
+
   // --- retry mode ----------------------------------------------------------
   const withRetry = has('retryState')
     ? mistakes.map((m, i) => [m, i]).filter(([m]) => m.retry) : [];
@@ -193,6 +217,7 @@ const out = await page.evaluate(() => {
       st && st.status === 'await' && st.ply === mk.ply, JSON.stringify(st));
     check('retry hides arrows', !document.querySelector('#layer-arrows line.arrow'));
     check('retry hides legend', hiddenOrAbsent($('board-legend')));
+    if (stable) probePositions('retry mode');
 
     R.retryPlay('e9e9');                 // illegal: must change nothing
     st = R.retryState();
@@ -233,6 +258,12 @@ const out = await page.evaluate(() => {
   } else if (has('retryState')) {
     R.retryStart(0);
     check('retryStart is a no-op without retry data', R.retryState() === null);
+  }
+
+  if (stable) {
+    check('buttons and move counter stay put on every ply (incl. retry)', !posFails.length,
+      posFails.slice(0, 4).join(' | '));
+    check('legend sits below the controls', !orderFails.length, orderFails.slice(0, 4).join(' | '));
   }
 
   // --- polish additions: highlights, opening report, time bar --------------

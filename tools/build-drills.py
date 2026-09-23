@@ -120,6 +120,10 @@ def build_drills(sidecars):
                 "acceptable": retry["acceptable"],
                 "legal": retry["legal"],
                 "played": mistake["played"],
+                # the game move, drawn as the rust arrow on reveal; older
+                # sidecars lack playedUci, so derive it from the SAN
+                "playedUci": mistake.get("playedUci")
+                or chess.Board(retry["fen"]).parse_san(mistake["played"]).uci(),
                 "best": mistake["best"],
             }
             if len(retry["solutions"]) > 1:

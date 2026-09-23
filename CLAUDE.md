@@ -458,7 +458,14 @@ sidecar too.
 - Copy `template.html` and replace **only** the `const GAME = { … };` statement inside
   the marked `GAME DATA` block, plus the static `<title>`. Never edit the template's
   markup, CSS, or scripts in a generated file — if something needs fixing, fix
-  `template.html` itself so all future pages benefit.
+  `template.html` itself so all future pages benefit. **After any
+  `template.html` change, run `python3 tools/retemplate-games.py`** (plain
+  python3, no engines): it rebuilds every live `games/*.html` from the new
+  template with its own GAME block and `<title>` kept byte-identical (never
+  touching `games/archive/`), and the updated pages are committed together
+  with the template change. `python3 tools/retemplate-games.py --check`
+  writes nothing and exits non-zero if any page is stale — the one-call way
+  to confirm no page lags the template.
 
 Regex that does the replacement safely (Python, `re.S`):
 `re.subn(r"const GAME = \{.*?\n\};", new_game_js, html, count=1, flags=re.S)`
@@ -577,7 +584,10 @@ The deck front end keeps its schedule in `localStorage` (key
 `chess-drills-v1`): a Leitner scheme keyed by `<stamp>:<ply>` — stable
 across regenerations — with boxes 1–4 (fail → box 1, due immediately;
 first-attempt solve → next box, due in 1/3/7 days). Due drills are
-interleaved round-robin across source games, each drill ends with a
+interleaved round-robin across source games, every reveal draws the move
+actually played in the game as a rust arrow (from the drill's `playedUci`,
+beside the gold engine and cream human-findable arrows, with a matching
+"played" legend item), each drill ends with a
 "recall the lesson" stage (the takeaway stays hidden until the user has
 tried to state it), and a tag filter scopes a session to one weakness.
 
@@ -823,7 +833,11 @@ For `moveNotes` (any page that carries them):
   (with the played and engine's-pick SANs) and draws the arrows; when the played
   move equals the engine's pick, the two arrows render side by side — thinner,
   offset, not stacked (two `.arrow` line elements with equal from→to but
-  different positions); opponent-move positions show no arrows and no legend.
+  different positions); opponent-move positions show no arrows and no legend;
+  and the layout stays put: `#btn-prev` and `#move-counter` have the same top
+  on every ply (user moves, opponent moves, the start position, retry mode)
+  and `#board-legend` sits below `.controls` — the hidden legend keeps its
+  one-line row (`visibility: hidden`) instead of collapsing.
 
 When the page carries Maia data, also check:
 
@@ -1029,6 +1043,9 @@ applies. Handle them with the **cross-reference registry** instead:
   assertion in one call, one PASS/FAIL summary.
 - `tools/build-drills.py` — the deck generator; also backfills step-2d
   `retry` objects into sidecars that predate them.
+- `tools/retemplate-games.py` — rolls the current `template.html` into every
+  live `games/*.html` (GAME block and `<title>` kept verbatim); run after any
+  template change, `--check` to detect stale pages (workflow step 4).
 - `progress-template.html` — the progress-dashboard template (self-contained;
   inline-SVG charts, tag-recurrence table). Only its `const PROGRESS = {…};`
   block is replaced in the generated dashboard.

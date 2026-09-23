@@ -120,7 +120,7 @@
   @media (max-width: 860px) {
     .drill { grid-template-columns: 1fr; }
   }
-  .board-col { display: flex; flex-direction: column; gap: 12px; }
+  .board-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
   .board-svg { width: 100%; height: auto; border-radius: 6px; display: block; }
   .legend {
     display: flex;
@@ -131,12 +131,22 @@
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    min-height: 14px;
+    height: 16px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;     /* never widen the column on a very narrow phone */
   }
-  .legend[hidden] { display: none; }
+  /* hidden legends keep their row, so the panel below never jumps on reveal */
+  .legend[hidden] { display: flex; visibility: hidden; }
   .legend-item { display: flex; align-items: center; gap: 6px; }
   .legend-item[hidden] { display: none; }
+  @media (max-width: 480px) {
+    .legend { gap: 8px; font-size: 9px; letter-spacing: 0; }
+    .legend-item { gap: 3px; }
+    .legend .dot { width: 7px; height: 7px; }
+  }
   .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .dot.rust { background: var(--rust); }
   .dot.gold { background: var(--gold); }
   .dot.cream { background: var(--hbcream); }
 
@@ -252,7 +262,8 @@
     margin: 0;
   }
 
-  .drill-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .drill-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 16px; }
+  .played-san { color: var(--rust); font-weight: 600; font-family: var(--mono); }
   button.act {
     font-family: var(--mono);
     font-size: 12.5px;
@@ -386,6 +397,7 @@
     <div class="board-col">
       <div id="board-mount"></div>
       <div class="legend" id="board-legend" hidden>
+        <span class="legend-item" id="legend-played"><i class="dot rust"></i><span id="legend-played-text">played</span></span>
         <span class="legend-item"><i class="dot gold"></i><span id="legend-best">best</span></span>
         <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i><span id="legend-human-text">human-findable</span></span>
       </div>
@@ -678,6 +690,8 @@ let activeTag = "all";
 let practiceAhead = false;
 let queue = [];        // drill ids still to do this session
 let doneCount = 0;
+let drillEyebrow = ""; // fixed when a drill starts, so the await and resolved
+                       // panels share one eyebrow line (and one button slot)
 
 function buildQueue() {
   const pool = DRILLS.filter((d) =>
@@ -852,11 +866,19 @@ function resolveDrill(success, outcome, uci) {
 
 function revealSolution(outcome, uci) {
   const bestUci = drill.solutions[0];
-  const specs = [{ from: bestUci.slice(0, 2), to: bestUci.slice(2, 4), color: "#c9a24bcc" }];
+  // played → best → human, the review page's order: rust sits underneath
+  const specs = [];
+  if (drill.playedUci) {
+    specs.push({ from: drill.playedUci.slice(0, 2), to: drill.playedUci.slice(2, 4), color: "#c1502fcc" });
+  }
+  specs.push({ from: bestUci.slice(0, 2), to: bestUci.slice(2, 4), color: "#c9a24bcc" });
   if (drill.solutions[1]) {
     specs.push({ from: drill.solutions[1].slice(0, 2), to: drill.solutions[1].slice(2, 4), color: "#e7d7abcc" });
   }
   drawArrowSet(arrowsLayer, specs);
+  const lp = $("legend-played");
+  lp.hidden = !drill.playedUci;
+  $("legend-played-text").textContent = "played " + drill.played;
   $("legend-best").textContent = "best " + drill.best;
   const lh = $("legend-human");
   if (drill.humanBest && drill.humanBest !== drill.best) {
@@ -880,9 +902,19 @@ function renderPanelAwait() {
 
   const eyebrow = document.createElement("span");
   eyebrow.className = "fb-eyebrow";
-  eyebrow.textContent = "drill " + (doneCount + 1) + " of " + (doneCount + queue.length) +
-    " · from " + drill.gameLabel + " · move " + drill.moveNo;
+  eyebrow.textContent = drillEyebrow;
   panel.appendChild(eyebrow);
+
+  // Actions right under the eyebrow: "Next drill" later lands in this slot.
+  const actions = document.createElement("div");
+  actions.className = "drill-actions";
+  const skip = document.createElement("button");
+  skip.className = "act";
+  skip.id = "btn-give-up";
+  skip.textContent = "Show the answer (counts as a miss)";
+  skip.addEventListener("click", giveUp);
+  actions.appendChild(skip);
+  panel.appendChild(actions);
 
   const ask = document.createElement("h2");
   ask.className = "drill-ask";
@@ -918,16 +950,6 @@ function renderPanelAwait() {
   attemptNote.className = "attempt-note";
   attemptNote.id = "attempt-note";
   panel.appendChild(attemptNote);
-
-  const actions = document.createElement("div");
-  actions.className = "drill-actions";
-  const skip = document.createElement("button");
-  skip.className = "act";
-  skip.id = "btn-give-up";
-  skip.textContent = "Show the answer (counts as a miss)";
-  skip.addEventListener("click", giveUp);
-  actions.appendChild(skip);
-  panel.appendChild(actions);
 }
 
 function renderPanelResolved(outcome, uci) {
@@ -937,8 +959,23 @@ function renderPanelResolved(outcome, uci) {
 
   const eyebrow = document.createElement("span");
   eyebrow.className = "fb-eyebrow";
-  eyebrow.textContent = "from " + drill.gameLabel + " · move " + drill.moveNo;
+  eyebrow.textContent = drillEyebrow;
   panel.appendChild(eyebrow);
+
+  const actions = document.createElement("div");
+  actions.className = "drill-actions";
+  const next = document.createElement("button");
+  next.className = "act primary";
+  next.id = "btn-next";
+  next.textContent = queue.length ? "Next drill" : "Finish";
+  next.addEventListener("click", nextDrill);
+  actions.appendChild(next);
+  const link = document.createElement("a");
+  link.className = "game-link";
+  link.href = drill.game;
+  link.textContent = "Open the full review ›";
+  actions.appendChild(link);
+  panel.appendChild(actions);
 
   const banner = document.createElement("div");
   banner.className = "result-banner " + outcome;
@@ -960,7 +997,10 @@ function renderPanelResolved(outcome, uci) {
 
   const played = document.createElement("p");
   played.className = "drill-note";
-  played.textContent = "In the game you played " + drill.played + ".";
+  const playedSan = document.createElement("span");
+  playedSan.className = "played-san";
+  playedSan.textContent = drill.played;
+  played.append("In the game you played ", playedSan, ".");
   panel.appendChild(played);
 
   // Active recall: the lesson stays hidden until the user has tried to say it.
@@ -990,21 +1030,6 @@ function renderPanelResolved(outcome, uci) {
     recall.appendChild(btn);
     panel.appendChild(recall);
   }
-
-  const actions = document.createElement("div");
-  actions.className = "drill-actions";
-  const next = document.createElement("button");
-  next.className = "act primary";
-  next.id = "btn-next";
-  next.textContent = queue.length ? "Next drill" : "Finish";
-  next.addEventListener("click", nextDrill);
-  actions.appendChild(next);
-  const link = document.createElement("a");
-  link.className = "game-link";
-  link.href = drill.game;
-  link.textContent = "Open the full review ›";
-  actions.appendChild(link);
-  panel.appendChild(actions);
 }
 
 // --------------------------------------------------------------------------
@@ -1022,6 +1047,8 @@ function startDrill(id) {
   attempts = 0;
   status = "await";
   selectedFrom = null;
+  drillEyebrow = "drill " + (doneCount + 1) + " of " + (doneCount + queue.length) +
+    " · from " + drill.gameLabel + " · move " + drill.moveNo;
   $("drill-area").hidden = false;
   $("empty-state").hidden = true;
   $("board-legend").hidden = true;

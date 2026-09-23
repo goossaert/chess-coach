@@ -102,6 +102,7 @@
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    min-width: 0;         /* the nowrap legend must not widen the grid column */
   }
   .board-svg {
     width: 100%;
@@ -118,10 +119,22 @@
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    min-height: 14px;
+    height: 16px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;     /* never widen the column on a very narrow phone */
   }
-  .legend[hidden] { display: none; }
+  /* A hidden legend keeps its one-line row, so nothing below it moves when
+     stepping between user and opponent moves (the hidden attribute stays the
+     on/off signal). The human-findable item likewise keeps its slot. */
+  .legend[hidden] { display: flex; visibility: hidden; }
   .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-item[hidden] { visibility: hidden; }
+  @media (max-width: 480px) {
+    .legend { gap: 8px; font-size: 9px; letter-spacing: 0; }
+    .legend-item { gap: 3px; }
+    .legend .dot { width: 7px; height: 7px; }
+  }
   .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
   .dot.rust { background: var(--rust); }
   .dot.gold { background: var(--gold); }
@@ -844,11 +857,6 @@
   <section class="replay">
     <div class="board-col">
       <div id="board-mount"></div>
-      <div class="legend" id="board-legend" hidden>
-        <span class="legend-item"><i class="dot rust"></i><span id="legend-played">played</span></span>
-        <span class="legend-item"><i class="dot gold"></i><span id="legend-best">engine's pick</span></span>
-        <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i><span id="legend-human-text">human-findable</span></span>
-      </div>
       <div class="controls">
         <button id="btn-start" title="Start position (Home)">|&laquo;</button>
         <button id="btn-back10" title="Back 10 moves (Shift+&larr;)">&minus;10</button>
@@ -856,6 +864,11 @@
         <button id="btn-next" title="Next move (&rarr;)">&rsaquo;</button>
         <button id="btn-fwd10" title="Forward 10 moves (Shift+&rarr;)">+10</button>
         <button id="btn-end" title="Final position (End)">&raquo;|</button>
+      </div>
+      <div class="legend" id="board-legend" hidden>
+        <span class="legend-item"><i class="dot rust"></i><span id="legend-played">played</span></span>
+        <span class="legend-item"><i class="dot gold"></i><span id="legend-best">engine's pick</span></span>
+        <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i><span id="legend-human-text">human-findable</span></span>
       </div>
       <div class="move-counter" id="move-counter"></div>
       <div class="kbd-hint">&larr; &rarr; move &middot; shift+&larr;&rarr; jump 10 &middot; home/end</div>

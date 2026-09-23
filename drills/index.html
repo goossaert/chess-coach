@@ -120,7 +120,7 @@
   @media (max-width: 860px) {
     .drill { grid-template-columns: 1fr; }
   }
-  .board-col { display: flex; flex-direction: column; gap: 12px; }
+  .board-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
   .board-svg { width: 100%; height: auto; border-radius: 6px; display: block; }
   .legend {
     display: flex;
@@ -131,12 +131,22 @@
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    min-height: 14px;
+    height: 16px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;     /* never widen the column on a very narrow phone */
   }
-  .legend[hidden] { display: none; }
+  /* hidden legends keep their row, so the panel below never jumps on reveal */
+  .legend[hidden] { display: flex; visibility: hidden; }
   .legend-item { display: flex; align-items: center; gap: 6px; }
   .legend-item[hidden] { display: none; }
+  @media (max-width: 480px) {
+    .legend { gap: 8px; font-size: 9px; letter-spacing: 0; }
+    .legend-item { gap: 3px; }
+    .legend .dot { width: 7px; height: 7px; }
+  }
   .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .dot.rust { background: var(--rust); }
   .dot.gold { background: var(--gold); }
   .dot.cream { background: var(--hbcream); }
 
@@ -252,7 +262,8 @@
     margin: 0;
   }
 
-  .drill-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .drill-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 16px; }
+  .played-san { color: var(--rust); font-weight: 600; font-family: var(--mono); }
   button.act {
     font-family: var(--mono);
     font-size: 12.5px;
@@ -386,6 +397,7 @@
     <div class="board-col">
       <div id="board-mount"></div>
       <div class="legend" id="board-legend" hidden>
+        <span class="legend-item" id="legend-played"><i class="dot rust"></i><span id="legend-played-text">played</span></span>
         <span class="legend-item"><i class="dot gold"></i><span id="legend-best">best</span></span>
         <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i><span id="legend-human-text">human-findable</span></span>
       </div>
@@ -472,6 +484,7 @@ const DRILLS = [
       "h8g8"
     ],
     "played": "Nb4",
+    "playedUci": "c6b4",
     "best": "Bb4+",
     "tags": [
       "opening-principle",
@@ -532,6 +545,7 @@ const DRILLS = [
       "h8g8"
     ],
     "played": "Nd7",
+    "playedUci": "f6d7",
     "best": "axb4",
     "tags": [
       "missed-tactic",
@@ -598,6 +612,7 @@ const DRILLS = [
       "h8g8"
     ],
     "played": "Ne5",
+    "playedUci": "c6e5",
     "best": "h6",
     "humanBest": "O-O",
     "tags": [
@@ -665,6 +680,7 @@ const DRILLS = [
       "h8h7"
     ],
     "played": "Ng4",
+    "playedUci": "e5g4",
     "best": "Ra3",
     "humanBest": "Nf6",
     "tags": [
@@ -730,6 +746,7 @@ const DRILLS = [
       "h8h7"
     ],
     "played": "Ra2",
+    "playedUci": "a4a2",
     "best": "Ra1+",
     "tags": [
       "missed-mate",
@@ -787,6 +804,7 @@ const DRILLS = [
       "g3g4"
     ],
     "played": "Qe3",
+    "playedUci": "c3e3",
     "best": "dxe5",
     "tags": [
       "missed-tactic",
@@ -821,6 +839,7 @@ const DRILLS = [
       "g2g4"
     ],
     "played": "g3",
+    "playedUci": "g2g3",
     "best": "Kf3",
     "tags": [
       "endgame-technique",
@@ -857,6 +876,7 @@ const DRILLS = [
       "g3g4"
     ],
     "played": "Be5",
+    "playedUci": "f4e5",
     "best": "Bxb8",
     "tags": [
       "hanging-piece",
@@ -924,6 +944,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Qg4",
+    "playedUci": "d1g4",
     "best": "Bd3",
     "tags": [
       "opening-principle"
@@ -993,6 +1014,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Na4",
+    "playedUci": "c3a4",
     "best": "dxc5",
     "tags": [
       "opening-principle"
@@ -1047,6 +1069,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "b4",
+    "playedUci": "b2b4",
     "best": "b3",
     "tags": [
       "hanging-piece",
@@ -1107,6 +1130,7 @@ const DRILLS = [
       "h4h5"
     ],
     "played": "Bxh5",
+    "playedUci": "e2h5",
     "best": "Nb1",
     "tags": [
       "unsafe-capture",
@@ -1162,6 +1186,7 @@ const DRILLS = [
       "h5g6"
     ],
     "played": "Qg4",
+    "playedUci": "h4g4",
     "best": "Bxf7+",
     "tags": [
       "missed-tactic"
@@ -1219,6 +1244,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "e5",
+    "playedUci": "e4e5",
     "best": "exd5",
     "tags": [
       "missed-tactic",
@@ -1275,6 +1301,7 @@ const DRILLS = [
       "h3h4"
     ],
     "played": "Na3",
+    "playedUci": "b1a3",
     "best": "c4",
     "tags": [
       "pawn-break-timing",
@@ -1346,6 +1373,7 @@ const DRILLS = [
       "h3h4"
     ],
     "played": "Rxc6",
+    "playedUci": "c1c6",
     "best": "Bc2",
     "humanBest": "Bxh6",
     "tags": [
@@ -1404,6 +1432,7 @@ const DRILLS = [
       "h3h4"
     ],
     "played": "Qa3",
+    "playedUci": "d3a3",
     "best": "Rb1",
     "tags": [
       "conversion-drift"
@@ -1475,6 +1504,7 @@ const DRILLS = [
       "h4g6"
     ],
     "played": "Qc6+",
+    "playedUci": "a6c6",
     "best": "Qc8#",
     "tags": [
       "missed-mate",
@@ -1538,6 +1568,7 @@ const DRILLS = [
       "h7h6"
     ],
     "played": "Nb5",
+    "playedUci": "d4b5",
     "best": "f5",
     "tags": [
       "opening-principle"
@@ -1606,6 +1637,7 @@ const DRILLS = [
       "h8g8"
     ],
     "played": "g5",
+    "playedUci": "g7g5",
     "best": "c4",
     "tags": [
       "pawn-break-timing",
@@ -1675,6 +1707,7 @@ const DRILLS = [
       "h8g8"
     ],
     "played": "fxg5",
+    "playedUci": "f6g5",
     "best": "Ng8",
     "humanBest": "Ng8",
     "tags": [
@@ -1743,6 +1776,7 @@ const DRILLS = [
       "h7h6"
     ],
     "played": "Rg5",
+    "playedUci": "g6g5",
     "best": "Qf7",
     "humanBest": "Qf7",
     "tags": [
@@ -1802,6 +1836,7 @@ const DRILLS = [
       "h6h5"
     ],
     "played": "Qxf6",
+    "playedUci": "e6f6",
     "best": "b4",
     "tags": [
       "unsafe-capture"
@@ -1847,6 +1882,7 @@ const DRILLS = [
       "h6h5"
     ],
     "played": "c4",
+    "playedUci": "c5c4",
     "best": "Be7",
     "tags": [
       "king-safety"
@@ -1911,6 +1947,7 @@ const DRILLS = [
       "h7h6"
     ],
     "played": "Bh8",
+    "playedUci": "f6h8",
     "best": "exf3",
     "tags": [
       "missed-tactic",
@@ -1973,6 +2010,7 @@ const DRILLS = [
       "h7h6"
     ],
     "played": "Qd7",
+    "playedUci": "d8d7",
     "best": "Ng3",
     "tags": [
       "missed-tactic",
@@ -2041,6 +2079,7 @@ const DRILLS = [
       "h7h6"
     ],
     "played": "Rxh5",
+    "playedUci": "c5h5",
     "best": "h3",
     "humanBest": "c3",
     "tags": [
@@ -2102,6 +2141,7 @@ const DRILLS = [
       "h7h6"
     ],
     "played": "Bh3",
+    "playedUci": "e6h3",
     "best": "Rg5",
     "tags": [
       "hanging-piece"
@@ -2163,6 +2203,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Ne4",
+    "playedUci": "d2e4",
     "best": "Qe2",
     "humanBest": "O-O",
     "tags": [
@@ -2230,6 +2271,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Nb7",
+    "playedUci": "c5b7",
     "best": "Nxd7+",
     "tags": [
       "missed-tactic",
@@ -2299,6 +2341,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Qd3",
+    "playedUci": "d1d3",
     "best": "a4",
     "humanBest": "Nbd2",
     "tags": [
@@ -2365,6 +2408,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Bh5",
+    "playedUci": "e2h5",
     "best": "Rab1",
     "tags": [
       "hanging-piece"
@@ -2409,6 +2453,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Qxb2",
+    "playedUci": "b1b2",
     "best": "Kh1",
     "tags": [
       "unsafe-capture",
@@ -2466,6 +2511,7 @@ const DRILLS = [
       "h8g8"
     ],
     "played": "e5",
+    "playedUci": "e7e5",
     "best": "Bf5",
     "tags": [
       "pawn-break-timing",
@@ -2490,6 +2536,7 @@ const DRILLS = [
       "e8d8"
     ],
     "played": "Kxd8",
+    "playedUci": "e8d8",
     "best": "Rxd8",
     "tags": [
       "wrong-recapture",
@@ -2534,6 +2581,7 @@ const DRILLS = [
       "h6h5"
     ],
     "played": "g6",
+    "playedUci": "g7g6",
     "best": "Kg5",
     "tags": [
       "endgame-technique",
@@ -2598,6 +2646,7 @@ const DRILLS = [
       "h7h6"
     ],
     "played": "Qa1+",
+    "playedUci": "c1a1",
     "best": "b1=Q#",
     "tags": [
       "missed-mate",
@@ -2654,6 +2703,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "d5",
+    "playedUci": "d4d5",
     "best": "dxe5",
     "tags": [
       "missed-tactic",
@@ -2719,6 +2769,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Rd6",
+    "playedUci": "d1d6",
     "best": "Ba3",
     "humanBest": "Be7",
     "tags": [
@@ -2744,6 +2795,7 @@ const DRILLS = [
       "e5f4"
     ],
     "played": "Kd6",
+    "playedUci": "e5d6",
     "best": "Kf4",
     "tags": [
       "unsafe-king-move",
@@ -2785,6 +2837,7 @@ const DRILLS = [
       "e4e5"
     ],
     "played": "Ke3",
+    "playedUci": "d3e3",
     "best": "Rh1",
     "tags": [
       "unsafe-king-move",
@@ -2850,6 +2903,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Bxg5+",
+    "playedUci": "c1g5",
     "best": "c5",
     "humanBest": "Qxa6",
     "tags": [
@@ -2919,6 +2973,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Bh6",
+    "playedUci": "g5h6",
     "best": "Bxf6+",
     "tags": [
       "king-safety",
@@ -2990,6 +3045,7 @@ const DRILLS = [
       "h6g7"
     ],
     "played": "Qxa6",
+    "playedUci": "b7a6",
     "best": "g3",
     "humanBest": "Kh1",
     "tags": [
@@ -3061,6 +3117,7 @@ const DRILLS = [
       "h2h4"
     ],
     "played": "Nb5",
+    "playedUci": "c3b5",
     "best": "Kh1",
     "tags": [
       "king-safety"
@@ -3092,6 +3149,7 @@ const DRILLS = [
       "f6d7"
     ],
     "played": "c6",
+    "playedUci": "c7c6",
     "best": "Qxb5",
     "tags": [
       "missed-tactic"
@@ -3141,6 +3199,7 @@ const DRILLS = [
       "h8g8"
     ],
     "played": "O-O",
+    "playedUci": "e8g8",
     "best": "Bxf3",
     "tags": [
       "opening-principle",
@@ -3195,6 +3254,7 @@ const DRILLS = [
       "h7h6"
     ],
     "played": "Ra8",
+    "playedUci": "c8a8",
     "best": "bxc5",
     "humanBest": "Bxf3",
     "tags": [
@@ -3447,6 +3507,8 @@ let activeTag = "all";
 let practiceAhead = false;
 let queue = [];        // drill ids still to do this session
 let doneCount = 0;
+let drillEyebrow = ""; // fixed when a drill starts, so the await and resolved
+                       // panels share one eyebrow line (and one button slot)
 
 function buildQueue() {
   const pool = DRILLS.filter((d) =>
@@ -3621,11 +3683,19 @@ function resolveDrill(success, outcome, uci) {
 
 function revealSolution(outcome, uci) {
   const bestUci = drill.solutions[0];
-  const specs = [{ from: bestUci.slice(0, 2), to: bestUci.slice(2, 4), color: "#c9a24bcc" }];
+  // played → best → human, the review page's order: rust sits underneath
+  const specs = [];
+  if (drill.playedUci) {
+    specs.push({ from: drill.playedUci.slice(0, 2), to: drill.playedUci.slice(2, 4), color: "#c1502fcc" });
+  }
+  specs.push({ from: bestUci.slice(0, 2), to: bestUci.slice(2, 4), color: "#c9a24bcc" });
   if (drill.solutions[1]) {
     specs.push({ from: drill.solutions[1].slice(0, 2), to: drill.solutions[1].slice(2, 4), color: "#e7d7abcc" });
   }
   drawArrowSet(arrowsLayer, specs);
+  const lp = $("legend-played");
+  lp.hidden = !drill.playedUci;
+  $("legend-played-text").textContent = "played " + drill.played;
   $("legend-best").textContent = "best " + drill.best;
   const lh = $("legend-human");
   if (drill.humanBest && drill.humanBest !== drill.best) {
@@ -3649,9 +3719,19 @@ function renderPanelAwait() {
 
   const eyebrow = document.createElement("span");
   eyebrow.className = "fb-eyebrow";
-  eyebrow.textContent = "drill " + (doneCount + 1) + " of " + (doneCount + queue.length) +
-    " · from " + drill.gameLabel + " · move " + drill.moveNo;
+  eyebrow.textContent = drillEyebrow;
   panel.appendChild(eyebrow);
+
+  // Actions right under the eyebrow: "Next drill" later lands in this slot.
+  const actions = document.createElement("div");
+  actions.className = "drill-actions";
+  const skip = document.createElement("button");
+  skip.className = "act";
+  skip.id = "btn-give-up";
+  skip.textContent = "Show the answer (counts as a miss)";
+  skip.addEventListener("click", giveUp);
+  actions.appendChild(skip);
+  panel.appendChild(actions);
 
   const ask = document.createElement("h2");
   ask.className = "drill-ask";
@@ -3687,16 +3767,6 @@ function renderPanelAwait() {
   attemptNote.className = "attempt-note";
   attemptNote.id = "attempt-note";
   panel.appendChild(attemptNote);
-
-  const actions = document.createElement("div");
-  actions.className = "drill-actions";
-  const skip = document.createElement("button");
-  skip.className = "act";
-  skip.id = "btn-give-up";
-  skip.textContent = "Show the answer (counts as a miss)";
-  skip.addEventListener("click", giveUp);
-  actions.appendChild(skip);
-  panel.appendChild(actions);
 }
 
 function renderPanelResolved(outcome, uci) {
@@ -3706,8 +3776,23 @@ function renderPanelResolved(outcome, uci) {
 
   const eyebrow = document.createElement("span");
   eyebrow.className = "fb-eyebrow";
-  eyebrow.textContent = "from " + drill.gameLabel + " · move " + drill.moveNo;
+  eyebrow.textContent = drillEyebrow;
   panel.appendChild(eyebrow);
+
+  const actions = document.createElement("div");
+  actions.className = "drill-actions";
+  const next = document.createElement("button");
+  next.className = "act primary";
+  next.id = "btn-next";
+  next.textContent = queue.length ? "Next drill" : "Finish";
+  next.addEventListener("click", nextDrill);
+  actions.appendChild(next);
+  const link = document.createElement("a");
+  link.className = "game-link";
+  link.href = drill.game;
+  link.textContent = "Open the full review ›";
+  actions.appendChild(link);
+  panel.appendChild(actions);
 
   const banner = document.createElement("div");
   banner.className = "result-banner " + outcome;
@@ -3729,7 +3814,10 @@ function renderPanelResolved(outcome, uci) {
 
   const played = document.createElement("p");
   played.className = "drill-note";
-  played.textContent = "In the game you played " + drill.played + ".";
+  const playedSan = document.createElement("span");
+  playedSan.className = "played-san";
+  playedSan.textContent = drill.played;
+  played.append("In the game you played ", playedSan, ".");
   panel.appendChild(played);
 
   // Active recall: the lesson stays hidden until the user has tried to say it.
@@ -3759,21 +3847,6 @@ function renderPanelResolved(outcome, uci) {
     recall.appendChild(btn);
     panel.appendChild(recall);
   }
-
-  const actions = document.createElement("div");
-  actions.className = "drill-actions";
-  const next = document.createElement("button");
-  next.className = "act primary";
-  next.id = "btn-next";
-  next.textContent = queue.length ? "Next drill" : "Finish";
-  next.addEventListener("click", nextDrill);
-  actions.appendChild(next);
-  const link = document.createElement("a");
-  link.className = "game-link";
-  link.href = drill.game;
-  link.textContent = "Open the full review ›";
-  actions.appendChild(link);
-  panel.appendChild(actions);
 }
 
 // --------------------------------------------------------------------------
@@ -3791,6 +3864,8 @@ function startDrill(id) {
   attempts = 0;
   status = "await";
   selectedFrom = null;
+  drillEyebrow = "drill " + (doneCount + 1) + " of " + (doneCount + queue.length) +
+    " · from " + drill.gameLabel + " · move " + drill.moveNo;
   $("drill-area").hidden = false;
   $("empty-state").hidden = true;
   $("board-legend").hidden = true;

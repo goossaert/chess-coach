@@ -102,6 +102,7 @@
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    min-width: 0;         /* the nowrap legend must not widen the grid column */
   }
   .board-svg {
     width: 100%;
@@ -118,10 +119,22 @@
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    min-height: 14px;
+    height: 16px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;     /* never widen the column on a very narrow phone */
   }
-  .legend[hidden] { display: none; }
+  /* A hidden legend keeps its one-line row, so nothing below it moves when
+     stepping between user and opponent moves (the hidden attribute stays the
+     on/off signal). The human-findable item likewise keeps its slot. */
+  .legend[hidden] { display: flex; visibility: hidden; }
   .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-item[hidden] { visibility: hidden; }
+  @media (max-width: 480px) {
+    .legend { gap: 8px; font-size: 9px; letter-spacing: 0; }
+    .legend-item { gap: 3px; }
+    .legend .dot { width: 7px; height: 7px; }
+  }
   .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
   .dot.rust { background: var(--rust); }
   .dot.gold { background: var(--gold); }
@@ -647,6 +660,13 @@
     min-height: 18px;
     margin: 0 0 12px;
   }
+  .check-note {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--rust);
+    margin: 0 0 10px;
+  }
+  .check-glow { pointer-events: none; }
   .retry-result {
     font-family: var(--mono);
     font-size: 13px;
@@ -837,11 +857,6 @@
   <section class="replay">
     <div class="board-col">
       <div id="board-mount"></div>
-      <div class="legend" id="board-legend" hidden>
-        <span class="legend-item"><i class="dot rust"></i><span id="legend-played">played</span></span>
-        <span class="legend-item"><i class="dot gold"></i><span id="legend-best">engine's pick</span></span>
-        <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i><span id="legend-human-text">human-findable</span></span>
-      </div>
       <div class="controls">
         <button id="btn-start" title="Start position (Home)">|&laquo;</button>
         <button id="btn-back10" title="Back 10 moves (Shift+&larr;)">&minus;10</button>
@@ -849,6 +864,11 @@
         <button id="btn-next" title="Next move (&rarr;)">&rsaquo;</button>
         <button id="btn-fwd10" title="Forward 10 moves (Shift+&rarr;)">+10</button>
         <button id="btn-end" title="Final position (End)">&raquo;|</button>
+      </div>
+      <div class="legend" id="board-legend" hidden>
+        <span class="legend-item"><i class="dot rust"></i><span id="legend-played">played</span></span>
+        <span class="legend-item"><i class="dot gold"></i><span id="legend-best">engine's pick</span></span>
+        <span class="legend-item" id="legend-human" hidden><i class="dot cream"></i><span id="legend-human-text">human-findable</span></span>
       </div>
       <div class="move-counter" id="move-counter"></div>
       <div class="kbd-hint">&larr; &rarr; move &middot; shift+&larr;&rarr; jump 10 &middot; home/end</div>
@@ -2494,7 +2514,37 @@ const GAME = {
 
 const FILES = "abcdefgh";
 
+// A FEN placement field (rank 8 first) → the 64-array the board uses (index
+// rank*8+file, rank 0 = board rank 1). Only the placement field is read here.
+function boardFromFenPlacement(placement) {
+  const b = new Array(64).fill(null);
+  const rows = placement.split("/");
+  for (let r = 0; r < 8 && r < rows.length; r++) {
+    const boardRank = 7 - r;                 // rows[0] is rank 8 → board rank index 7
+    let f = 0;
+    for (const ch of rows[r]) {
+      if (ch >= "1" && ch <= "8") f += ch.charCodeAt(0) - 48;
+      else { if (f < 8) b[boardRank * 8 + f] = ch; f++; }
+    }
+  }
+  return b;
+}
+
+// Optional From-Position start (GAME.startFen). Absent → the standard start.
+const START = (function () {
+  if (!GAME.startFen) return { board: null, whiteToMove: true, ep: null, moveNum: 1 };
+  const parts = GAME.startFen.trim().split(/\s+/);
+  return {
+    board: boardFromFenPlacement(parts[0]),
+    whiteToMove: parts[1] !== "b",
+    ep: (parts[3] && parts[3] !== "-") ? sqIndex(parts[3]) : null,
+    moveNum: parseInt(parts[5] || "1", 10),
+  };
+})();
+const START_HALF = (START.moveNum - 1) * 2 + (START.whiteToMove ? 0 : 1);
+
 function initialBoard() {
+  if (START.board) return START.board.slice();
   const b = new Array(64).fill(null);
   const back = ["R", "N", "B", "Q", "K", "B", "N", "R"];
   for (let f = 0; f < 8; f++) {
@@ -2545,6 +2595,11 @@ function squareAttackedBy(board, sq, byWhite) {
 }
 
 function findKing(board, white) { return board.indexOf(white ? "K" : "k"); }
+
+// Is the side-to-move's king in check on this board? Used only by retry mode's
+// check indicator (below) — a position where most pieces have zero legal
+// moves because of check should read as "in check", not as a broken board.
+function kingInCheck(board, white) { return squareAttackedBy(board, findKing(board, white), !white); }
 
 // Pseudo-legal move check (ignores self-check), including pawn pushes and en passant.
 function canMove(state, from, to) {
@@ -2639,15 +2694,15 @@ function applySan(state, san) {
 
 // positions[k] = state after k plies; positions[k].last = {from,to} of ply k-1.
 function buildPositions(movesSan) {
-  const state = { board: initialBoard(), ep: null, whiteToMove: true };
+  const state = { board: initialBoard(), ep: START.ep, whiteToMove: START.whiteToMove };
   const positions = [{ board: state.board.slice(), last: null }];
   for (let i = 0; i < movesSan.length; i++) {
     let mv;
     try {
       mv = applySan(state, movesSan[i]);
     } catch (e) {
-      const num = Math.floor(i / 2) + 1;
-      const dots = i % 2 ? "…" : ".";
+      const num = moveNumOfPly(i);
+      const dots = plyIsBlack(i) ? "…" : ".";
       throw new Error("Move " + num + dots + " “" + movesSan[i] + "” (ply " + i + "): " + e.message);
     }
     positions.push({ board: state.board.slice(), last: mv });
@@ -2736,6 +2791,7 @@ function buildBoardSvg() {
   }
   svg.appendChild(coords);
 
+  svg.appendChild(svgEl("g", { id: "layer-check" }));
   svg.appendChild(svgEl("g", { id: "layer-hl" }));
   svg.appendChild(svgEl("g", { id: "layer-pieces" }));
   svg.appendChild(svgEl("g", { id: "layer-arrows" }));
@@ -2932,9 +2988,14 @@ function makeFindRow(mk) {
   return div;
 }
 
-function sideOfPly(ply) { return ply % 2 === 0 ? "White" : "Black"; }
-function moveNumOfPly(ply) { return Math.floor(ply / 2) + 1; }
-function sanLabel(ply, san) { return moveNumOfPly(ply) + (ply % 2 ? "…" : ".") + " " + san; }
+// Absolute half-move index of a ply within the full game. 0 for a standard
+// start; START_HALF shifts it for a From-Position game (GAME.startFen) so the
+// displayed move numbers and side-to-move stay true to the real board.
+function absHalf(ply) { return START_HALF + ply; }
+function plyIsBlack(ply) { return absHalf(ply) % 2 === 1; }
+function sideOfPly(ply) { return plyIsBlack(ply) ? "Black" : "White"; }
+function moveNumOfPly(ply) { return Math.floor(absHalf(ply) / 2) + 1; }
+function sanLabel(ply, san) { return moveNumOfPly(ply) + (plyIsBlack(ply) ? "…" : ".") + " " + san; }
 
 function renderFeedbackDefault() {
   const panel = $("fb-panel");
@@ -2988,7 +3049,7 @@ function renderFeedbackMistake(mk, retryOutcome) {
   eb.textContent = sideOfPly(mk.ply) + " to move · move " + moveNumOfPly(mk.ply);
   const h2 = document.createElement("h2");
   h2.className = "played-move";
-  h2.textContent = moveNumOfPly(mk.ply) + (mk.ply % 2 ? "… " : ". ") + mk.played;
+  h2.textContent = moveNumOfPly(mk.ply) + (plyIsBlack(mk.ply) ? "… " : ". ") + mk.played;
   text.appendChild(eb);
   text.appendChild(h2);
   const badges = document.createElement("div");
@@ -3111,7 +3172,7 @@ function renderFeedbackHighlight(hl) {
   eb.textContent = "What you did well · move " + moveNumOfPly(hl.ply);
   const h2 = document.createElement("h2");
   h2.className = "played-move";
-  h2.textContent = moveNumOfPly(hl.ply) + (hl.ply % 2 ? "… " : ". ") + hl.move;
+  h2.textContent = moveNumOfPly(hl.ply) + (plyIsBlack(hl.ply) ? "… " : ". ") + hl.move;
   text.appendChild(eb);
   text.appendChild(h2);
   head.appendChild(num);
@@ -3162,7 +3223,7 @@ for (const n of GAME.moveNotes || []) annoByPly.set(n.ply, n);
 for (const mk of mistakes) annoByPly.set(mk.ply, mk);
 
 let current = 0;
-let piecesLayer = null, hlLayer = null, arrowsLayer = null;
+let piecesLayer = null, hlLayer = null, arrowsLayer = null, checkLayer = null;
 const moveButtons = [];
 
 // Retry mode: null when inactive, else { mk, attempts, status, outcome,
@@ -3212,6 +3273,16 @@ function renderPosition() {
   arrowsLayer.innerHTML = "";
   // while a retry is taking input, arrows, legend, and feedback stay hidden
   const awaitingRetry = retry && retry.status === "await";
+
+  checkLayer.innerHTML = "";
+  if (awaitingRetry && kingInCheck(pos.board, !plyIsBlack(current))) {
+    const [x, y] = sqXY(findKing(pos.board, !plyIsBlack(current)));
+    checkLayer.appendChild(svgEl("circle", {
+      cx: x + SQ / 2, cy: y + SQ / 2, r: SQ * 0.52,
+      fill: "rgba(193,80,47,0.55)", class: "check-glow"
+    }));
+  }
+
   const note = (!awaitingRetry && current < totalPlies) ? annoByPly.get(current) : null;
   if (note) {
     const specs = [];
@@ -3329,6 +3400,14 @@ function renderRetryPrompt() {
   h2.textContent = "Your move — find a better one than you played.";
   panel.appendChild(h2);
 
+  if (kingInCheck(positions[current].board, !plyIsBlack(current))) {
+    const checkNote = document.createElement("p");
+    checkNote.className = "check-note";
+    checkNote.textContent = sideOfPly(mk.ply) + " is in check — only moves that deal with it " +
+      "(capture the checking piece, block it, or move the king) are legal here.";
+    panel.appendChild(checkNote);
+  }
+
   const p = document.createElement("p");
   p.className = "explain";
   p.textContent = "Click a piece, then its destination square (promotions become queens). " +
@@ -3390,7 +3469,11 @@ function onRetryBoardClick(evt, svg) {
   const name = boardClickSquare(evt, svg);
   if (!name) return;
   if (retry.from === null) {
-    if (retryHasLegalFrom(name)) retrySelectFrom(name);
+    if (retryHasLegalFrom(name)) { retrySelectFrom(name); return; }
+    // A tap on a piece that simply has no legal move (e.g. anything but the
+    // king/blocker/capturer while in check) should still visibly register —
+    // silence there reads as an unresponsive board, not "this piece is stuck".
+    if (positions[current].board[sqIndex(name)]) flashSquare(name, "rgba(139,147,161,0.4)");
     return;
   }
   if (name === retry.from) { clearRetrySelection(); return; }
@@ -3402,6 +3485,7 @@ function onRetryBoardClick(evt, svg) {
   }
   if (retry.mk.retry.legal.includes(uci)) { clearRetrySelection(); retryGrade(uci); return; }
   if (retryHasLegalFrom(name)) { retrySelectFrom(name); return; }
+  if (positions[current].board[sqIndex(name)]) flashSquare(name, "rgba(139,147,161,0.4)");
   // not a legal move and not a reselect — an illegal move is not an answer
 }
 
@@ -3531,7 +3615,7 @@ function buildTimeBar() {
     // sqrt scale keeps short thinks visible next to one long tank
     const h = Math.max(1.5, (TBAR_H - 2 * TPAD_Y) * Math.sqrt(t / maxT));
     const x0 = graphX(k), x1 = graphX(k + 1);
-    const isUser = ((k % 2 === 0) === (GAME.playerColor === "white"));
+    const isUser = (!plyIsBlack(k) === (GAME.playerColor === "white"));
     const fast = isUser && t < 10;
     const bar = svgEl("rect", {
       x: x0 + (x1 - x0) * 0.15, y: TBAR_H - TPAD_Y - h,
@@ -3560,6 +3644,7 @@ if (positions) {
   piecesLayer = svg.querySelector("#layer-pieces");
   hlLayer = svg.querySelector("#layer-hl");
   arrowsLayer = svg.querySelector("#layer-arrows");
+  checkLayer = svg.querySelector("#layer-check");
   svg.addEventListener("click", (evt) => onRetryBoardClick(evt, svg));
 
   // move list
